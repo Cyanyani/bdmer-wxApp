@@ -54,6 +54,12 @@
             <version>2.0.1</version>
         </dependency>
 
+        <!--redis 数据库相关-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!--slf4j + logback 日志记录-->
         <dependency>
             <groupId>org.slf4j</groupId>
