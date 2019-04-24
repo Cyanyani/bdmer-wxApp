@@ -1,6 +1,6 @@
 package com.bdmer.wxapp.model;
 
-public class User {
+public class UserEntity {
     private Long id;
 
     private String unionid;
