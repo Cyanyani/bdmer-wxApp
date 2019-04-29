@@ -1,5 +1,5 @@
 {
-    "pages":[
+    "pages": [
         "pages/index/index",
         "pages/login/login",
         "pages/list/list",
@@ -10,21 +10,20 @@
         "pages/mine-info/index",
         "pages/list/index"
     ],
-    "window":{
-        "backgroundTextStyle":"light",
+    "window": {
+        "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "WeChat",
-        "navigationBarTextStyle":"black"
+        "navigationBarTextStyle": "black"
     },
     "networkTimeout": {
         "request": 10000,
         "downloadFile": 10000,
-        "uploadFile":10000
+        "uploadFile": 10000
     },
     "tabBar": {
         "color": "#6e6d6b",
         "selectedColor": "#e64340",
-       
         "backgroundColor": "#fff",
         "list": [
             {
@@ -52,5 +51,6 @@
                 "text": "我的"
             }
         ]
-    }
+    },
+    "sitemapLocation": "sitemap.json"
 }

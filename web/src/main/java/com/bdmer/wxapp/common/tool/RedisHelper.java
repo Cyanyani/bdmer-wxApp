@@ -1,4 +1,4 @@
-package com.bdmer.wxapp.tool;
+package com.bdmer.wxapp.common.tool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

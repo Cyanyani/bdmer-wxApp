@@ -1,4 +1,4 @@
-package com.bdmer.wxapp.config;
+package com.bdmer.wxapp.common.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;

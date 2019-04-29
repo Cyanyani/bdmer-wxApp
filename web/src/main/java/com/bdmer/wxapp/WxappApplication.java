@@ -20,6 +20,6 @@ public class WxappApplication{
     public static void main(String[] args) {
         SpringApplication.run(WxappApplication.class, args);
 
-        LOG.info("bmder 服务启动成功");
+        LOG.info("BDMER - 服务启动成功");
     }
 }

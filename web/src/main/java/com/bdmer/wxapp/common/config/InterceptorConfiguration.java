@@ -1,4 +1,4 @@
-package com.bdmer.wxapp.config;
+package com.bdmer.wxapp.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
@@ -11,6 +11,6 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new MemberInfoInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new MemberInfoInterceptor()).addPathPatterns("/**");;
     }
 }
