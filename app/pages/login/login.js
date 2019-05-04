@@ -1,4 +1,5 @@
 const WXAPI = require('../../wxapi/main');
+const Util = require("../../utils/util.js");
 const { $Message } = require('../../components/iView/base/index');
 
 var app = getApp();
@@ -19,27 +20,27 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        // let that = this
-        // //再检查一次token
-        // WXAPI.checkToken().then(
-        //     function (res) {
-        //         if (res.code != 0) {
-        //             //token有效，但是需要用户信息
-        //             if (res.code != 10005) {
-        //                 wx.removeStorageSync('token');
-        //                 that.login();
-        //             }
-        //         }
-        //     },
-        //     function (err) {
-        //         //console.log(err)
-        //         $Message({
-        //             content: '服务器开小差了!',
-        //             type: 'error',
-        //             duration: 3
-        //         });
-        //     }
-        // )
+        let that = this
+        //再检查一次token
+        WXAPI.checkToken().then(
+            function (res) {
+                if (res.code != 0) {
+                    //token有效，但是需要用户信息
+                    if (res.code != 2005) {
+                        wx.removeStorageSync('token');
+                        that.login();
+                    }
+                }
+            },
+            function (err) {
+                //console.log(err)
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        )
     },
 
     /**
@@ -68,11 +69,11 @@ Page({
         loginData.encryptedData = e.detail.encryptedData;
 
         //给服务端发送用户信息
-        WXAPI.sendUserInfo(loginData).then(
+        WXAPI.sendUserInfo(Util.formatParamDTO(loginData)).then(
             function (res) {
                 if (res.code != 0) {
                     //没有token，token错误，token失效，跳到登陆
-                    if (res.code == -2 || res.code == 10003 || res.code == 10004) {
+                    if (res.code == -2 || res.code == 2003 || res.code == 2004) {
                         that.login();
                         return;
                     }
@@ -119,14 +120,15 @@ Page({
         that.data.isLogin = true;
         wx.login({
             success: function (res) {
-                //console.log(res);
+                console.log(res.code);
                 WXAPI.login({code:res.code}).then(
                     function (res) {
+                        console.log(res)
                         // 登录错误
                         if (res.code != 0) {
                             //需要用户信息
-                            if (res.code === 10005) {
-                                wx.setStorageSync('token', res.data.token);
+                            if (res.code === 2005) {
+                                wx.setStorageSync('token', res.data);
                                 return;
                             }
                             $Message({
@@ -135,7 +137,7 @@ Page({
                                 duration: 5
                             });
                         } else {
-                            wx.setStorageSync('token', res.data.token)
+                            wx.setStorageSync('token', res.data)
                             if (!wx.getStorageSync('userInfo')) {
                                 return;
                             }

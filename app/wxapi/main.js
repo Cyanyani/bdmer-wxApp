@@ -1,7 +1,7 @@
-const CONFIG = require('config.js')
+const CONFIG = require('config.js');
 
 const login = (data) => {
-  let _url = CONFIG.baseUrl + CONFIG.subDomain + '/userController/login'
+  let _url = CONFIG.baseUrl + CONFIG.subDomain + '/user/login';
     wx.showLoading({
         title: '登陆中'
     });
@@ -29,8 +29,11 @@ const login = (data) => {
 }
 
 const request = (url, method, data, isLoading=true) => {
+    
   let _url = CONFIG.baseUrl + CONFIG.subDomain + url
-
+    console.log(`请求方法：${method}\n请求地址：${_url}\n请求参数:`)
+    console.log(data)
+    console.log("\n")
   // 获取token
   let token = wx.getStorageSync('token');
 
@@ -58,6 +61,7 @@ const request = (url, method, data, isLoading=true) => {
         'Cookie':'token=' + token
       },
       success(request) {
+          console.log(request.data);
         resolve(request.data);
       },
       fail(error) {
@@ -73,15 +77,14 @@ const request = (url, method, data, isLoading=true) => {
   })
 }
 
-
 module.exports = {
     request,
     login,
     checkToken:() => {
-        return request('/userController/checkToken', 'get')
+        return request('/user/checkToken', 'get')
     },
     sendUserInfo:(data) => {
-        return request('/userController/sendUserInfo', 'post', data)
+        return request('/user/sendWxUserInfo', 'post', data)
     },
 
     // 未实现接口

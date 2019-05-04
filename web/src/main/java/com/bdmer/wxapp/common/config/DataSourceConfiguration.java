@@ -16,14 +16,12 @@ import javax.sql.DataSource;
 
 
 /**
- * 开启datasource事务管理, 以及mapper
+ * 开启datasource事务管理, 以及mapper - 配置类
  *
  * @since 2019-04-17 11:45
  * @author gongdelang
  */
-
 @Configuration
-@EnableTransactionManagement
 @MapperScan(basePackages = {"com.bdmer.wxapp.dao"}, sqlSessionFactoryRef = "SqlSessionFactory")
 public class DataSourceConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(DataSourceConfiguration.class);

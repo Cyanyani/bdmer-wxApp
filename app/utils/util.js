@@ -14,6 +14,18 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const formatParamDTO = o =>{
+    let data = {};
+    if(o === null){
+        data.data = "";
+    }else{
+        data.data = JSON.stringify(o);
+    }
+
+    return data;
+}
+
 module.exports = {
-  formatTime: formatTime
+    formatTime: formatTime,
+    formatParamDTO: formatParamDTO
 }

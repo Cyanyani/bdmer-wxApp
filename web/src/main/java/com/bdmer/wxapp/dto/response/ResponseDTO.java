@@ -1,4 +1,4 @@
-package com.bdmer.wxapp.dto;
+package com.bdmer.wxapp.dto.response;
 
 public class ResponseDTO<T> {
     /** 状态码 */

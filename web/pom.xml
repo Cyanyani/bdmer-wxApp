@@ -79,6 +79,19 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
+        <!-- StringUtils -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- AES加密数据解密算法 -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>1.46</version>
+        </dependency>
+
         <!--slf4j + logback 日志记录-->
         <dependency>
             <groupId>org.slf4j</groupId>

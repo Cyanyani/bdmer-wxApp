@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * bdmer（帮点儿忙）微信小程序 springboot 后台
+ * BMDER（帮点儿忙）微信小程序 springboot 后台
  *
  * @since 2019-04-17 11:48
  * @author gongdelang

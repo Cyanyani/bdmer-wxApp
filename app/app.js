@@ -8,7 +8,7 @@ App({
     },
     
     onLaunch: function () {
-        wx.setStorageSync("token", "saxas");
+        //wx.setStorageSync("token", "saxas");
         const that = this;
 
         /**

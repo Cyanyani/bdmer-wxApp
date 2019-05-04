@@ -1,10 +1,11 @@
 package com.bdmer.wxapp.common.tool;
 
 import com.bdmer.wxapp.common.enums.ResponseEnum;
-import com.bdmer.wxapp.dto.ResponseDTO;
+import com.bdmer.wxapp.dto.response.ResponseDTO;
 
 /**
- * 结果返回工具类
+ * 结果返回 - 工具类
+ *
  * @since 2019-04-29
  * @author gongdl
  */
@@ -26,6 +27,7 @@ public class B {
 
     /**
      * 失败 - 返回结果
+     *
      * @param responseEnum
      * @param object
      * @param <T>

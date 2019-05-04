@@ -14,14 +14,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * redis操作类
+ * redis操作 - 工具类
  *
  * @since 2019-04-24
  * @author gongdelang
  */
 @Component
-public class RedisHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(RedisHelper.class);
+public class RedisUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(RedisUtil.class);
 
     @Autowired
     private StringRedisTemplate redisTemplate;

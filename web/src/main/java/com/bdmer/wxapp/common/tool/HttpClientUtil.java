@@ -23,16 +23,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * http请求类
+ * http请求 - 工具类
  *
  * @since 2019-04-24
  * @author gongdelang
  */
-public class HttpClientHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(HttpClientHelper.class);
+public class HttpClientUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(HttpClientUtil.class);
 
     /**
      * get 请求 - 带参数
+     *
      * @param url
      * @param param
      * @return
@@ -67,14 +68,17 @@ public class HttpClientHelper {
             throw new RuntimeException("HttpClient Failed Code:" + response.getStatusLine().getStatusCode());
         }
 
+        String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+
         response.close();
         httpClient.close();
 
-        return EntityUtils.toString(response.getEntity(), "UTF-8");
+        return result;
     }
 
     /**
      * get 请求 - 不带参数
+     *
      * @param url
      * @return
      * @throws IOException
@@ -118,14 +122,17 @@ public class HttpClientHelper {
         if (response.getStatusLine().getStatusCode() != 200) {
             throw new RuntimeException("HttpClient Failed Code:" + response.getStatusLine().getStatusCode());
         }
+        String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+
         response.close();
         httpClient.close();
 
-        return EntityUtils.toString(response.getEntity(), "UTF_8");
+        return result;
     }
 
     /**
      * post 请求 - 不带参数
+     *
      * @param url
      * @return
      * @throws IOException
@@ -136,6 +143,7 @@ public class HttpClientHelper {
 
     /**
      * post json请求
+     *
      * @param url
      * @param json
      * @return
@@ -162,9 +170,11 @@ public class HttpClientHelper {
         if (response.getStatusLine().getStatusCode() != 200) {
             throw new RuntimeException("HttpClient Failed Code:" + response.getStatusLine().getStatusCode());
         }
+        String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+
         response.close();
         httpClient.close();
 
-        return EntityUtils.toString(response.getEntity(), "UTF-8");
+        return result;
     }
 }
