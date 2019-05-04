@@ -1,0 +1,34 @@
+<view>
+    <!-- list -->
+    <i-cell-group>
+        <i-cell title="UID" value="{{bdmerInfo.uid}}" >
+            
+        </i-cell>
+        <i-cell title="点数" value="{{bdmerInfo.point}}">
+            
+        </i-cell>
+        <i-cell title="昵称" value="{{userInfo.nickName}}" >
+            
+        </i-cell>
+        <i-cell title="性别" value="{{userInfo.gender === 0 ? '女':'男'}}">
+            
+        </i-cell>
+    </i-cell-group>
+   
+    <!-- 留灰色（分割线） -->
+    <wux-white-space size="default" bodyStyle="background:#F5F5F5" />
+
+    <!-- list -->
+    <i-cell-group>
+        <i-cell is-link title="电话" value="{{showTelNumber}}" url="./mine-info-phone?telNumber={{bdmerInfo.telNumber}}">
+
+        </i-cell>
+        <i-cell is-link title="位置" value="{{showLocaleName}}" bind:click="updateLocale">
+        
+        </i-cell>
+    </i-cell-group>
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
+</view> 
+

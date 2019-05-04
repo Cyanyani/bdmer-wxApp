@@ -8,7 +8,6 @@ App({
     },
     
     onLaunch: function () {
-        //wx.setStorageSync("token", "saxas");
         const that = this;
 
         /**
@@ -71,7 +70,7 @@ App({
         WXAPI.checkToken().then(function (res) {
             if (res.code != 0) {
                 //token有效，但是需要用户信息
-                if (res.code != 10005) {
+                if (res.code != 2005) {
                     wx.removeStorageSync('token');
                 }
                 that.goLoginPageTimeOut();

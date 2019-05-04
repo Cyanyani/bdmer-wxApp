@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import java.util.UUID;
  * @author gongdl
  */
 @Component
+@Transactional
 public class WxAuthCore {
     private static final Logger LOG = LoggerFactory.getLogger(WxAuthCore.class);
 

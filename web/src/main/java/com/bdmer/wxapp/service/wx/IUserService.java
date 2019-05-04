@@ -1,5 +1,6 @@
 package com.bdmer.wxapp.service.wx;
 
+import com.bdmer.wxapp.dto.request.LocaleDTO;
 import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
 
@@ -35,4 +36,21 @@ public interface IUserService {
      * @throws Exception
      */
     public ResponseDTO<?> sendWxUserInfo(SendWxUserInfoDTO sendWxUserInfoDTO) throws Exception;
+
+    /**
+     * 获取bdmer用户信息
+     *
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> getUserBdmerInfo() throws Exception;
+
+    /**
+     * 更新用户位置信息
+     *
+     * @param localeDTO
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> updateUserLocale(LocaleDTO localeDTO) throws Exception;
 }

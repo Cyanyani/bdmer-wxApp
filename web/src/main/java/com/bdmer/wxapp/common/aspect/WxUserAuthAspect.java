@@ -70,7 +70,7 @@ public class WxUserAuthAspect {
         UserTokenDTO userTokenDTO =  redisUtil.get(token, UserTokenDTO.class);
         if(Util.isNullOrEmpty(userTokenDTO)){
             LOG.error("【微信用户登陆验证拦截器】- token不在redis中");
-            throw new WxException(ResponseEnum.ERROR_WX_USER_TOKEN);
+            throw new WxException(ResponseEnum.ERROR_WX_USER_NO_TOKEN);
         }
         WxUserHolder.setUserTokenDTO(userTokenDTO);
 

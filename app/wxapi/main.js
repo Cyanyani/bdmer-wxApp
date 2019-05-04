@@ -1,4 +1,5 @@
 const CONFIG = require('config.js');
+const Util = require("../utils/util.js");
 
 const login = (data) => {
   let _url = CONFIG.baseUrl + CONFIG.subDomain + '/user/login';
@@ -26,87 +27,78 @@ const login = (data) => {
       }
     })
   })
-}
+};
 
 const request = (url, method, data, isLoading=true) => {
+    let _url = CONFIG.baseUrl + CONFIG.subDomain + url;
+    console.log(`请求方法：${method}\n请求地址：${_url}\n请求参数:`);
+    console.log(data);
+    console.log("\n");
+
+    if (method === "get" && data !== undefined){
+        _url = Util.formatGETUrl(_url, data);
+    }
+
+    // 获取token
+    let token = wx.getStorageSync('token');
+
+    return new Promise((resolve, reject) => {
+        if (!token || token === '') {
+            console.log('没有token');
+            let res = {};
+            res.code = -2;
+            res.msg = "本地错误，没有token"
+            resolve(res);
+            return;
+        }
+        if (isLoading){
+            wx.showLoading({
+                title: '加载中'
+            });
+        }
     
-  let _url = CONFIG.baseUrl + CONFIG.subDomain + url
-    console.log(`请求方法：${method}\n请求地址：${_url}\n请求参数:`)
-    console.log(data)
-    console.log("\n")
-  // 获取token
-  let token = wx.getStorageSync('token');
-
-  return new Promise((resolve, reject) => {
-    if (!token || token === '') {
-        console.log('没有token');
-        let res = {};
-        res.code = -2;
-        resolve(res);
-        return;
-    }
-    if (isLoading){
-        wx.showLoading({
-            title: '加载中'
-        });
-    }
-  
-
-    wx.request({
-      url: _url,
-      method: method,
-      data: data,
-      header: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Cookie':'token=' + token
-      },
-      success(request) {
-          console.log(request.data);
-        resolve(request.data);
-      },
-      fail(error) {
-        reject(error);
-      },
-      complete() {
-          if(isLoading){
-              wx.hideLoading();
-          }
-         console.log(`${url}-执行完毕`);
-      }
+        wx.request({
+        url: _url,
+        method: method,
+        data: data,
+        header: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Cookie':'token=' + token
+        },
+        success(res) {
+            console.log("请求结果:");
+            console.log(res.data);
+            console.log("\n");
+            resolve(res.data);
+        },
+        fail(error) {
+            reject(error);
+        },
+        complete() {
+            if(isLoading){
+                wx.hideLoading();
+            }
+            console.log(`${url}-执行完毕`);
+        }
+        })
     })
-  })
-}
+};
 
 module.exports = {
     request,
     login,
     checkToken:() => {
-        return request('/user/checkToken', 'get')
+        let data = {};
+        data.token = wx.getStorageSync('token');
+        return request('/user/checkToken', 'get', data);
     },
     sendUserInfo:(data) => {
-        return request('/user/sendWxUserInfo', 'post', data)
+        return request('/user/sendWxUserInfo', 'post', data);
     },
-
-    // 未实现接口
-    //用户相关接口
-    getInfInfo: () => {
-        return request('/userController/getInfInfo', 'get');
+    getUserBdmerInfo:() => {
+        return request('/user/getUserBdmerInfo', 'get');
     },
-    getCode: (data) => {
-        return request('/userController/getCode', 'post', data);
-    },
-    bindTel: (data) => {
-        return request('/userController/bindTel', 'post', data);
-    },
-    bindJiaoWu: (data) => {
-        return request('/userController/bindJiaoWu', 'post', data);
-    },
-    bindLibrary: (data) => {
-        return request('/userController/bindLibrary', 'post', data);
-    },
-
-    //资讯相关接口
-    getANotice:()=>{
-        return request('/newController/getANotice', 'get', {}, false);
+    updateUserLocale: (data) => {
+        return request('/user/updateUserLocale', 'post', data);
     }
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bdmer.wxapp.common.enums.ResponseEnum;
 import com.bdmer.wxapp.common.tool.B;
 import com.bdmer.wxapp.common.tool.Util;
+import com.bdmer.wxapp.dto.request.LocaleDTO;
 import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
 import com.bdmer.wxapp.service.wx.IUserService;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
 
 /**
  * 用户基本操作接口 - 控制类
@@ -70,5 +73,30 @@ public class UserController {
         // 开始执行
         LOG.info("【UserController - sendWxUserInfo】 - 开始执行");
         return userService.sendWxUserInfo(sendWxUserInfoDTO);
+    }
+
+    @RequestMapping(value = "/getUserBdmerInfo",  method = RequestMethod.GET)
+    public ResponseDTO<?> getUserBdmerInfo() throws Exception {
+
+        // 开始执行
+        LOG.info("【UserController - getUserBdmerInfo】 - 开始执行");
+        return userService.getUserBdmerInfo();
+    }
+
+    @RequestMapping(value = "/updateUserLocale",  method = RequestMethod.POST)
+    public ResponseDTO<?> updateUserLocale(String data) throws Exception {
+        // 参数转化成DTO
+        LocaleDTO localeDTO = JSONObject.parseObject(data, LocaleDTO.class);
+
+        // 参数检查
+        LOG.info("【UserController - updateUserLocale】 - 参数检查");
+        if(Util.allFieldIsNUll(localeDTO)){
+            LOG.error("【UserController - updateUserLocale】 - 参数为空");
+            return B.error(ResponseEnum.ERROR_REQ_NO_PARAM, null);
+        }
+
+        // 开始执行
+        LOG.info("【UserController - updateUserLocale】 - 开始执行");
+        return userService.updateUserLocale(localeDTO);
     }
 }

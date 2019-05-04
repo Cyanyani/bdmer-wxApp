@@ -1,1 +1,6 @@
-/* pages/list/list.wxss */
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+}

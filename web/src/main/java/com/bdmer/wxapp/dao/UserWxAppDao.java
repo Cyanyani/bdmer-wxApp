@@ -1,6 +1,7 @@
 package com.bdmer.wxapp.dao;
 
 import com.bdmer.wxapp.model.UserWxAppEntity;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserWxAppDao {
     int deleteByPrimaryKey(Long id);
@@ -21,5 +22,5 @@ public interface UserWxAppDao {
      * @param openid
      * @return
      */
-    UserWxAppEntity selectByOpenid(String openid);
+    UserWxAppEntity selectByOpenid(@Param("openid") String openid);
 }

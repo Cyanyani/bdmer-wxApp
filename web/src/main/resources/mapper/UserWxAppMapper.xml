@@ -167,7 +167,7 @@
     select
     <include refid="Base_Column_List" />
     from user_wx_app
-    where openid = #{id}
+    where openid = #{openid}
   </select>
 
 </mapper>

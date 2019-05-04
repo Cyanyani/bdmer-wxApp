@@ -6,9 +6,12 @@ import com.bdmer.wxapp.common.tool.B;
 import com.bdmer.wxapp.common.tool.Util;
 import com.bdmer.wxapp.common.tool.WxUserHolder;
 import com.bdmer.wxapp.dto.other.UserTokenDTO;
+import com.bdmer.wxapp.dto.request.LocaleDTO;
 import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
+import com.bdmer.wxapp.model.UserBdmerEntity;
 import com.bdmer.wxapp.model.UserWxAppEntity;
+import com.bdmer.wxapp.service.core.UserBdmerCore;
 import com.bdmer.wxapp.service.core.WxAuthCore;
 import com.bdmer.wxapp.service.wx.IUserService;
 import org.slf4j.Logger;
@@ -30,6 +33,8 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     WxAuthCore wxAuthCore;
+    @Autowired
+    UserBdmerCore userBdmerCore;
 
     @Override
     public ResponseDTO<?> login(String code) throws Exception{
@@ -51,6 +56,14 @@ public class UserServiceImpl implements IUserService {
         UserWxAppEntity userWxAppEntity = (UserWxAppEntity) wxAuthCore.getUserWxAppEntityByOpenid(userTokenDTO.getOpenid()).getData();
         if(Util.isNullOrEmpty(userWxAppEntity)){
             return B.error(ResponseEnum.ERROR_WX_USER_TOKEN_NEED_INFO, token);
+        }
+
+        // 5.通过unionid查询bdmer用户信息
+        LOG.info("【Service - login】 - 5.通过unionid查询bdmer用户信息");
+        UserBdmerEntity olduserBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(userTokenDTO.getUnionid()).getData();
+        if(Util.allFieldIsNUll(olduserBdmerEntity)){
+            // --> 选择插入
+            userBdmerCore.insertBdmerEntity();
         }
 
        return B.success(token);
@@ -85,5 +98,29 @@ public class UserServiceImpl implements IUserService {
         }
 
         return B.success(sendWxUserInfoDTO);
+    }
+
+    @Override
+    public ResponseDTO<?> getUserBdmerInfo() throws Exception{
+        // 1.获取unionid
+        String unionid = WxUserHolder.getUnionid();
+
+        // 2.获取bdmer用户信息
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(unionid).getData();
+        if(Util.allFieldIsNUll(userBdmerEntity)){
+            userBdmerEntity = (UserBdmerEntity) userBdmerCore.insertBdmerEntity().getData();
+        }
+
+        return B.success(userBdmerEntity);
+    }
+
+    @Override
+    public ResponseDTO<?> updateUserLocale(LocaleDTO localeDTO) throws Exception{
+        // 1.获取unionid
+        String unionid = WxUserHolder.getUnionid();
+
+        Integer result = (Integer) userBdmerCore.updateUserLocale(unionid, localeDTO).getData();
+
+        return B.success(result);
     }
 }

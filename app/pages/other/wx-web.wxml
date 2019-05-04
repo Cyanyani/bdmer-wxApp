@@ -1,0 +1,10 @@
+<view>
+    <!-- 头 -->
+    <view  id="header" >
+        <view class="container"> 
+            <text>扫描以下二维码，关注“帮点儿忙”公众号</text>
+            <image src='../../images/other/wx_web.png' mode="widthFix"></image>
+        </view>
+    </view>
+</view>
+

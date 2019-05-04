@@ -14,9 +14,16 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const isNull = (o) => {
+    if (o === undefined || o === "" || o === {} || o === null) {
+        return true;
+    }
+    return false;
+}
+
 const formatParamDTO = o =>{
     let data = {};
-    if(o === null){
+    if(isNull(o)){
         data.data = "";
     }else{
         data.data = JSON.stringify(o);
@@ -25,7 +32,34 @@ const formatParamDTO = o =>{
     return data;
 }
 
+const formatGETUrl = (url , data) => {
+    if(data === undefined){
+        return url;
+    }
+    
+    let paramNameList = Object.getOwnPropertyNames(data);
+    for (let i = 0; i < paramNameList.length; ++i){
+        if(i === 0 ){
+            url = url + "?" + paramNameList[i] + "=" + data[paramNameList[i]];
+        }else{
+            url = url + "&" + paramNameList[i] + "=" + data[paramNameList[i]];
+        } 
+    }
+
+    return url;
+}
+
+const formatTelNumber = (telNumber) => {
+    if (isNull(telNumber)){
+        return "未绑定";
+    }
+    return telNumber ? (telNumber.substr(0, 3) + "****" + telNumber.substr(7, 4)) : "";
+}
+
 module.exports = {
     formatTime: formatTime,
-    formatParamDTO: formatParamDTO
+    formatParamDTO: formatParamDTO,
+    formatGETUrl: formatGETUrl,
+    formatTelNumber: formatTelNumber,
+    isNull: isNull
 }

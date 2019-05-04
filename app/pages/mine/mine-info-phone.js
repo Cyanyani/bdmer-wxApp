@@ -1,4 +1,5 @@
 const WXAPI = require('../../wxapi/main');
+const Util = require('../../utils/util.js');
 const { $Message } = require('../../components/iView/base/index');
 
 var app = getApp();
@@ -46,12 +47,6 @@ Page({
         data.encryptedData = e.detail.encryptedData;
         //WXAPI解密+更新telNumber
         
-    },
-
-    goBindPhone:function(){
-        wx.navigateTo({
-            url: "./bind-phone"
-        });
     }
  
 })

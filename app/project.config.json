@@ -39,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
@@ -50,29 +50,15 @@
 				},
 				{
 					"id": -1,
-					"name": "phone",
-					"pathName": "pages/mine-phone/index",
+					"name": "wx-web",
+					"pathName": "pages/other/wx-web",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "bindphone",
-					"pathName": "pages/mine-phone/bind-phone",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "new",
-					"pathName": "pages/new/new",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 4,
-					"name": "list",
-					"pathName": "pages/list/index",
+					"name": "mine-info",
+					"pathName": "pages/mine/mine-info",
 					"query": "",
 					"scene": null
 				}

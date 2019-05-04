@@ -21,7 +21,10 @@ public enum ResponseEnum {
     ERROR_WX_USER_INFO(2002, "错误用户信息,解密失败"),
     ERROR_WX_USER_TOKEN(2003, "错误token"),
     ERROR_WX_USER_NO_TOKEN(2004, "token已过期"),
-    ERROR_WX_USER_TOKEN_NEED_INFO(2005, "token需要用户信息");
+    ERROR_WX_USER_TOKEN_NEED_INFO(2005, "token需要用户信息"),
+
+    /** bdmer用户错误 **/
+    ERROR_BDMER_USER_CODE(3001, "没有帮点儿忙用户信息");
 
     ResponseEnum(Integer code, String msg) {
         this.code = code;
