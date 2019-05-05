@@ -9,7 +9,18 @@ import com.bdmer.wxapp.dto.other.UserTokenDTO;
  * @author gongdl
  */
 public class WxUserHolder {
+
+    private static String token = "";
+
     private static UserTokenDTO userTokenDTO = new UserTokenDTO();
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String token) {
+        WxUserHolder.token = token;
+    }
 
     public static UserTokenDTO getUserTokenDTO() {
         return userTokenDTO;

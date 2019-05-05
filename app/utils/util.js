@@ -21,6 +21,17 @@ const isNull = (o) => {
     return false;
 }
 
+const isToken = (res) => {
+    if(isNull(res)){
+        return false;
+    }
+    if(res.code === -2 || res.code === 2003 || res.code === 2004){
+        console.log(res.code)
+        return false;
+    }
+    return true;
+}
+
 const formatParamDTO = o =>{
     let data = {};
     if(isNull(o)){
@@ -61,5 +72,6 @@ module.exports = {
     formatParamDTO: formatParamDTO,
     formatGETUrl: formatGETUrl,
     formatTelNumber: formatTelNumber,
-    isNull: isNull
+    isNull: isNull,
+    isToken: isToken
 }

@@ -37,6 +37,26 @@ public class UserBdmerEntity {
 
     private String localeName;
 
+    private String authImage;
+
+    private Integer authStatus;
+
+    public String getAuthImage() {
+        return authImage;
+    }
+
+    public void setAuthImage(String authImage) {
+        this.authImage = authImage;
+    }
+
+    public Integer getAuthStatus() {
+        return authStatus;
+    }
+
+    public void setAuthStatus(Integer authStatus) {
+        this.authStatus = authStatus;
+    }
+
     public Long getUid() {
         return uid;
     }

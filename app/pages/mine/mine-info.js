@@ -33,7 +33,7 @@ Page({
         let showTelNumber = Util.formatTelNumber(bdmerInfo.telNumber);
         let showLocaleName = "请选择地址";
         if (!Util.isNull(bdmerInfo.localeName)){
-            showLocaleName = bdmerInfo.localeName;
+            showLocaleName = bdmerInfo.localeName.split(";")[0];
         }
 
         this.setData({
@@ -49,15 +49,27 @@ Page({
      * 更新位置信息
      */
     updateLocale:function(){
+        let that = this;
         wx.chooseLocation({
             success: function (res) {
+                that.data.bdmerInfo.localeName = res.name + ";" + res.address;
+                wx.setStorageSync("bdmerInfo", that.data.bdmerInfo);
                 // 构建请求localeDTO
-                WXAPI.updateLocale(Util.formatParamDTO(res)).then(
+                WXAPI.updateUserLocale(Util.formatParamDTO(res)).then(
                     function (res) {
                         if (res.code != 0) {
                             $Message({
                                 content: res.msg,
                                 type: 'error',
+                                duration: 3
+                            });
+                            if (!Util.isToken(res)) {
+                                app.goLoginPageTimeOut();
+                            }
+                        }else{
+                            $Message({
+                                content: "修改成功",
+                                type: 'success',
                                 duration: 3
                             });
                         }

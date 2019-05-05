@@ -96,9 +96,12 @@ module.exports = {
         return request('/user/sendWxUserInfo', 'post', data);
     },
     getUserBdmerInfo:() => {
-        return request('/user/getUserBdmerInfo', 'get');
+        return request('/user/getUserBdmerInfo', 'get', undefined, false);
     },
     updateUserLocale: (data) => {
         return request('/user/updateUserLocale', 'post', data);
+    },
+    updateUserTelNumber: (data) => {
+        return request('/user/updateUserTelNumber', 'post', data);
     }
 }

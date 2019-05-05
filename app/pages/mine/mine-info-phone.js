@@ -29,11 +29,9 @@ Page({
 
     },
 
-    /**
-     * 用户自定义函数
-     */
-    bindGetPhoneNumber:function(e){
-        console.log(e)
+    // 用户自定义函数
+    bindPhoneNumber:function(e){
+        let that = this;
         if (!e.detail.iv || !e.detail.encryptedData){
             $Message({
                 content: '无法授权，请重试',
@@ -46,7 +44,49 @@ Page({
         data.iv = e.detail.iv;
         data.encryptedData = e.detail.encryptedData;
         //WXAPI解密+更新telNumber
-        
+        WXAPI.updateUserTelNumber(Util.formatParamDTO(data)).then(
+            function (res) {
+                if (res.code != 0) {
+                    $Message({
+                        content: res.msg,
+                        type: 'error',
+                        duration: 3
+                    });
+                    if (!Util.isToken(res)) {
+                        app.goLoginPageTimeOut();
+                    }
+                } else {
+                    that.setData({
+                        telNumber: res.data
+                    });
+                    let bdmerInfo = wx.getStorageSync("bdmerInfo");
+                    if (!Util.isNull(bdmerInfo)){
+                        bdmerInfo.telNumber = res.data;
+                        wx.setStorageSync("bdmerInfo", bdmerInfo);
+                    }
+
+                    $Message({
+                        content: "绑定成功",
+                        type: 'success',
+                        duration: 3
+                    });
+
+                    // 关闭当前页面，返回上一层
+                    setTimeout(function () {
+                        wx.navigateBack();
+                    }, 2000);
+                   
+                }
+            },
+            function (err) {
+                console.log(err);
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        );
     }
  
 })

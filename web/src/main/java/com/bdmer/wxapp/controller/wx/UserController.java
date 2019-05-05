@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bdmer.wxapp.common.enums.ResponseEnum;
 import com.bdmer.wxapp.common.tool.B;
 import com.bdmer.wxapp.common.tool.Util;
+import com.bdmer.wxapp.dto.request.AESUserTelNumberDTO;
 import com.bdmer.wxapp.dto.request.LocaleDTO;
 import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -98,5 +101,36 @@ public class UserController {
         // 开始执行
         LOG.info("【UserController - updateUserLocale】 - 开始执行");
         return userService.updateUserLocale(localeDTO);
+    }
+
+    @RequestMapping(value = "/updateUserTelNumber",  method = RequestMethod.POST)
+    public ResponseDTO<?> updateUserTelNumber(String data) throws Exception {
+        // 参数转化成DTO
+        AESUserTelNumberDTO aesUserTelNumberDTO = JSONObject.parseObject(data, AESUserTelNumberDTO.class);
+
+        // 参数检查
+        LOG.info("【UserController - updateUserTelNumber】 - 参数检查");
+        if(Util.allFieldIsNUll(aesUserTelNumberDTO)){
+            LOG.error("【UserController - updateUserTelNumber】 - 参数为空");
+            return B.error(ResponseEnum.ERROR_REQ_NO_PARAM, null);
+        }
+
+        // 开始执行
+        LOG.info("【UserController - updateUserTelNumber】 - 开始执行");
+        return userService.updateUserTelNumber(aesUserTelNumberDTO);
+    }
+
+    @RequestMapping(value = "/uploadAuthInfo",  method = RequestMethod.POST)
+    public ResponseDTO<?> uploadAuthInfo(@RequestParam("file") MultipartFile img) throws Exception {
+        // 参数检查
+        LOG.info("【UserController - uploadAuthInfo】 - 参数检查");
+        if(img.isEmpty()){
+            LOG.error("【UserController - uploadAuthInfo】 - 参数为空");
+            return B.error(ResponseEnum.ERROR_REQ_NO_PARAM, null);
+        }
+
+        // 开始执行
+        LOG.info("【UserController - uploadAuthInfo】 - 开始执行");
+        return userService.uploadAuthInfo(img);
     }
 }

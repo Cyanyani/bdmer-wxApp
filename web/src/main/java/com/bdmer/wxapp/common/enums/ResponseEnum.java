@@ -24,7 +24,8 @@ public enum ResponseEnum {
     ERROR_WX_USER_TOKEN_NEED_INFO(2005, "token需要用户信息"),
 
     /** bdmer用户错误 **/
-    ERROR_BDMER_USER_CODE(3001, "没有帮点儿忙用户信息");
+    ERROR_BDMER_USER_TEL(3001, "加密的手机号码有误"),
+    ERROR_BDMER_IMG_FORMAT(3002, "图片格式不正确");
 
     ResponseEnum(Integer code, String msg) {
         this.code = code;

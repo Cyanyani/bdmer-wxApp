@@ -20,7 +20,7 @@
 
     <!-- list -->
     <i-cell-group>
-        <i-cell is-link title="电话" value="{{showTelNumber}}" url="./mine-info-phone?telNumber={{bdmerInfo.telNumber}}">
+        <i-cell is-link title="电话" value="{{showTelNumber}}" url="./mine-info-phone?telNumber={{bdmerInfo.telNumber ? bdmerInfo.telNumber : ''}}">
 
         </i-cell>
         <i-cell is-link title="位置" value="{{showLocaleName}}" bind:click="updateLocale">

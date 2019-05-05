@@ -6,6 +6,7 @@
         "pages/mine/mine",
         "pages/mine/mine-info",
         "pages/mine/mine-info-phone",
+        "pages/mine/mine-cert",
         "pages/other/wx-web"
     ],
     "window": {

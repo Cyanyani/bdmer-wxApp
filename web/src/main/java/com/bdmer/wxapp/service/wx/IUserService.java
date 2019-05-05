@@ -1,8 +1,10 @@
 package com.bdmer.wxapp.service.wx;
 
+import com.bdmer.wxapp.dto.request.AESUserTelNumberDTO;
 import com.bdmer.wxapp.dto.request.LocaleDTO;
 import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 用户操作 - 接口类
@@ -53,4 +55,22 @@ public interface IUserService {
      * @throws Exception
      */
     public ResponseDTO<?> updateUserLocale(LocaleDTO localeDTO) throws Exception;
+
+    /**
+     * 更新用户电话
+     *
+     * @param aesUserTelNumberDTO
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> updateUserTelNumber(AESUserTelNumberDTO aesUserTelNumberDTO) throws Exception;
+
+    /**
+     * 上传用户认证图片
+     *
+     * @param img
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> uploadAuthInfo(MultipartFile img) throws Exception;
 }

@@ -72,6 +72,7 @@ public class WxUserAuthAspect {
             LOG.error("【微信用户登陆验证拦截器】- token不在redis中");
             throw new WxException(ResponseEnum.ERROR_WX_USER_NO_TOKEN);
         }
+        WxUserHolder.setToken(token);
         WxUserHolder.setUserTokenDTO(userTokenDTO);
 
         return;

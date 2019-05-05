@@ -31,37 +31,38 @@ Page({
      */
     onShow: function () {
         let userInfo = wx.getStorageSync("userInfo");
-        let bdmerInfo = wx.getStorageSync("bdmerInfo");
+        let bdmerInfo = {};
 
         //WXAPI获取bdmerInfo
-        if (Util.isNull(bdmerInfo)){
-            WXAPI.getUserBdmerInfo().then(
-                function (res) {
-                    if (res.code != 0) {
-                        $Message({
-                            content: res.msg,
-                            type: 'error',
-                            duration: 3
-                        });
-                    } else {
-                        bdmerInfo = res.data;
-                        wx.setStorageSync("bdmerInfo", res.data);
-                    }
-                },
-                function (err) {
-                    console.log(err);
+        WXAPI.getUserBdmerInfo().then(
+            function (res) {
+                if (res.code != 0) {
                     $Message({
-                        content: '服务器开小差了!',
+                        content: res.msg,
                         type: 'error',
                         duration: 3
                     });
+                    if (!Util.isToken(res)) {
+                        app.goLoginPageTimeOut();
+                    }
+                } else {
+                    bdmerInfo = res.data;
+                    wx.setStorageSync("bdmerInfo", res.data);
                 }
-            )
-        }
-        
-        this.setData({
-            userInfo: userInfo,
-            bdmerInfo: bdmerInfo
+            },
+            function (err) {
+                console.log(err);
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        ).then(() => {
+            this.setData({
+                userInfo: userInfo,
+                bdmerInfo: bdmerInfo
+            });
         });
     },
 

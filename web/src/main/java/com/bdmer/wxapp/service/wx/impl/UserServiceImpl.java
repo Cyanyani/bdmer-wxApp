@@ -5,7 +5,9 @@ import com.bdmer.wxapp.common.enums.ResponseEnum;
 import com.bdmer.wxapp.common.tool.B;
 import com.bdmer.wxapp.common.tool.Util;
 import com.bdmer.wxapp.common.tool.WxUserHolder;
+import com.bdmer.wxapp.dto.other.AuthInfoDTO;
 import com.bdmer.wxapp.dto.other.UserTokenDTO;
+import com.bdmer.wxapp.dto.request.AESUserTelNumberDTO;
 import com.bdmer.wxapp.dto.request.LocaleDTO;
 import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
@@ -18,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Member;
 
@@ -119,8 +122,39 @@ public class UserServiceImpl implements IUserService {
         // 1.获取unionid
         String unionid = WxUserHolder.getUnionid();
 
-        Integer result = (Integer) userBdmerCore.updateUserLocale(unionid, localeDTO).getData();
+        // 2.更新用户位置信息
+        Integer result = (Integer) userBdmerCore.updateUserLocaleByUnionid(unionid, localeDTO).getData();
 
         return B.success(result);
     }
+
+    @Override
+    public ResponseDTO<?> updateUserTelNumber(AESUserTelNumberDTO aesUserTelNumberDTO) throws Exception{
+        // 1.解密，获取用户电话信息
+        String telNumber = (String) userBdmerCore.decryptUserTelNumber(aesUserTelNumberDTO).getData();
+
+        // 2.获取unionid
+        String unionid = WxUserHolder.getUnionid();
+
+        // 3.更新用户电话信息
+        Integer result = (Integer) userBdmerCore.updateUserTelNumberByUnionid(unionid, telNumber).getData();
+
+        return B.success(telNumber);
+    }
+
+    @Override
+    public ResponseDTO<?> uploadAuthInfo(MultipartFile img) throws Exception{
+        // 1.获取用户unionid
+        String unionid = WxUserHolder.getUnionid();
+
+        // 2.解析并存储上传的MultipartFile
+        String authImage = (String) userBdmerCore.storageAuthImage(unionid, img).getData();
+
+        // 3.更新authInfo
+        AuthInfoDTO authInfoDTO  = (AuthInfoDTO) userBdmerCore.updateAuthInfo(authImage, 0).getData();
+        authInfoDTO.setUnionid("");
+
+        return B.success(authInfoDTO);
+    }
+
 }

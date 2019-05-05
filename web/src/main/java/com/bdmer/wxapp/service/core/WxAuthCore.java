@@ -121,6 +121,8 @@ public class WxAuthCore {
         // 解密
         byte[] resultByte = AESUtil.decrypt(Base64.decodeBase64(sendWxUserInfoDTO.getEncryptedData()), Base64.decodeBase64(WxUserHolder.getSessionKey()), Base64.decodeBase64(sendWxUserInfoDTO.getIv()));
         if(resultByte == null || resultByte.length <= 0){
+            // 获取是sessionkey有问题，将token清除
+            redisUtil.del(WxUserHolder.getToken());
             throw new WxException(ResponseEnum.ERROR_WX_USER_INFO);
         }
 

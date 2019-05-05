@@ -6,7 +6,7 @@
         </view>
         <label style='margin-top:40px'>您的账号未绑定手机</label>
         <label style='margin-top:10px'>推荐授权并同意使用微信账号的手机号</label>
-        <i-button class="i-button" openType="getPhoneNumber" bind:getphonenumber="bindGetPhoneNumber" type="info" shape="circle">微信授权绑定</i-button>
+        <i-button class="i-button" openType="getPhoneNumber" bind:getphonenumber="bindPhoneNumber" type="info" shape="circle">微信授权绑定</i-button>
     </view>
 
     <!-- 已绑定手机 -->
@@ -16,7 +16,7 @@
         </view>
         <view style='margin-top:20px'>您已绑定手机号</view>
         <view style='margin-top:20px;width:200px;text-align:center;border-bottom:1px solid #e9eaec'>{{telNumber}}</view>
-        <i-button class="i-button" openType="getPhoneNumber" bind:getphonenumber="bindGetPhoneNumber" type="info" shape="circle">微信授权修改绑定</i-button>
+        <i-button class="i-button" openType="getPhoneNumber" bind:getphonenumber="bindPhoneNumber" type="info" shape="circle">微信授权修改绑定</i-button>
     </view>
 
     <!-- 错误提示 -->

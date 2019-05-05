@@ -1,5 +1,6 @@
 package com.bdmer.wxapp.common.tool;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 
 /**
  * 小工具 - 工具类
@@ -119,6 +121,11 @@ public class Util {
         }
 
         return true;
+    }
+
+    //获取跟目录
+    public static File getClassPath() throws Exception{
+        return new File(ResourceUtils.getURL("classpath:").getPath());
     }
 
     /**

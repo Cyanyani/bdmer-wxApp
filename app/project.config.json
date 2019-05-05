@@ -39,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -59,6 +59,13 @@
 					"id": -1,
 					"name": "mine-info",
 					"pathName": "pages/mine/mine-info",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "mine-cert",
+					"pathName": "pages/mine/mine-cert",
 					"query": "",
 					"scene": null
 				}
