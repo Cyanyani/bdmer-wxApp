@@ -103,5 +103,23 @@ module.exports = {
     },
     updateUserTelNumber: (data) => {
         return request('/user/updateUserTelNumber', 'post', data);
+    },
+    publishTask:() => {
+        
+    },
+    getTaskList:() => {
+
+    },
+    getTaskUserList: () => { 
+
+    },
+    getTaskDeatil: () => { 
+
+    },
+    updateTaskStatus: ()=> {
+
+    },
+    updateTaskGivePoint:() =>{
+
     }
 }

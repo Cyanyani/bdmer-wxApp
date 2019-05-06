@@ -7,15 +7,15 @@
     </wux-tabs>
 
     <!--  swiper滑动内容块 -->
-    <swiper current="{{ index }}" bindchange="onSwiperChange" style='height:{{swiperHeight}}px;'>
+    <swiper current="{{ current }}" bindchange="onSwiperChange" style='height:{{swiperHeight}}px;'>
         <block wx:for="{{ tabs }}" wx:key="key">
             <swiper-item>
-                <!-- 通知 -->
-                <view wx:if="{{ item.key=='NOTICE' }}" wx:key="newId">
-                    <block wx:for="{{ news.NOTICE }}" wx:key="key">
+                <!-- 通知公告 -->
+                <view wx:if="{{ item.key=='NOTICE' }}">
+                    <block wx:for="{{ tasks.NOTICE }}" wx:key="taskId">
                         <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
                         <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
-                            <view slot="content" bindtap="openNewDetail" data-new-id="{{item.newId}}" data-index="{{index}}">{{item.brief}}</view>
+                            <view slot="content" bindtap="openNewDetail" data-task-id="{{item.taskId}}" >{{item.brief}}</view>
                             <view slot="footer" class="container" style='justify-content:space-between'>
                                 <view class="container" style='justify-content:space-between'>
                                     <view>
@@ -27,7 +27,6 @@
                                         <label>分享</label>
                                     </view>
                                 </view>
-
                                 
                                 <view wx:if="{{item.tag == 'NOTICE'}}">
                                     <i-tag 
@@ -37,39 +36,12 @@
                                         通知
                                     </i-tag>
                                 </view>
-
-                                <view wx:elif="{{item.tag == 'ACTIVITY'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="green"
-                                        >
-                                        活动
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'NEW'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="blue"
-                                        >
-                                        资讯
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'OTHER'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="yellow"
-                                        >
-                                        其他
-                                    </i-tag>
-                                </view>
                             </view>
                         </i-card>
                     </block>
                     <view id="NOTICE" style="width: 0;height:0;visibility:hidden;"></view>
                 </view>
-                <!-- 活动 -->
+                <!-- 外卖快递 -->
                 <view wx:if="{{ item.key=='ACTIVITY' }}" wx:key="newId">
                     <block wx:for="{{ news.ACTIVITY }}" wx:key="key">
                         <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
@@ -128,7 +100,7 @@
                     </block>
                     <view id="ACTIVITY" style="width: 0;height:0;visibility:hidden;"></view>
                 </view>
-                <!-- 资讯 -->
+                <!-- 失物招领 -->
                 <view wx:if="{{ item.key=='NEW' }}" wx:key="newId">
                     <block wx:for="{{ news.NEW }}" wx:key="key">
                         <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
@@ -187,7 +159,7 @@
                     </block>
                     <view id="NEW" style="width: 0;height:0;visibility:hidden;"></view>
                 </view>
-                 <!-- 其他 -->
+                 <!-- 其他任务 -->
                 <view wx:if="{{ item.key=='OTHER' }}" wx:key="newId">
                     <block wx:for="{{ news.OTHER }}" wx:key="key">
                         <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
@@ -268,6 +240,8 @@
     <i-action-sheet visible="{{ showActionSheet }}" data-new-id="2" actions="{{ actions }}" show-cancel bind:cancel="cancelActionSheet" bind:click="clickActionSheet">
     </i-action-sheet>
 
+    <!-- 错误提示 -->
+    <i-message id="message" />
 </view>
 
 

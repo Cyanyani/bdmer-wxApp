@@ -7,7 +7,7 @@
         interval="{{4000}}"
         duration="{{1000}}"
         >
-            <block wx:for="{{banner}}">
+            <block wx:for="{{banner}}" wx:key="*this">
                 <swiper-item>
                     <image src="{{item}}" style='width:100%;height:100%'/>
                 </swiper-item>
@@ -53,6 +53,12 @@
     <view id="news">
         <block id="new" wx:for="{{news}}" wx:key="newId">
             <wux-white-space size="large" bodyStyle="background:#FFFFFF"  />
+
+            <wux-card full="{{ true }}" title="卡片标题" extra="额外内容" thumb="https://wux.cdn.cloverstd.com/logo.png">
+                <view slot="body">卡片内容</view>
+                <view slot="footer">尾部内容</view>
+            </wux-card>
+            
             <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
                 <view slot="content" bindtap="openNewDetail" data-new-id="{{item.newId}}" data-index="{{index}}">{{item.brief}}</view>
                 <view slot="footer" class="container" style='justify-content:space-between'>

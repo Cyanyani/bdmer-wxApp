@@ -2,7 +2,9 @@
     "pages": [
         "pages/index/index",
         "pages/login/login",
-        "pages/list/list",
+        "pages/task/task",
+        "pages/task/task-publish",
+        "pages/task/task-detail",
         "pages/mine/mine",
         "pages/mine/mine-info",
         "pages/mine/mine-info-phone",
@@ -32,7 +34,7 @@
                 "text": "首页"
             },
             {
-                "pagePath": "pages/list/list",
+                "pagePath": "pages/task/task",
                 "iconPath": "images/nav/list-off.png",
                 "selectedIconPath": "images/nav/list-on.png",
                 "text": "任务"

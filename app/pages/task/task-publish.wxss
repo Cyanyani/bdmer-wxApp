@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+}
+
+.header{
+    background: #19be6b;
+    color:#FFFFFF;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+}
+
+.locale view{
+    font-size: 18px;
+}

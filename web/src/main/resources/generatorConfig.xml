@@ -42,8 +42,12 @@
        <!-- <table tableName="user_wx_app" domainObjectName="UserWxApp" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
 
         </table>-->
-        <table tableName="userBdmer" domainObjectName="UserBdmer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
+        <!--<table tableName="userBdmer" domainObjectName="UserBdmer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
 
+        </table>-->
+        <table tableName="task" domainObjectName="Task" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
+            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="pictrues" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 
