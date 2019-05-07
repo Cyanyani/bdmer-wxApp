@@ -22,22 +22,18 @@ Page({
             {
                 key: 'NOTICE',
                 title: '通知公告',
-                index:0
             },
             {
                 key: 'WAIKUAI',
                 title: '外卖快递',
-                index: 0
             },
             {
                 key: 'LOSTF',
                 title: '失物招领',
-                index: 0
             },
             {
                 key: 'OTHER',
                 title: '其他任务',
-                index: 0
             }
         ],
         tasks: { 
@@ -88,74 +84,38 @@ Page({
         showLoadOk: false,
         showSpin: false
     },
-
     /**
      * 请求-获取数据
      */
-    getTaskData(index, size, type) {
+    getTaskData(current) {
         let that = this;
         let { tasks } = this.data;
         this.setData({
             showSpin: true,
             showLoadOk: false
         });
-        
-
         //WXAPI-请求
-        let data = {};
-        data.index = index;
-        data.size = size;
-        data.type =  type;
-        let locale = wx.getStorageSync("locale");
-        data.lat = locale.lat;
-        data.lng = locale.lng;
-        
-        WXAPI.getTaskList(data).then(
-            function (res) {
-                if (res.code != 0) {
-                    $Message({
-                        content: res.msg,
-                        type: 'error',
-                        duration: 3
-                    });
-                    if (!Util.isToken(res)) {
-                        app.goLoginPageTimeOut();
-                    }
-                } else {
-                    // doSomething
-
-                }
-            },
-            function (err) {
-                console.log(err);
-                $Message({
-                    content: '服务器开小差了!',
-                    type: 'error',
-                    duration: 3
-                });
-            }
-        );
 
         //测试
-        // setTimeout(() => {
-        //     for (var i = 0; i < 1; i++) {
-        //         if (current == "NOTICE") {
-        //             tasks.NOTICE.push(tasks.NOTICE[i]);
-        //         } else if (current == "WAIKUAI") {
-        //             tasks.ACTIVITY.push(tasks.ACTIVITY[i]);
-        //         } else if (current == "LOSTF") {
-        //             tasks.NEW.push(tasks.NEW[i]);
-        //         } else {
-        //             tasks.OTHER.push(tasks.OTHER[i]);
-        //         }
-        //     }
-        //     that.setData({
-        //         showSpin: false,
-        //         showLoadOk: true,
-        //         tasks: tasks
-        //     });
-        //     that.autoHeight(current);
-        // }, 2000);
+        setTimeout(() => {
+            for (var i = 0; i < 1; i++) {
+                if (current == "NOTICE") {
+                    tasks.NOTICE.push(tasks.NOTICE[i]);
+                } else if (current == "WAIKUAI") {
+                    tasks.ACTIVITY.push(tasks.ACTIVITY[i]);
+                } else if (current == "LOSTF") {
+                    tasks.NEW.push(tasks.NEW[i]);
+                } else {
+                    tasks.OTHER.push(tasks.OTHER[i]);
+                }
+            }
+            that.setData({
+                showSpin: false,
+                showLoadOk: true,
+                tasks: tasks
+            });
+            that.autoHeight(current);
+        }, 2000);
     },
 
     /**
@@ -169,20 +129,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        // 清除原来的数据
-        let tasks = this.data.tasks;
-        tasks.NOTICE = [];
-        tasks.WAIKUAI = [];
-        tasks.LOSTF = [];
-        tasks.NOTICE = [];
-        this.setData({
-            tasks: tasks
-        });
-
-        // 给所有页面获取数据
-        let index = 0;
-        let size = 40;
-        this.getTaskData(index, size, "");
+        this.getTaskData(this.data.key);
     },
 
     /**
@@ -190,17 +137,7 @@ Page({
      */
     onReachBottom: function () {
         let that = this;
-
-        // 给当前界面获取数据
-        let index = 0;
-        switch (this.data.key) {
-            case "NOTICE": index = tabs[0].index; break;
-            case "NOTICE": index = tabs[1].index; break;
-            case "NOTICE": index = tabs[2].index; break;
-            case "NOTICE": index = tabs[3].index; break;
-        }
-        let size = 10;
-        this.getTaskData(index, size, this.data.key);
+        this.getTaskData(that.data.key);
     },
 
     // 用户自定义函数
@@ -214,6 +151,7 @@ Page({
         });
         this.autoHeight(this.data.key);
     },
+
     onSwiperChange(e) {
         const { current: index, source } = e.detail
         const { key } = this.data.tabs[index]
@@ -227,7 +165,7 @@ Page({
     },
 
     /**
-    * 打开任务详情页
+    * 打开新闻详情页
     */
     goTaskDetail: function (e) {
         //跳转

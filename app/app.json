@@ -5,6 +5,7 @@
         "pages/task/task",
         "pages/task/task-publish",
         "pages/task/task-detail",
+        "pages/task/task-history",
         "pages/mine/mine",
         "pages/mine/mine-info",
         "pages/mine/mine-info-phone",

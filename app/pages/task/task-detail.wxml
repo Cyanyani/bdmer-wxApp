@@ -1,240 +1,105 @@
 <view id="page">
-    <!-- tabs头 -->
-    <wux-tabs  controlled current="{{ key }}" bindchange="onTabsChange">
-        <block wx:for="{{ tabs }}" wx:key="key">
-            <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
-        </block>
-    </wux-tabs>
 
-    <!--  swiper滑动内容块 -->
-    <swiper current="{{ current }}" bindchange="onSwiperChange" style='height:{{swiperHeight}}px;'>
-        <block wx:for="{{ tabs }}" wx:key="key">
-            <swiper-item>
-                <!-- 通知公告 -->
-                <view wx:if="{{ item.key=='NOTICE' }}">
-                    <block wx:for="{{ tasks.NOTICE }}" wx:key="taskId">
-                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
-                        <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
-                            <view slot="content" bindtap="openNewDetail" data-task-id="{{item.taskId}}" >{{item.brief}}</view>
-                            <view slot="footer" class="container" style='justify-content:space-between'>
-                                <view class="container" style='justify-content:space-between'>
-                                    <view>
-                                        <i-icon type="browse"  size="20"/>
-                                        <label>{{item.browse}}</label>
-                                    </view>
-                                    <view style='margin-left:20rpx' bindtap='openActionSheet'  data-new-id="{{item.newId}}">
-                                        <i-icon type="share" size="20" />
-                                        <label>分享</label>
-                                    </view>
-                                </view>
-                                
-                                <view wx:if="{{item.tag == 'NOTICE'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="red"
-                                        >
-                                        通知
-                                    </i-tag>
-                                </view>
-                            </view>
-                        </i-card>
-                    </block>
-                    <view id="NOTICE" style="width: 0;height:0;visibility:hidden;"></view>
+    <!-- button -->
+    <view wx:if="{{(uid != task.uid) && (task.type != 'NOTICE') && (task.type != 'LOSTF') && (task.status == 'FINDING')}}" class="header-button" bindtap='openReceiveTaskModal'>领取任务</view>
+
+    <view wx:if="{{(uid == task.uid) && (task.status == 'FINDING')}}" class="header-button" bindtap='openCancelTaskModal'>取消任务</view>
+
+    <view wx:if="{{(task.doUid == uid)  && (task.status == 'DOING')}}" class="header-button" bindtap='openFinishTaskModal'>完成任务</view>
+
+    <!-- 任务详情 -->
+    <view class="weui-article">
+        <!-- 头像&名字 -->
+        <view class="container header">
+            <image src="{{task.avatarUrl}}" class="header-image"></image>
+            <view class='container-other'>
+                <view class="header-text">
+                    <view>{{task.name}}</view>
+                    <view>{{task.createTime}}</view>
                 </view>
-                <!-- 外卖快递 -->
-                <view wx:if="{{ item.key=='ACTIVITY' }}" wx:key="newId">
-                    <block wx:for="{{ news.ACTIVITY }}" wx:key="key">
-                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
-                        <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
-                            <view slot="content" bindtap="openNewDetail" data-new-id="{{item.newId}}" data-index="{{index}}">{{item.brief}}</view>
-                            <view slot="footer" class="container" style='justify-content:space-between'>
-                                <view class="container" style='justify-content:space-between'>
-                                    <view>
-                                        <i-icon type="browse"  size="20"/>
-                                        <label>{{item.browse}}</label>
-                                    </view>
-                                    <view style='margin-left:20rpx' bindtap='openActionSheet'  data-new-id="{{item.newId}}">
-                                        <i-icon type="share" size="20" />
-                                        <label>分享</label>
-                                    </view>
-                                </view>
-
-                                
-                                <view wx:if="{{item.tag == 'NOTICE'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="red"
-                                        >
-                                        通知
-                                    </i-tag>
-                                </view>
-
-                                <view wx:elif="{{item.tag == 'ACTIVITY'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="green"
-                                        >
-                                        活动
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'NEW'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="blue"
-                                        >
-                                        资讯
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'OTHER'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="yellow"
-                                        >
-                                        其他
-                                    </i-tag>
-                                </view>
-                            </view>
-                        </i-card>
-                    </block>
-                    <view id="ACTIVITY" style="width: 0;height:0;visibility:hidden;"></view>
+                <view>
+                    <view style='color:#FFFFFF'>分享</view>
+                    <view style='margin-left:20rpx' bindtap='openActionSheet'>
+                        <i-icon type="share" size="20" />
+                        <label>分享</label>
+                    </view>
                 </view>
-                <!-- 失物招领 -->
-                <view wx:if="{{ item.key=='NEW' }}" wx:key="newId">
-                    <block wx:for="{{ news.NEW }}" wx:key="key">
-                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
-                        <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
-                            <view slot="content" bindtap="openNewDetail" data-new-id="{{item.newId}}" data-index="{{index}}">{{item.brief}}</view>
-                            <view slot="footer" class="container" style='justify-content:space-between'>
-                                <view class="container" style='justify-content:space-between'>
-                                    <view>
-                                        <i-icon type="browse"  size="20"/>
-                                        <label>{{item.browse}}</label>
-                                    </view>
-                                    <view style='margin-left:20rpx' bindtap='openActionSheet'  data-new-id="{{item.newId}}">
-                                        <i-icon type="share" size="20" />
-                                        <label>分享</label>
-                                    </view>
-                                </view>
-
-                                
-                                <view wx:if="{{item.tag == 'NOTICE'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="red"
-                                        >
-                                        通知
-                                    </i-tag>
-                                </view>
-
-                                <view wx:elif="{{item.tag == 'ACTIVITY'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="green"
-                                        >
-                                        活动
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'NEW'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="blue"
-                                        >
-                                        资讯
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'OTHER'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="yellow"
-                                        >
-                                        其他
-                                    </i-tag>
-                                </view>
-                            </view>
-                        </i-card>
-                    </block>
-                    <view id="NEW" style="width: 0;height:0;visibility:hidden;"></view>
+                <view>
+                    <view>
+                        <i-tag name="{{task.typee}}" color="yellow">{{task.typeName}}</i-tag>
+                    </view>
+                    <view>
+                        <i-tag name="{{task.status}}" color="blue">{{task.statusName}}</i-tag>
+                    </view>
                 </view>
-                 <!-- 其他任务 -->
-                <view wx:if="{{ item.key=='OTHER' }}" wx:key="newId">
-                    <block wx:for="{{ news.OTHER }}" wx:key="key">
-                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
-                        <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
-                            <view slot="content" bindtap="openNewDetail" data-new-id="{{item.newId}}" data-index="{{index}}">{{item.brief}}</view>
-                            <view slot="footer" class="container" style='justify-content:space-between'>
-                                <view class="container" style='justify-content:space-between'>
-                                    <view>
-                                        <i-icon type="browse"  size="20"/>
-                                        <label>{{item.browse}}</label>
-                                    </view>
-                                    <view style='margin-left:20rpx' bindtap='openActionSheet'  data-new-id="{{item.newId}}">
-                                        <i-icon type="share" size="20" />
-                                        <label>分享</label>
-                                    </view>
-                                </view>
-
-                                
-                                <view wx:if="{{item.tag == 'NOTICE'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="red"
-                                        >
-                                        通知
-                                    </i-tag>
-                                </view>
-
-                                <view wx:elif="{{item.tag == 'ACTIVITY'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="green"
-                                        >
-                                        活动
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'NEW'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="blue"
-                                        >
-                                        资讯
-                                    </i-tag>
-                                </view>
-
-                                <view wx:if="{{item.tag == 'OTHER'}}">
-                                    <i-tag 
-                                        name="{{item.tag}}" 
-                                        color="yellow"
-                                        >
-                                        其他
-                                    </i-tag>
-                                </view>
-                            </view>
-                        </i-card>
-                    </block>
-                    <view id="OTHER" style="width: 0;height:0;visibility:hidden;"></view>
-                </view>
-            </swiper-item>
-        </block>
-    </swiper>
-
-    <!-- 加载中 -->
-    <view id="loading" id="load">
-        <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
-        <view wx:if="{{showSpin}}" class='container'>
-            <i-spin size="small"></i-spin>
-            <i-spin size="small"></i-spin>
-            <i-spin size="small"></i-spin>
+            </view>
+           
         </view>
-        <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
+        <!-- 标题&内容 -->
+        <view class="weui-article__section">
+            <view class="weui-article__h1">{{task.title}}</view>
+            <view class="weui-article__section">
+                <view class="weui-article__p">
+                    {{task.content}}
+                </view>
+            </view>
+        </view>
+
+        <!-- 时间&地点&电话&报酬 -->
+        <view class="weui-article__section">
+            <view class="weui-article__h2">结束时间：{{task.endTime}}</view>
+            <view class="weui-article__h2">任务地点：{{task.localeName}}</view>
+            <view class="weui-article__h2">联系电话：{{task.telNumber}}</view>
+            <view wx:if="{{(task.type != 'NOTICE') && (task.type != 'LOSTF')}}" class="weui-article__h2">报酬金额：{{task.reward}}元</view>
+        </view>
+
+        <!-- 执行人 -->
+        <view wx:if="{{(task.doUid) && (uid == task.uid)}}" class="weui-article__section">
+            <view class="weui-article__h1">执行人</view>
+            <view class='container'>
+                <image src="{{doUser.avatarUrl}}" class="header-image"></image>
+                <view style='font-size:15px;' style='margin-left:10px;'>
+                    <view>昵称：{{doUser.name}}</view>
+                    <view>联系电话：{{doUser.telNumber}}</view>
+                </view>
+            </view>
+        </view>
+
+        <!-- 评价 -->
+        <view wx:if="{{(uid == task.uid) && (task.status == 'FINISH') && (task.type != 'NOTICE') && (task.type != 'LOSTF')}}">
+            <view class="weui-article__h1">任务评分</view>  
+            <picker wx:if="{{!(task.givePoint)}}" id="type" bindchange="openGivePointModal" value="{{task.givePoint}}" range="{{givePointType}}">
+                <view>快来给任务评分</view>
+            </picker>
+            <view  wx:else class="weui-article__h2">{{task.givePoint +"分"}}</view>
+        </view>
+
     </view>
-   
-    <!-- 加载完毕 -->
-    <wux-divider wx:if="{{showLoadOk}}" show-text="{{ true }}" text="没有数据了" />
+
+    <!-- 图片 -->
+    <view class="weui-cell">
+        <view class="weui-cell__bd">
+            <view class="weui-uploader">
+                <view class="weui-uploader__hd">
+                    <view class="weui-uploader__title">任务相关图片</view>
+                </view>
+                <view class="weui-uploader__bd">
+                    <view class="weui-uploader__files" id="uploaderFiles">
+                        <block wx:for="{{task.pictrues}}" wx:key="*this">
+                                <view class="weui-uploader__file" bindtap="previewImage" id="{{baseUrl + item}}">
+                                    <image class="weui-uploader__img" src="{{baseUrl + item}}" mode="aspectFill" />
+                                </view>
+                        </block>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    
+    <!-- 模态框 -->
+    <i-modal title="{{modal.title}}" visible="{{ modal.visible }}" actions="{{ modal.actions }}" bind:click="{{modal.mFunction}}">
+        <view>{{modal.content}}</view>
+    </i-modal>
 
     <!-- 动作面板（分享） -->
     <i-action-sheet visible="{{ showActionSheet }}" data-new-id="2" actions="{{ actions }}" show-cancel bind:cancel="cancelActionSheet" bind:click="clickActionSheet">

@@ -39,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 5,
+			"current": 6,
 			"list": [
 				{
 					"id": -1,
@@ -80,6 +80,13 @@
 					"id": -1,
 					"name": "task-publish",
 					"pathName": "pages/task/task-publish",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "task-detail",
+					"pathName": "pages/task/task-detail",
 					"query": "",
 					"scene": null
 				}

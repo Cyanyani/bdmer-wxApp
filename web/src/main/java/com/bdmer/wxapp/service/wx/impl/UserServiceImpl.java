@@ -13,12 +13,14 @@ import com.bdmer.wxapp.dto.request.SendWxUserInfoDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
 import com.bdmer.wxapp.model.UserBdmerEntity;
 import com.bdmer.wxapp.model.UserWxAppEntity;
+import com.bdmer.wxapp.service.core.FileCore;
 import com.bdmer.wxapp.service.core.UserBdmerCore;
 import com.bdmer.wxapp.service.core.WxAuthCore;
 import com.bdmer.wxapp.service.wx.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,10 +34,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserServiceImpl implements IUserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Value("${bdmer.upload.authImage}")
+    private String uploadDir;
+    @Value("${bdmer.download.authImage}")
+    private String downloadUrl;
+
     @Autowired
     WxAuthCore wxAuthCore;
     @Autowired
     UserBdmerCore userBdmerCore;
+    @Autowired
+    FileCore fileCore;
 
     @Override
     public ResponseDTO<?> login(String code) throws Exception{
@@ -146,10 +155,10 @@ public class UserServiceImpl implements IUserService {
         String unionid = WxUserHolder.getUnionid();
 
         // 2.解析并存储上传的MultipartFile
-        String authImage = (String) userBdmerCore.storageAuthImage(unionid, img).getData();
+        String imageName = (String) fileCore.storageImage(uploadDir, unionid, img).getData();
 
         // 3.更新authInfo
-        AuthInfoDTO authInfoDTO  = (AuthInfoDTO) userBdmerCore.updateAuthInfo(authImage, 0).getData();
+        AuthInfoDTO authInfoDTO  = (AuthInfoDTO) userBdmerCore.updateAuthInfo(downloadUrl + imageName, 0).getData();
         authInfoDTO.setUnionid("");
 
         return B.success(authInfoDTO);

@@ -1,11 +1,11 @@
 {
-    "navigationBarTitleText": "任务",
+    "navigationBarTitleText": "任务详情",
     "onReachBottomDistance": 50,
     "usingComponents": {
-        "i-icon": "../../components/iView/icon/index",
-        "i-card": "../../components/iView/card/index",
         "i-tag": "../../components/iView/tag/index",
         "i-action-sheet": "../../components/iView/action-sheet/index",
-        "i-message": "../../components/iView/message/index"
+        "i-message": "../../components/iView/message/index",
+        "i-icon": "../../components/iView/icon/index",
+        "i-modal": "../../components/iView/modal/index"
     }
 }

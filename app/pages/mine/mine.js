@@ -30,6 +30,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+        let that = this;
         let userInfo = wx.getStorageSync("userInfo");
         let bdmerInfo = {};
 
@@ -59,7 +60,7 @@ Page({
                 });
             }
         ).then(() => {
-            this.setData({
+            that.setData({
                 userInfo: userInfo,
                 bdmerInfo: bdmerInfo
             });

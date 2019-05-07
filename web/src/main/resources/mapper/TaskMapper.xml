@@ -11,7 +11,8 @@
     <result column="pictrues" property="pictrues" jdbcType="VARCHAR" />
     <result column="creatStamp" property="creatstamp" jdbcType="BIGINT" />
     <result column="endStamp" property="endstamp" jdbcType="BIGINT" />
-    <result column="locale" property="locale" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="DOUBLE" />
+    <result column="lng" property="lng" jdbcType="DOUBLE" />
     <result column="locale_name" property="localeName" jdbcType="VARCHAR" />
     <result column="tel_number" property="telNumber" jdbcType="VARCHAR" />
     <result column="reward" property="reward" jdbcType="INTEGER" />
@@ -21,7 +22,7 @@
     <result column="give_point" property="givePoint" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, name, avatar_url, title, content, pictrues, creatStamp, endStamp, locale, 
+    id, uid, name, avatar_url, title, content, pictrues, creatStamp, endStamp, lat, lng, 
     locale_name, tel_number, reward, doUid, status, type, give_point
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -38,17 +39,19 @@
     insert into task (id, uid, name, 
       avatar_url, title, content, 
       pictrues, creatStamp, endStamp, 
-      locale, locale_name, tel_number, 
-      reward, doUid, status, 
-      type, give_point)
+      lat, lng, locale_name, 
+      tel_number, reward, doUid, 
+      status, type, give_point
+      )
     values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{avatarUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{pictrues,jdbcType=VARCHAR}, #{creatstamp,jdbcType=BIGINT}, #{endstamp,jdbcType=BIGINT}, 
-      #{locale,jdbcType=VARCHAR}, #{localeName,jdbcType=VARCHAR}, #{telNumber,jdbcType=VARCHAR}, 
-      #{reward,jdbcType=INTEGER}, #{douid,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
-      #{type,jdbcType=VARCHAR}, #{givePoint,jdbcType=INTEGER})
+      #{lat,jdbcType=DOUBLE}, #{lng,jdbcType=DOUBLE}, #{localeName,jdbcType=VARCHAR}, 
+      #{telNumber,jdbcType=VARCHAR}, #{reward,jdbcType=INTEGER}, #{douid,jdbcType=BIGINT}, 
+      #{status,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{givePoint,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.bdmer.wxapp.model.TaskEntity" >
+  <insert id="insertSelective" parameterType="com.bdmer.wxapp.model.TaskEntity" useGeneratedKeys="true" keyProperty="id">
     insert into task
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -78,8 +81,11 @@
       <if test="endstamp != null" >
         endStamp,
       </if>
-      <if test="locale != null" >
-        locale,
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="lng != null" >
+        lng,
       </if>
       <if test="localeName != null" >
         locale_name,
@@ -131,8 +137,11 @@
       <if test="endstamp != null" >
         #{endstamp,jdbcType=BIGINT},
       </if>
-      <if test="locale != null" >
-        #{locale,jdbcType=VARCHAR},
+      <if test="lat != null" >
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=DOUBLE},
       </if>
       <if test="localeName != null" >
         #{localeName,jdbcType=VARCHAR},
@@ -184,8 +193,11 @@
       <if test="endstamp != null" >
         endStamp = #{endstamp,jdbcType=BIGINT},
       </if>
-      <if test="locale != null" >
-        locale = #{locale,jdbcType=VARCHAR},
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=DOUBLE},
       </if>
       <if test="localeName != null" >
         locale_name = #{localeName,jdbcType=VARCHAR},
@@ -221,7 +233,8 @@
       pictrues = #{pictrues,jdbcType=VARCHAR},
       creatStamp = #{creatstamp,jdbcType=BIGINT},
       endStamp = #{endstamp,jdbcType=BIGINT},
-      locale = #{locale,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=DOUBLE},
+      lng = #{lng,jdbcType=DOUBLE},
       locale_name = #{localeName,jdbcType=VARCHAR},
       tel_number = #{telNumber,jdbcType=VARCHAR},
       reward = #{reward,jdbcType=INTEGER},
@@ -230,5 +243,17 @@
       type = #{type,jdbcType=VARCHAR},
       give_point = #{givePoint,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateTaskStatus">
+    update task
+    set status = #{taskStatus}
+    where id = #{taskId}
+  </update>
+
+  <update id="updateTaskDoUid">
+    update task
+    set doUid = #{doUid}
+    where id = #{taskId}
   </update>
 </mapper>

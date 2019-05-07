@@ -104,22 +104,28 @@ module.exports = {
     updateUserTelNumber: (data) => {
         return request('/user/updateUserTelNumber', 'post', data);
     },
-    publishTask:() => {
-        
+    publishTask:(data) => {
+        return request('/task/createTask', 'post', data);
     },
-    getTaskList:() => {
-
+    getTaskList:(data) => {
+        return request('/task/getTaskList', 'post', data);
     },
     getTaskUserList: () => { 
-
+        
     },
-    getTaskDeatil: () => { 
-
+    getTaskDeatil: (data) => { 
+        return request('/task/getTaskDetail', 'get', data);
     },
-    updateTaskStatus: ()=> {
-
+    getDoUser(data){
+        return request('/task/getDoUser', 'get', data);
+    },
+    updateTaskStatus: (data) => {
+        return request('/task/updateTaskStatus', 'get', data);
+    },
+    updateTaskDoUid: (data) => {
+        return request('/task/updateTaskDoUid', 'get', data);
     },
     updateTaskGivePoint:() =>{
-
+        
     }
 }

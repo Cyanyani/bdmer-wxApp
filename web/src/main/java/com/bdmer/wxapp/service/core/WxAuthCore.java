@@ -106,6 +106,9 @@ public class WxAuthCore {
      */
     public ResponseDTO<?> getUserWxAppEntityByOpenid(String openid) throws Exception{
         UserWxAppEntity userWxAppEntity = userWxAppDao.selectByOpenid(openid);
+        if(Util.allFieldIsNUll(userWxAppEntity)){
+            throw new WxException(ResponseEnum.ERROR_WX_NO_USER);
+        }
 
         return B.success(userWxAppEntity);
     }

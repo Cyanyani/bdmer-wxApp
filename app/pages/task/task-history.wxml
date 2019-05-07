@@ -1,0 +1,129 @@
+<view id="page">
+    <!-- tabs头 -->
+    <wux-tabs  controlled current="{{ key }}" bindchange="onTabsChange">
+        <block wx:for="{{ tabs }}" wx:key="key">
+            <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
+        </block>
+    </wux-tabs>
+
+    <!--  swiper滑动内容块 -->
+    <swiper current="{{ index }}" bindchange="onSwiperChange" style='height:{{swiperHeight}}px'>
+        <block wx:for="{{ tabs }}" wx:key="key">
+            <swiper-item>
+                <!-- 通知公告 -->
+                <view wx:if="{{ item.key=='NOTICE' }}">
+                    <block wx:for="{{ tasks.NOTICE }}" wx:key="taskId">
+
+                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+                        <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                            <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                                <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                                <view slot="footer" class="container" style='justify-content:space-between'>
+                                    <view>
+                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                    </view>
+                                    <view>
+                                        <i-tag name="{{item.type}}" color="red">通知公告</i-tag>
+                                    </view>
+                                </view>
+                            </i-card>
+                        </view>
+
+                    </block> 
+                    <view id="{{item.key}}" style="width: 0;height:0;visibility:hidden;"></view>
+                </view>
+
+                <!-- 外卖快递 -->
+                <view wx:if="{{ item.key=='WAIKUAI' }}">
+                    <block wx:for="{{ tasks.WAIKUAI }}" wx:key="taskId">
+
+                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+                        <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                            <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                                <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                                <view slot="footer" class="container" style='justify-content:space-between'>
+                                    <view>
+                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                    </view>
+                                    <view>
+                                        <i-tag name="{{item.type}}" color="green">外卖快递</i-tag>
+                                    </view>
+                                </view>
+                            </i-card>
+                        </view>
+
+                    </block> 
+                    <view id="{{item.key}}" style="width: 0;height:0;visibility:hidden;"></view>
+                </view>
+                
+                <!-- 失物招领 -->
+                <view wx:if="{{ item.key=='LOSTF' }}">
+                    <block wx:for="{{ tasks.LOSTF }}" wx:key="taskId">
+
+                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+                        <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                            <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                                <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                                <view slot="footer" class="container" style='justify-content:space-between'>
+                                    <view>
+                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                    </view>
+                                    <view >
+                                        <i-tag name="{{item.type}}" color="blue">失物招领</i-tag>
+                                    </view>
+                                </view>
+                            </i-card>
+                        </view>
+
+                    </block> 
+                    <view id="{{item.key}}" style="width: 0;height:0;visibility:hidden;"></view>
+                </view>
+               
+                <!-- 其他任务 -->
+                <view wx:if="{{ item.key=='OTHER' }}">
+                    <block wx:for="{{ tasks.OTHER }}" wx:key="taskId">
+
+                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+                        <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                            <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                                <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                                <view slot="footer" class="container" style='justify-content:space-between'>
+                                    <view>
+                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                    </view>
+                                    <view>
+                                        <i-tag name="{{item.type}}" color="yellow">其他任务</i-tag>
+                                    </view>
+                                </view>
+                            </i-card>
+                        </view>
+
+                    </block> 
+                    <view id="{{item.key}}" style="width: 0;height:0;visibility:hidden;"></view>
+                </view>
+            </swiper-item>
+        </block>
+    </swiper>
+
+    <!-- 加载中 -->
+    <view id="loading" id="load">
+        <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
+        <view wx:if="{{showSpin}}" class='container'>
+            <i-spin size="small"></i-spin>
+            <i-spin size="small"></i-spin>
+            <i-spin size="small"></i-spin>
+        </view>
+        <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
+    </view>
+   
+    <!-- 加载完毕 -->
+    <wux-divider wx:if="{{showLoadOk}}" show-text="{{ true }}" text="没有数据了" />
+
+    <!-- 浮动按钮 -->
+    <wux-fab-button position="bottomRight" theme="balanced" direction="horizontal" spaceBetween="10" bind:click="goPublishTask" buttons="{{fabButton}}"/>
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
+</view>
+
+

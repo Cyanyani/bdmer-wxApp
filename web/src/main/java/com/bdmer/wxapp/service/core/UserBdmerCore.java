@@ -53,6 +53,10 @@ public class UserBdmerCore {
     public ResponseDTO<?> getUserBdmerEntityByUnionid(String unionid) throws Exception{
         UserBdmerEntity userBdmerEntity = userBdmerDao.selectByUnionid(unionid);
 
+        if(Util.allFieldIsNUll(userBdmerEntity)){
+            throw new WxException(ResponseEnum.ERROR_BDMER_NO_USER);
+        }
+
         return B.success(userBdmerEntity);
     }
 
@@ -149,26 +153,14 @@ public class UserBdmerCore {
         return B.success(result);
     }
 
-    public ResponseDTO<?> storageAuthImage(String unionid, MultipartFile img) throws Exception{
-
-        String suffixName = img.getOriginalFilename().substring(img.getOriginalFilename().lastIndexOf("."));
-        // 判断后缀是否为图片
-        if(!suffixName.equals(".png") && !suffixName.equals(".jpg") &&  !suffixName.equals(".jpge") && !suffixName.equals(".gif")){
-            throw new WxException(ResponseEnum.ERROR_BDMER_IMG_FORMAT);
-        }
-
-        String imgName = unionid + suffixName;
-        File path = Util.getClassPath();
-        File dest = new File(path.getAbsolutePath(),uploadDir+imgName);
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
-        img.transferTo(dest);
-        LOG.info("【UserBdmerCore - storageAuthImage】 - 上传认证图片：{}", downloadUrl + imgName);
-
-        return B.success(downloadUrl + imgName);
-    }
-
+    /**
+     * 更新用户认证信息
+     *
+     * @param authImage
+     * @param authStatus
+     * @return
+     * @throws Exception
+     */
     public ResponseDTO<?> updateAuthInfo(String authImage, Integer authStatus) throws Exception{
 
         AuthInfoDTO authInfoDTO = new AuthInfoDTO();
@@ -180,4 +172,5 @@ public class UserBdmerCore {
 
         return B.success(authInfoDTO);
     }
+
 }

@@ -1,49 +1,31 @@
-package com.bdmer.wxapp.model;
+package com.bdmer.wxapp.dto.response;
 
-public class TaskEntity {
-    private Long id;
-
+/**
+ * 任务详情 - DTO类
+ *
+ * @since 2019-05-07
+ * @author gongdl
+ */
+public class TaskDetailDTO {
     private Long uid;
-
     private String name;
-
     private String avatarUrl;
 
     private String title;
-
     private String content;
+    private String[] pictrues;
 
-    private String pictrues;
 
-    private Long creatstamp;
-
-    private Long endstamp;
-
-    private Double lat;
-
-    private Double lng;
-
+    private String createTime;
+    private String endTime;
     private String localeName;
-
     private String telNumber;
-
-    private Integer reward;
-
-    private Long douid;
-
+    private String type;
     private String status;
 
-    private String type;
-
+    private Integer reward;
     private Integer givePoint;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long doUid;
 
     public Long getUid() {
         return uid;
@@ -85,44 +67,28 @@ public class TaskEntity {
         this.content = content;
     }
 
-    public String getPictrues() {
+    public String[] getPictrues() {
         return pictrues;
     }
 
-    public void setPictrues(String pictrues) {
+    public void setPictrues(String[] pictrues) {
         this.pictrues = pictrues;
     }
 
-    public Long getCreatstamp() {
-        return creatstamp;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatstamp(Long creatstamp) {
-        this.creatstamp = creatstamp;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
-    public Long getEndstamp() {
-        return endstamp;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEndstamp(Long endstamp) {
-        this.endstamp = endstamp;
-    }
-
-    public Double getLat() {
-        return lat;
-    }
-
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
-    public Double getLng() {
-        return lng;
-    }
-
-    public void setLng(Double lng) {
-        this.lng = lng;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getLocaleName() {
@@ -141,20 +107,12 @@ public class TaskEntity {
         this.telNumber = telNumber;
     }
 
-    public Integer getReward() {
-        return reward;
+    public String getType() {
+        return type;
     }
 
-    public void setReward(Integer reward) {
-        this.reward = reward;
-    }
-
-    public Long getDouid() {
-        return douid;
-    }
-
-    public void setDouid(Long douid) {
-        this.douid = douid;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getStatus() {
@@ -165,12 +123,12 @@ public class TaskEntity {
         this.status = status;
     }
 
-    public String getType() {
-        return type;
+    public Integer getReward() {
+        return reward;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setReward(Integer reward) {
+        this.reward = reward;
     }
 
     public Integer getGivePoint() {
@@ -179,5 +137,13 @@ public class TaskEntity {
 
     public void setGivePoint(Integer givePoint) {
         this.givePoint = givePoint;
+    }
+
+    public Long getDoUid() {
+        return doUid;
+    }
+
+    public void setDoUid(Long doUid) {
+        this.doUid = doUid;
     }
 }

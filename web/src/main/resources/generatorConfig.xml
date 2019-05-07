@@ -50,5 +50,4 @@
             <columnOverride column="pictrues" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
-
 </generatorConfiguration>

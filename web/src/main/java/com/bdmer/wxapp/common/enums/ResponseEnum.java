@@ -22,10 +22,17 @@ public enum ResponseEnum {
     ERROR_WX_USER_TOKEN(2003, "错误token"),
     ERROR_WX_USER_NO_TOKEN(2004, "token已过期"),
     ERROR_WX_USER_TOKEN_NEED_INFO(2005, "token需要用户信息"),
+    ERROR_WX_NO_USER(2006, "用户不存在-wx"),
 
     /** bdmer用户错误 **/
-    ERROR_BDMER_USER_TEL(3001, "加密的手机号码有误"),
-    ERROR_BDMER_IMG_FORMAT(3002, "图片格式不正确");
+    ERROR_BDMER_NO_USER(3000, "用户不存在"),
+    ERROR_BDMER_USER_TEL(3002, "加密的手机号码有误"),
+    ERROR_BDMER_IMG_FORMAT(3003, "图片格式不正确"),
+
+    /** 任务相关错误 **/
+    ERROR_TASK_NO_TASK(4000, "任务不存在"),
+    ERROR_TASK_NO_STATUS(4001, "不存在该状态"),
+    ERROR_TASK_CANNT_CANCEL(4002, "不能取消，该任务不属于该用户");
 
     ResponseEnum(Integer code, String msg) {
         this.code = code;

@@ -11,10 +11,24 @@ Page({
      * 页面的初始数据
      */
     data: {
+        modal:{
+            actions: [
+                {
+                    name: '取消'
+                },
+                {
+                    name: '确认',
+                    color: '#19be6b',
+                    loading: false
+                }
+            ],
+            visible:false
+            
+        },
         header: {},
         baseUrl: "",
         types: ["通知公告", "外卖快递", "失物招领", "其他"],
-        pictruesList: ["http://www.cjlu.edu.cn/upload/ad/1550934473809.jpg","http://www.cjlu.edu.cn/upload/ad/1550934473809.jpg"],
+        pictruesList: [],
         form:{
             title:"",
             content:"",
@@ -49,17 +63,142 @@ Page({
             baseUrl: CONFIG.baseUrl
         });
     },
+
+    openPublishTasktModal(e) {
+        // 任务表单检查
+        let form = this.data.form;
+        if (Util.isNull(form)){
+            $Message({
+                content: '任务不能为空',
+                type: 'error',
+                duration: 3
+            });
+            return;
+        }
+
+        if (Util.isNull(form.title)){
+            $Message({
+                content: '任务标题不能为空',
+                type: 'error',
+                duration: 3
+            });
+            return;
+        }
+
+        if (Util.isNull(form.content)) {
+            $Message({
+                content: '任务内容不能为空',
+                type: 'error',
+                duration: 3
+            });
+            return;
+        }
+
+        if (Util.isNull(form.type)) {
+            $Message({
+                content: '任务类型不能为空',
+                type: 'error',
+                duration: 3
+            });
+            return;
+        }
+
+        if (Util.isNull(form.endDate) || Util.isNull(form.endTime)) {
+            $Message({
+                content: '任务时间日期不能为空',
+                type: 'error',
+                duration: 3
+            });
+            return;
+        }
+
+        if (this.data.form.type !== "通知公告" && this.data.form.type !== "失物招领") {
+            if (Util.isNull(form.telNumber)){
+                $Message({
+                    content: '手机号不能为空',
+                    type: 'error',
+                    duration: 3
+                });
+                return;
+            } else if (!(/^1[34578]\d{9}$/.test(form.telNumber))) {
+                $Message({
+                    content: '手机号码有误!',
+                    type: 'error',
+                    duration: 3
+                });
+                return;
+            }
+        }
+
+        if (Util.isNull(form.localeName)) {
+            $Message({
+                content: '位置不能为空',
+                type: 'error',
+                duration: 3
+            });
+            return;
+        }
+
+        let modal = this.data.modal;
+        modal.visible = true;
+
+        this.setData({
+            modal: modal
+        });
+    },
     
     // 用户自定义函数
-    publishTask(){
+    publishTask(e){
+        let modal = this.data.modal;
+        modal.visible = false;
+        this.setData({
+            modal: modal
+        })
+        if (e.detail.index != 1) {
+            return;
+        }
+
         // WXAPI创建任务
+        WXAPI.publishTask(Util.formatParamDTO(this.data.form)).then(
+            function (res) {
+                if (res.code != 0) {
+                    $Message({
+                        content: res.msg,
+                        type: 'error',
+                        duration: 3
+                    });
+                    if (!Util.isToken(res)) {
+                        app.goLoginPageTimeOut();
+                    }
+                } else {
+                    let taskId = res.data;
+                    // doSomething
+                    $Message({
+                        content: "发布成功",
+                        type: 'success',
+                        duration: 3
+                    });
+                    wx.redirectTo({
+                        url:"./task-detail?taskId="+taskId
+                    });
+                }
+            },
+            function (err) {
+                console.log(err);
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        );
     },
 
     checkTelNumber(e){
         let telNumber = e.detail.value;
         if (!(/^1[34578]\d{9}$/.test(telNumber))) {
             $Message({
-                content: '手机号码有误!',
+                content: '手机号码有误',
                 type: 'error',
                 duration: 3
             });
@@ -100,7 +239,7 @@ Page({
             fail: function (err) {
                 console.log(err);
                 $Message({
-                    content: "未授权",
+                    content: "请选择位置",
                     type: 'warning',
                     duration: 3
                 });
@@ -120,11 +259,12 @@ Page({
             success(res) {
                 const tempFilePaths = res.tempFilePaths
                 wx.uploadFile({
-                    url: baseUrl + '/wxApp/wx/task/uploadPictrue',
+                    url: baseUrl + '/wxApp/wx/task/uploadTaskPictrue',
                     header:header,
                     filePath: tempFilePaths[0],
                     name: 'file',
                     success(res) {
+                        res = JSON.parse(res.data);
                         let pictruesList = that.data.pictruesList;
                         let form = that.data.form;
                         if (form.pictrues === ""){

@@ -1,6 +1,40 @@
 .container{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items:center;
+}
+
+.container-other{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header{
+    margin-bottom: 20px;
+}
+
+.header-button{
+    background: #ff9900;
+    color:#FFFFFF;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+}
+
+.header-image{
+    width: 40px;
+    height: 40px;
+    border-radius: 10%;
+}
+
+.header-text{
+   margin-left: 10px;
+}
+
+.header-time{
+   font-size: 12px;
 }
