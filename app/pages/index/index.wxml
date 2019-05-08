@@ -14,99 +14,55 @@
             </block>
         </swiper>
     </view>
-   
+    <!-- 隔离线 -->
+    <view id="line" style='border:1px solid #f5f5f5'></view>
+
     <!-- 功能模块 -->
     <view id="feature">
-        <wux-white-space size="large" bodyStyle="background:#f5f5f5" />
-        <wux-grids col="4" bordered="{{ false }}">
-            <wux-grid>
-                <i-icon type="interactive" size="30" />
-                <view>咨询</view>
+        <wux-white-space size="large" bodyStyle="background:#FFFFFF" />
+        <wux-grids col="3" bordered="{{ false }}">
+            <wux-grid hover-class="none" bind:click="goPublishTask">
+                <i-icon type="editor" size="30" />
+                <view>发布任务</view>
             </wux-grid>
-            <wux-grid>
-                <i-icon type="brush" size="30" />
-                <view>考试</view>
+            <wux-grid hover-class="none" bind:click="goCurrentTask">
+                <i-icon type="task" size="30" />
+                <view>当前任务</view>
             </wux-grid>
-            <wux-grid>
-                <i-icon type="coordinates"  size="30" />
-                <view>教室</view>
-            </wux-grid>
-            <wux-grid >
-                <i-icon type="createtask" size="30" />
-                <view>图书</view>
+            <wux-grid hover-class="none" bind:click="goHistoryTask">
+                <i-icon type="createtask"  size="30" />
+                <view>历史任务</view>
             </wux-grid>
         </wux-grids>
-    </view>
+    </view> 
 
     <!-- 隔离线 -->
-    <view id="line" style='border:1px solid #f5f5f5'>
-    </view>
-   
-    <!-- 通告栏 -->
-    <view id="notice">
-        <i-notice-bar icon="systemprompt" loop speed="{{noticeSpeed}}"  bindtap="goNewDetail" data-newid="{{notice.newId}}">
-            {{notice.title}}
-        </i-notice-bar>
-    </view>
-   
-    <!-- 资讯 -->
-    <view id="news">
-        <block id="new" wx:for="{{news}}" wx:key="newId">
-            <wux-white-space size="large" bodyStyle="background:#FFFFFF"  />
-            
-            <i-card  title="{{item.title}}" extra="{{item.time}}" thumb="{{item.imgUrl}}" >
-                <view slot="content" bindtap="openNewDetail" data-new-id="{{item.newId}}" data-index="{{index}}">{{item.brief}}</view>
-                <view slot="footer" class="container" style='justify-content:space-between'>
-                    <view class="container" style='justify-content:space-between'>
+    <view id="line" style='border:1px solid #f5f5f5'></view>
+
+    <!-- 任务 -->
+    <view>
+        <block wx:for="{{ tasks }}" wx:key="taskId">
+            <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+            <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                    <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                    <view slot="footer" class="container" style='justify-content:space-between'>
                         <view>
-                            <i-icon type="browse"  size="20"/>
-                            <label>{{item.browse}}</label>
+                            <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                            <i-icon type="coordinates" />
+                            <span>{{item.distance}}公里</span>
                         </view>
-                        <view style='margin-left:20rpx' bindtap='openActionSheet'  data-new-id="{{item.newId}}">
-                            <i-icon type="share" size="20" />
-                            <label>分享</label>
+                        <view>
+                            <i-tag wx:if="{{item.type == 'NOTICE'}}" name="{{item.type}}" color="red">通知公告</i-tag>
+                            <i-tag wx:if="{{item.type == 'WAIKUAI'}}" name="{{item.type}}" color="green">外卖快递</i-tag>
+                            <i-tag wx:if="{{item.type == 'LOSTF'}}" name="{{item.type}}" color="blue">失物招领</i-tag>
+                            <i-tag wx:if="{{item.type == 'OTHER'}}" name="{{item.type}}" color="yellow">其他</i-tag>
                         </view>
                     </view>
+                </i-card>
+            </view>
 
-                    
-                    <view wx:if="{{item.tag == 'NOTICE'}}">
-                        <i-tag 
-                            name="{{item.tag}}" 
-                            color="red"
-                            >
-                            通知
-                        </i-tag>
-                    </view>
-
-                    <view wx:elif="{{item.tag == 'ACTIVITY'}}">
-                        <i-tag 
-                            name="{{item.tag}}" 
-                            color="green"
-                            >
-                            活动
-                        </i-tag>
-                    </view>
-
-                    <view wx:if="{{item.tag == 'NEW'}}">
-                        <i-tag 
-                            name="{{item.tag}}" 
-                            color="blue"
-                            >
-                            资讯
-                        </i-tag>
-                    </view>
-
-                    <view wx:if="{{item.tag == 'OTHER'}}">
-                        <i-tag 
-                            name="{{item.tag}}" 
-                            color="yellow"
-                            >
-                            其他
-                        </i-tag>
-                    </view>
-                </view>
-            </i-card>
-        </block>
+        </block> 
     </view>
 
     <!-- 加载中 -->
@@ -122,13 +78,9 @@
    
     <!-- 加载完毕 -->
     <wux-divider wx:if="{{showLoadOk}}" show-text="{{ true }}" text="加载已经完成" />
-
-    <!-- 轻提示 -->
-    <i-toast id="toast" />
-    
-    <!-- 动作面板（分享） -->
-    <i-action-sheet visible="{{ showActionSheet }}" data-new-id="2" actions="{{ actions }}" show-cancel bind:cancel="cancelActionSheet" bind:click="clickActionSheet">
-    </i-action-sheet>
     <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
 </view>
 

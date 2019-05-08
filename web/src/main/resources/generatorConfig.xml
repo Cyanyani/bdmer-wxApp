@@ -45,9 +45,13 @@
         <!--<table tableName="userBdmer" domainObjectName="UserBdmer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
 
         </table>-->
-        <table tableName="task" domainObjectName="Task" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
+        <!--<table tableName="task" domainObjectName="Task" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
             <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
             <columnOverride column="pictrues" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+
+        <table tableName="record" domainObjectName="Record" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
         </table>
+
     </context>
 </generatorConfiguration>

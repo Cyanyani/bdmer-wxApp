@@ -3,14 +3,13 @@
     "onReachBottomDistance":50,
     "usingComponents": {
         "wux-white-space": "../../components/wux/white-space/index",
-        "wux-grids": "../../components/wux/grids/index",
-        "wux-grid": "../../components/wux/grid/index",
-        "i-notice-bar": "../../components/iView/notice-bar/index",
         "i-icon": "../../components/iView/icon/index",
         "i-card": "../../components/iView/card/index",
         "wux-divider": "../../components/wux/divider/index",
         "i-spin": "../../components/iView/spin/index",
         "i-tag": "../../components/iView/tag/index",
-        "i-action-sheet": "../../components/iView/action-sheet/index"
+        "i-message": "../../components/iView/message/index",
+        "wux-grids": "../../components/wux/grids/index",
+        "wux-grid": "../../components/wux/grid/index"
     }
 }

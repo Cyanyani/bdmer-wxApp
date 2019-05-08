@@ -12,7 +12,7 @@
                 <view class='container' style='width:450rpx;justify-content:space-between' >
                     <view style='font-size:35rpx;'>UID:{{bdmerInfo.uid}}</view>
                     <view style='font-size:35rpx;color:#1677D2'>点数:{{bdmerInfo.point}}</view>
-                    <view bindtap='goWxWeb'><i-icon type="enter" color='grey'/></view>
+                    <view bindtap='goRecord'><i-icon type="enter" color='grey'/></view>
                 </view>
             </view>
         </view>
@@ -37,10 +37,10 @@
     <wux-white-space size="default" bodyStyle="background:#F5F5F5" />
 
     <i-cell-group>
-         <i-cell title="当前任务" is-link url="../task/task-current">
+         <i-cell title="当前任务" is-link url="../task/task-mine?myStatus=CURRENT">
             <i-icon slot="icon" type="task" size='28' />
         </i-cell>
-        <i-cell title="历史任务" is-link url="../task/task-history">
+        <i-cell title="历史任务" is-link url="../task/task-mine?myStatus=HISTORY">
             <i-icon slot="icon"  type="createtask" size='28' />
         </i-cell>
     </i-cell-group>

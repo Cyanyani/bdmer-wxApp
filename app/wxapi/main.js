@@ -108,10 +108,10 @@ module.exports = {
         return request('/task/createTask', 'post', data);
     },
     getTaskList:(data) => {
-        return request('/task/getTaskList', 'post', data);
+        return request('/task/getTaskList', 'post', data, false);
     },
-    getTaskUserList: () => { 
-        
+    getUserTaskList: (data) => { 
+        return request('/task/getUserTaskList', 'post', data, false);
     },
     getTaskDeatil: (data) => { 
         return request('/task/getTaskDetail', 'get', data);
@@ -125,7 +125,10 @@ module.exports = {
     updateTaskDoUid: (data) => {
         return request('/task/updateTaskDoUid', 'get', data);
     },
-    updateTaskGivePoint:() =>{
-        
+    updateGivePoint:(data) =>{
+        return request('/task/updateGivePoint', 'get', data);
+    },
+    getRecord: () => {
+        return request('/task/getRecord', 'get', undefined, false);
     }
 }

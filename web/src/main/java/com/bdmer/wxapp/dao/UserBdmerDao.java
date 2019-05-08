@@ -50,4 +50,13 @@ public interface UserBdmerDao {
      * @return
      */
     int updateAuthInfo(AuthInfoDTO authInfoDTO);
+
+    /**
+     * 根据uid更新用户分数
+     *
+     * @param taskDoUid
+     * @param givePoint
+     * @return
+     */
+    int updatePointByUid(@Param("taskDoUid") Long taskDoUid , @Param("givePoint") Integer givePoint);
 }

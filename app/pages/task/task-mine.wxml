@@ -1,0 +1,103 @@
+<view id="page">
+    <!-- tabs头 -->
+    <wux-tabs  controlled current="{{ key }}" bindchange="onTabsChange">
+        <block wx:for="{{ tabs }}" wx:key="key">
+            <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
+        </block>
+    </wux-tabs>
+
+    <!--  swiper滑动内容块 -->
+    <swiper current="{{ index }}" bindchange="onSwiperChange" style='height:{{swiperHeight}}px'>
+        <block wx:for="{{ tabs }}" wx:key="key">
+            <swiper-item>
+                <!-- 我发布的 -->
+                <view wx:if="{{ item.key=='PUBLISH' }}">
+                    <block wx:for="{{ tasks.PUBLISH }}" wx:key="taskId">
+
+                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+                        <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                            <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                                <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                                <view slot="footer" class="container" style='justify-content:space-between'>
+                                    <view>
+                                        <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                                        <i-icon type="coordinates" />
+                                        <span>{{item.distance}}公里</span>
+                                    </view>
+                                    <view>
+                                        <i-tag wx:if="{{item.type == 'NOTICE'}}" name="{{item.type}}" color="red">通知公告</i-tag>
+                                        <i-tag wx:if="{{item.type == 'WAIKUAI'}}" name="{{item.type}}" color="green">外卖快递</i-tag>
+                                        <i-tag wx:if="{{item.type == 'LOSTF'}}" name="{{item.type}}" color="blue">失物招领</i-tag>
+                                        <i-tag wx:if="{{item.type == 'OTHER'}}" name="{{item.type}}" color="yellow">其他</i-tag>
+
+                                    </view>
+                                    <view>
+                                     <i-tag wx:if="{{item.status == 'FINDING'}}" name="{{item.type}}" color="red">发布中</i-tag>
+                                        <i-tag wx:if="{{item.status == 'DOING'}}" name="{{item.type}}" color="yellow">执行中</i-tag>
+                                        <i-tag wx:if="{{item.status == 'CANCEL'}}" name="{{item.type}}" color="blue">已取消</i-tag>
+                                        <i-tag wx:if="{{item.status == 'FINISH'}}" name="{{item.type}}" color="green">已完成</i-tag>
+                                    </view>
+                                </view>
+                            </i-card>
+                        </view>
+
+                    </block> 
+                    <view id="{{item.key}}" style="width: 0;height:0;visibility:hidden;"></view>
+                </view>
+
+                <!-- 我领取的 -->
+                <view wx:if="{{ item.key=='RECEIVE' }}">
+                    <block wx:for="{{ tasks.RECEIVE }}" wx:key="taskId">
+
+                        <wux-white-space size="large"  bodyStyle="background:#FFFFFF;"  />
+                        <view bindtap="goTaskDetail" data-task-id="{{item.taskId}}" > 
+                            <i-card  title="{{item.title}}" extra="{{item.createTime}}" thumb="{{item.avatarUrl}}" i-class="card-demo">
+                                <view slot="content" style="height:56px">{{item.contentBrief}}</view>
+                                <view slot="footer" class="container" style='justify-content:space-between'>
+                                    <view>
+                                       <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                                        <i-icon type="coordinates" />
+                                        <span>{{item.distance}}公里</span>
+                                    </view>
+                                    <view>
+                                        <i-tag wx:if="{{item.type == 'NOTICE'}}" name="{{item.type}}" color="red">通知公告</i-tag>
+                                        <i-tag wx:if="{{item.type == 'WAIKUAI'}}" name="{{item.type}}" color="green">外卖快递</i-tag>
+                                        <i-tag wx:if="{{item.type == 'LOSTF'}}" name="{{item.type}}" color="blue">失物招领</i-tag>
+                                        <i-tag wx:if="{{item.type == 'OTHER'}}" name="{{item.type}}" color="yellow">其他</i-tag>
+                                    </view>
+                                       <view>
+                                     <i-tag wx:if="{{item.status == 'FINDING'}}" name="{{item.type}}" color="red">发布中</i-tag>
+                                        <i-tag wx:if="{{item.status == 'DOING'}}" name="{{item.type}}" color="yellow">执行中</i-tag>
+                                        <i-tag wx:if="{{item.status == 'CANCEL'}}" name="{{item.type}}" color="blue">已取消</i-tag>
+                                        <i-tag wx:if="{{item.status == 'FINISH'}}" name="{{item.type}}" color="green">已完成</i-tag>
+                                    </view>
+                                </view>
+                            </i-card>
+                        </view>
+
+                    </block> 
+                    <view id="{{item.key}}" style="width: 0;height:0;visibility:hidden;"></view>
+                </view>
+            </swiper-item>
+        </block>
+    </swiper>
+
+    <!-- 加载中 -->
+    <view id="loading" id="load">
+        <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
+        <view wx:if="{{showSpin}}" class='container'>
+            <i-spin size="small"></i-spin>
+            <i-spin size="small"></i-spin>
+            <i-spin size="small"></i-spin>
+        </view>
+        <wux-white-space size="default" bodyStyle="background:#FFFFFF" />
+    </view>
+   
+    <!-- 加载完毕 -->
+    <wux-divider wx:if="{{showLoadOk}}" show-text="{{ true }}" text="没有数据了" />
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
+</view>
+
+

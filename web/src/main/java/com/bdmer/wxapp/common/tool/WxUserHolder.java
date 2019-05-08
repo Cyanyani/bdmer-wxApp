@@ -47,7 +47,7 @@ public class WxUserHolder {
     }
 
     public static String getUnionid() {
-        return userTokenDTO.getUnionid();
+        return userTokenDTO.getOpenid();
     }
 
     public static void setUnionid(String unionid) {

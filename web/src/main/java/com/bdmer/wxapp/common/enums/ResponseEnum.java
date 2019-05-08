@@ -32,7 +32,10 @@ public enum ResponseEnum {
     /** 任务相关错误 **/
     ERROR_TASK_NO_TASK(4000, "任务不存在"),
     ERROR_TASK_NO_STATUS(4001, "不存在该状态"),
-    ERROR_TASK_CANNT_CANCEL(4002, "不能取消，该任务不属于该用户");
+    ERROR_TASK_CANNT_CANCEL(4002, "不能取消，该任务不属于该用户"),
+    ERROR_TASK_CANNT_GIVE_POINT(4003, "不能评分，该任务不属于该用户"),
+    ERROR_TASK_ERROR_QUERY_PARAMS(4003, "错误的查询参数"),
+    ERROR_TASK_ERROR_POINT(4004, "评论分数不正确");
 
     ResponseEnum(Integer code, String msg) {
         this.code = code;

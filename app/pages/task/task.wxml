@@ -20,7 +20,9 @@
                                 <view slot="content" style="height:56px">{{item.contentBrief}}</view>
                                 <view slot="footer" class="container" style='justify-content:space-between'>
                                     <view>
-                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                        <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                                        <i-icon type="coordinates" />
+                                        <span>{{item.distance}}公里</span>
                                     </view>
                                     <view>
                                         <i-tag name="{{item.type}}" color="red">通知公告</i-tag>
@@ -43,7 +45,9 @@
                                 <view slot="content" style="height:56px">{{item.contentBrief}}</view>
                                 <view slot="footer" class="container" style='justify-content:space-between'>
                                     <view>
-                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                       <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                                        <i-icon type="coordinates" />
+                                        <span>{{item.distance}}公里</span>
                                     </view>
                                     <view>
                                         <i-tag name="{{item.type}}" color="green">外卖快递</i-tag>
@@ -66,7 +70,9 @@
                                 <view slot="content" style="height:56px">{{item.contentBrief}}</view>
                                 <view slot="footer" class="container" style='justify-content:space-between'>
                                     <view>
-                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                        <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                                        <i-icon type="coordinates" />
+                                        <span>{{item.distance}}公里</span>
                                     </view>
                                     <view >
                                         <i-tag name="{{item.type}}" color="blue">失物招领</i-tag>
@@ -89,7 +95,9 @@
                                 <view slot="content" style="height:56px">{{item.contentBrief}}</view>
                                 <view slot="footer" class="container" style='justify-content:space-between'>
                                     <view>
-                                        <span style="font-size:14px">{{item.endTime}}</span>
+                                        <span style="font-size:14px;margin-right:20px;">{{item.endTime}}</span>
+                                        <i-icon type="coordinates" />
+                                        <span>{{item.distance}}公里</span>
                                     </view>
                                     <view>
                                         <i-tag name="{{item.type}}" color="yellow">其他任务</i-tag>

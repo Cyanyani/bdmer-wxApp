@@ -39,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 6,
+			"current": 7,
 			"list": [
 				{
 					"id": -1,
@@ -88,6 +88,12 @@
 					"name": "task-detail",
 					"pathName": "pages/task/task-detail",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "timeline",
+					"pathName": "pages/other/record",
 					"scene": null
 				}
 			]

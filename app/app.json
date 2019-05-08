@@ -4,13 +4,12 @@
         "pages/login/login",
         "pages/task/task",
         "pages/task/task-publish",
-        "pages/task/task-detail",
-        "pages/task/task-history",
+        "pages/task/task-mine",
         "pages/mine/mine",
         "pages/mine/mine-info",
         "pages/mine/mine-info-phone",
         "pages/mine/mine-cert",
-        "pages/other/wx-web"
+        "pages/other/record"
     ],
     "window": {
         "backgroundTextStyle": "light",

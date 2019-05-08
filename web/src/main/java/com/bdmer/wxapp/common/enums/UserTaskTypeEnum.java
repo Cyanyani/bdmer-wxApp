@@ -1,19 +1,16 @@
 package com.bdmer.wxapp.common.enums;
 
 /**
- * 任务类型枚举
+ * 用户任务类型 - 枚举类
  *
- * @since 2019-05-06
- * @author gongdl
+ * @sicne 2019-05-08
+ * @suthor gongdl
  */
-public enum TaskTypeEnum {
+public enum UserTaskTypeEnum {
+    USER_TASK_TYPE_ENUM_PUBLISH("PUBLISH", "用户发布的"),
+    USER_TASK_TYPE_ENUM_RECEIVE("RECEIVE", "用户领取的");
 
-    TYPE_IS_NOTICE("NOTICE", "通知公告"),
-    TYPE_IS_WAIKUAI("WAIKUAI", "外卖快递"),
-    TYPE_IS_LOSTF("LOSTF", "失物招领"),
-    TYPE_IS_OTHER("OTHER", "其他");
-
-    TaskTypeEnum(String code, String msg) {
+    UserTaskTypeEnum(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }

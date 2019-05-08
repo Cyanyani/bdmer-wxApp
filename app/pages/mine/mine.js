@@ -79,11 +79,11 @@ Page({
     },
 
     /**
-     * 跳转公众号二维码
+     * 跳转点数记录
      */
-    goWxWeb:function(){
+    goRecord:function(){
         wx.navigateTo({
-            url: "../other/wx-web"
+            url: "../other/record"
         }); 
     }
 

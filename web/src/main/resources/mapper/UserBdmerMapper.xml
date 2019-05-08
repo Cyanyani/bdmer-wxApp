@@ -252,20 +252,20 @@
     select
     <include refid="Base_Column_List" />
     from userBdmer
-    where unionid = #{unionid}
+    where openidWxApp = #{unionid}
   </select>
 
   <update id="updateLocaleByUnionid">
     update userBdmer
     set locale = #{locale},
         locale_name = #{localeName}
-    where unionid = #{unionid}
+    where openidWxApp = #{unionid}
   </update>
 
   <update id="updateTelNumberByUnionid">
     update userBdmer
     set tel_number = #{telNumber}
-    where unionid = #{unionid}
+    where openidWxApp = #{unionid}
   </update>
 
   <update id="updateAuthInfo" parameterType="com.bdmer.wxapp.dto.other.AuthInfoDTO">
@@ -278,7 +278,13 @@
         auth_status = #{authStatus}
       </if>
     </set>
-    where unionid = #{unionid}
+    where openidWxApp = #{unionid}
+  </update>
+
+  <update id="updatePointByUid">
+    update userBdmer
+    set point = point + #{givePoint}
+    where uid = #{taskDoUid}
   </update>
 
 </mapper>

@@ -53,9 +53,11 @@ public class UserBdmerCore {
     public ResponseDTO<?> getUserBdmerEntityByUnionid(String unionid) throws Exception{
         UserBdmerEntity userBdmerEntity = userBdmerDao.selectByUnionid(unionid);
 
-        if(Util.allFieldIsNUll(userBdmerEntity)){
-            throw new WxException(ResponseEnum.ERROR_BDMER_NO_USER);
-        }
+        return B.success(userBdmerEntity);
+    }
+
+    public ResponseDTO<?> getUserBdmerEntityByUid(Long userId) throws Exception{
+        UserBdmerEntity userBdmerEntity = userBdmerDao.selectByPrimaryKey(userId);
 
         return B.success(userBdmerEntity);
     }

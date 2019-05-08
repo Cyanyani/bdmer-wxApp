@@ -35,6 +35,8 @@ Page({
         doUser:{},
         givePointType: [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         taskId:0,
+        nowTime:0,
+        endTime: 0,
         task:{},
 
         showActionSheet: false,
@@ -51,8 +53,17 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.setData({
+            taskId: options.taskId
+        })
+    },
+
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow: function () {
         // 获取用户uid
-        let uid = 2
+        let uid = 0
         try {
             uid = wx.getStorageSync("bdmerInfo").uid;
             if (Util.isNull(uid)) {
@@ -65,13 +76,12 @@ Page({
         let that = this;
         this.setData({
             baseUrl: CONFIG.baseUrl,
-            uid:uid,
-            taskId: options.taskId
+            uid: uid
         })
 
         // WXAPI获取任务详情
         let data = {};
-        data.taskId = options.taskId;
+        data.taskId = this.data.taskId;
         WXAPI.getTaskDeatil(data).then(
             function (res) {
                 if (res.code != 0) {
@@ -86,11 +96,11 @@ Page({
                 } else {
                     //doSomething
                     let task = res.data;
-                    switch (task.type){
+                    switch (task.type) {
                         case "NOTICE": task.typeName = "通知公告"; break;
                         case "WAIKUAI": task.typeName = "外卖快递"; break;
                         case "LOSTF": task.typeName = "失物招领"; break;
-                        case "OTHER": task.typeName = "其他";break;
+                        case "OTHER": task.typeName = "其他"; break;
                     }
                     switch (task.status) {
                         case "FINDING": task.statusName = "发布中"; break;
@@ -98,11 +108,16 @@ Page({
                         case "CANCEL": task.statusName = "已取消"; break;
                         case "FINISH": task.statusName = "已完成"; break;
                     }
-                    if (task.reward == null){
-                            task.reward = 0;
+                    if (task.reward == null) {
+                        task.reward = 0;
                     }
+                    // 设置时间
+                    let nowTime = new Date().getTime();
+                    let endTime = new Date(task.endTime).getTime()
                     that.setData({
-                        task: task
+                        task: task,
+                        nowTime: nowTime,
+                        endTime: endTime
                     })
                 }
             },
@@ -114,8 +129,8 @@ Page({
                     duration: 3
                 });
             }
-        ).then(function(){
-            if(Util.isNull(that.data.task.doUid)){
+        ).then(function () {
+            if (Util.isNull(that.data.task.doUid)) {
                 return;
             }
             // 查询doUserDTO
@@ -152,30 +167,14 @@ Page({
         });
     },
 
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-        // 获取用户uid
-        let uid = 2
-        try{
-            uid = wx.getStorageSync("bdmerInfo").uid;
-            if (Util.isNull(uid)) {
-                app.goLoginPageTimeOut();
-            }
-        }catch(e){
-            app.goLoginPageTimeOut();
-        }
-    },
-
-
     openGivePointModal(e){
+        console.log(e);
         let modal = this.data.modal;
         modal.title = "确认评分";
         modal.content = "评分后无法修改哦";
         modal.mFunction = "updateGivePoint";
         modal.visible = true;
-        modal.value = e.detail.value;
+        modal.value = this.data.givePointType[e.detail.value];
 
         this.setData({
             modal:modal
@@ -193,6 +192,25 @@ Page({
         });
     },
     openReceiveTaskModal(e) {
+        let bdmerInfo = wx.getStorageSync("bdmerInfo")
+        if (!bdmerInfo){
+            app.goLoginPageTimeOut();
+            return;
+        }
+
+        if (!bdmerInfo.telNumber) {
+            wx.showModal({
+                title: '请完善个人信息',
+                content: '请先绑定手机号码',
+                success(res) {
+                    wx.navigateTo({
+                        url: '../mine/mine-info',
+                    })
+                }
+            })
+            return;
+        }
+
         let modal = this.data.modal;
         modal.title = "确认领取";
         modal.content = "领取后就一定要完成哦";
@@ -269,6 +287,7 @@ Page({
      * wxapi相关
      */
     receiveTask(e){
+        let that = this;
         let modal = this.data.modal;
         modal.visible = false;
         this.setData({
@@ -277,11 +296,6 @@ Page({
         if (e.detail.index != 1) {
             return;
         }
-        $Message({
-            content: '领取成功',
-            type: 'success',
-            duration: 3
-        });
 
         //WXAPI领取任务
         let data = {};
@@ -299,9 +313,12 @@ Page({
                     }
                 } else {
                     // doSomething
-                    wx.redirectTo({
-                        url: "./task-current"
+                    $Message({
+                        content: '领取成功',
+                        type: 'success',
+                        duration: 3
                     });
+                    that.onShow();
                 }
             },
             function (err) {
@@ -315,6 +332,7 @@ Page({
         );
     },
     cancelTask(e) {
+        let that = this;
         let modal = this.data.modal;
         modal.visible = false;
         this.setData({
@@ -323,11 +341,6 @@ Page({
         if (e.detail.index != 1) {
             return;
         }
-        $Message({
-            content: '取消成功',
-            type: 'success',
-            duration: 3
-        });
 
         //WXAPI取消任务
         let data = {};
@@ -346,9 +359,12 @@ Page({
                     }
                 } else {
                     // doSomething
-                    wx.redirectTo({
-                        url: "./task-history"
+                    $Message({
+                        content: '取消成功',
+                        type: 'success',
+                        duration: 3
                     });
+                    that.onShow();
                 }
             },
             function (err) {
@@ -362,6 +378,7 @@ Page({
         );
     },
     finishTask(e) {
+        let that =this;
         let modal = this.data.modal;
         modal.visible = false;
         this.setData({
@@ -370,12 +387,7 @@ Page({
         if (e.detail.index != 1) {
             return;
         }
-        $Message({
-            content: '执行成功',
-            type: 'success',
-            duration: 3
-        });
-
+       
         //WXAPI完成任务
         let data = {};
         data.taskId = this.data.taskId;
@@ -393,9 +405,12 @@ Page({
                     }
                 } else {
                     // doSomething
-                    wx.redirectTo({
-                        url: "./task-history"
+                    $Message({
+                        content: '执行成功',
+                        type: 'success',
+                        duration: 3
                     });
+                    that.onShow();
                 }
             },
             function (err) {
@@ -409,6 +424,7 @@ Page({
         );
     },
     updateGivePoint(e){
+        let  that = this;
         let modal = this.data.modal;
         modal.visible = false;
         if(e.detail.index != 1){
@@ -418,20 +434,50 @@ Page({
             return;
         }
 
-        let task = this.data.task;
-        task.givePoint = modal.value;
         this.setData({
-            task: task,
             modal:modal
         })
 
-        $Message({
-            content: '评分成功',
-            type: 'success',
-            duration: 3
-        });
-
         //WXAPI评分
+        //WXAPI完成任务
+        let data = {};
+        data.taskId = this.data.taskId;
+        data.givePoint = modal.value;
+        WXAPI.updateGivePoint(data).then(
+            function (res) {
+                if (res.code != 0) {
+                    $Message({
+                        content: res.msg,
+                        type: 'error',
+                        duration: 3
+                    });
+                    if (!Util.isToken(res)) {
+                        app.goLoginPageTimeOut();
+                    }
+                } else {
+                    // doSomething
+                    let task = that.data.task;
+                    task.givePoint = modal.value;
+                    that.setData({
+                        task: task
+                    })
+                    $Message({
+                        content: '评分成功',
+                        type: 'success',
+                        duration: 3
+                    });
+                }
+            },
+            function (err) {
+                console.log(err);
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        );
+
     }
 
 })

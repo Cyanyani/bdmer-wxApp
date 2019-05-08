@@ -6,6 +6,7 @@ import com.bdmer.wxapp.common.tool.B;
 import com.bdmer.wxapp.common.tool.Util;
 import com.bdmer.wxapp.dto.request.CreateTaskDTO;
 import com.bdmer.wxapp.dto.request.QueryTaskListDTO;
+import com.bdmer.wxapp.dto.request.QueryUserTaskListDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
 import com.bdmer.wxapp.service.wx.ITaskService;
 import org.slf4j.Logger;
@@ -93,7 +94,7 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/updateTaskStatus",  method = RequestMethod.GET)
-    public ResponseDTO<?> getDoUser(Long taskId, String taskStatus) throws Exception {
+    public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus) throws Exception {
         // 参数检查
         LOG.info("【TaskController - updateTaskStatus】 - 参数检查");
         if(Util.allFieldIsNUll(taskId) || !Util.isString(taskStatus)){
@@ -120,22 +121,62 @@ public class TaskController {
         return taskService.updateTaskDoUid(taskId);
     }
 
-    @RequestMapping(value = "/getTaskList",  method = RequestMethod.GET)
+    @RequestMapping(value = "/updateGivePoint",  method = RequestMethod.GET)
+    public ResponseDTO<?> updateTaskStatus(Long taskId, Integer givePoint) throws Exception {
+        // 参数检查
+        LOG.info("【TaskController - updateGivePoint】 - 参数检查");
+        if(Util.allFieldIsNUll(taskId) || Util.allFieldIsNUll(givePoint)){
+            LOG.error("【TaskController - updateGivePoint】 - 参数为空");
+            return B.error(ResponseEnum.ERROR_REQ_NO_PARAM, null);
+        }
+
+        // 开始执行
+        LOG.info("【TaskController - updateGivePoint】 - 开始执行");
+        return taskService.updateGivePoint(taskId, givePoint);
+    }
+
+    @RequestMapping(value = "/getTaskList",  method = RequestMethod.POST)
     public ResponseDTO<?> getTaskList(String data) throws Exception {
         // 参数转化成DTO
         QueryTaskListDTO queryTaskListDTO = JSONObject.parseObject(data, QueryTaskListDTO.class);
 
         // 参数检查
         LOG.info("【TaskController - getTaskList】 - 参数检查");
-        if(Util.allFieldIsNUll(queryTaskListDTO)){
-            LOG.error("【TaskController - getTaskList】 - 参数为空");
+        if(queryTaskListDTO == null || queryTaskListDTO.getLat() == null || queryTaskListDTO.getLng() == null){
+            LOG.error("【TaskController - getUserTaskList】 - 位置信息不能为空");
+            return B.error(ResponseEnum.ERROR_REQ_NO_PARAM, null);
+        }
+        if(queryTaskListDTO.getType().equals("")){
+            LOG.info("【TaskController - getTaskList】 - 设置type参数为null");
+            queryTaskListDTO.setType(null);
+        }
+
+        // 开始执行
+        LOG.info("【TaskController - getUserTaskList】 - 开始执行");
+        return taskService.getTaskList(queryTaskListDTO);
+    }
+
+    @RequestMapping(value = "/getUserTaskList",  method = RequestMethod.POST)
+    public ResponseDTO<?> getUserTaskList(String data) throws Exception {
+        // 参数转化成DTO
+        QueryUserTaskListDTO queryUserTaskListDTO = JSONObject.parseObject(data, QueryUserTaskListDTO.class);
+
+        // 参数检查
+        LOG.info("【TaskController - getUserTaskList】 - 参数检查");
+        if(queryUserTaskListDTO == null || queryUserTaskListDTO.getLat() == null || queryUserTaskListDTO.getLng() == null){
+            LOG.error("【TaskController - getUserTaskList】 - 位置信息不能为空");
             return B.error(ResponseEnum.ERROR_REQ_NO_PARAM, null);
         }
 
         // 开始执行
-        LOG.info("【TaskController - getTaskList】 - 开始执行");
-        //return taskService.getTaskList(queryTaskListDTO);
-        return null;
+        LOG.info("【TaskController - getUserTaskList】 - 开始执行");
+        return taskService.getUserTaskList(queryUserTaskListDTO);
     }
 
+    @RequestMapping(value = "/getRecord",  method = RequestMethod.GET)
+    public ResponseDTO<?> getRecord() throws Exception {
+        // 开始执行
+        LOG.info("【TaskController - getRecord】 - 开始执行");
+        return taskService.getRecord();
+    }
 }

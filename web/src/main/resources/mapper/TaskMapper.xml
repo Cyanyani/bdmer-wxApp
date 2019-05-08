@@ -21,6 +21,19 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="give_point" property="givePoint" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="TaskCardResultMap" type="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    <id column="id" property="taskId"/>
+    <result column="title" property="title"/>
+    <result column="content_brief" property="contentBrief"/>
+    <result column="create_time" property="createTime"/>
+    <result column="end_time" property="endTime"/>
+    <result column="avatar_url" property="avatarUrl"/>
+    <result column="type" property="type"/>
+    <result column="distance" property="distance" />
+    <result column="status" property="status" />
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, uid, name, avatar_url, title, content, pictrues, creatStamp, endStamp, lat, lng, 
     locale_name, tel_number, reward, doUid, status, type, give_point
@@ -256,4 +269,97 @@
     set doUid = #{doUid}
     where id = #{taskId}
   </update>
+
+  <update id="updateGivePoint">
+    update task
+    set give_point = #{givePoint}
+    where id = #{taskId}
+  </update>
+
+  <select id="getTaskList" resultMap="TaskCardResultMap" parameterType="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    select
+      id,
+      title,
+      left(content, 50) AS content_brief,
+      FROM_UNIXTIME(creatStamp/1000, '%Y-%m-%d %H:%i') AS create_time,
+      FROM_UNIXTIME(endStamp/1000, '%Y-%m-%d %H:%i') AS end_time,
+      avatar_url,
+      type,
+      status,
+      FORMAT(
+        6371 * acos (
+          cos ( radians(#{lat}) )
+          * cos( radians( lat ) )
+          * cos( radians( lng ) - radians(#{lng}) )
+          + sin ( radians(#{lat}) )
+          * sin( radians( lat ) )
+        ), 0
+      ) AS distance
+    from task
+    where status = "FINDING" and (unix_timestamp(now()) &lt; (FORMAT(endStamp/1000, 0)))
+    <if test="type != null" >
+      and type = #{type}
+    </if>
+    order by distance
+    LIMIT #{index}, #{size}
+  </select>
+
+  <select id="getTaskListByUid" resultMap="TaskCardResultMap" parameterType="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    select
+    id,
+    title,
+    left(content, 50) AS content_brief,
+    FROM_UNIXTIME(creatStamp/1000, '%Y-%m-%d %H:%i') AS create_time,
+    FROM_UNIXTIME(endStamp/1000, '%Y-%m-%d %H:%i') AS end_time,
+    avatar_url,
+    type,
+    status,
+    FORMAT(
+    6371 * acos (
+    cos ( radians(#{lat}) )
+    * cos( radians( lat ) )
+    * cos( radians( lng ) - radians(#{lng}) )
+    + sin ( radians(#{lat}) )
+    * sin( radians( lat ) )
+    ), 0
+    ) AS distance
+    from task
+    where uid = #{uid} and (status = #{status1}
+    <if test="status2 != null">
+      or status = #{status2}
+    </if>
+    )
+    order by creatStamp desc
+    LIMIT #{index}, #{size}
+  </select>
+
+  <select id="getTaskListByDoUid" resultMap="TaskCardResultMap" parameterType="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    select
+    id,
+    title,
+    left(content, 50) AS content_brief,
+    FROM_UNIXTIME(creatStamp/1000, '%Y-%m-%d %H:%i') AS create_time,
+    FROM_UNIXTIME(endStamp/1000, '%Y-%m-%d %H:%i') AS end_time,
+    avatar_url,
+    type,
+    status,
+    FORMAT(
+    6371 * acos (
+    cos ( radians(#{lat}) )
+    * cos( radians( lat ) )
+    * cos( radians( lng ) - radians(#{lng}) )
+    + sin ( radians(#{lat}) )
+    * sin( radians( lat ) )
+    ), 0
+    ) AS distance
+    from task
+    where doUid = #{doUid} and (status = #{status1}
+    <if test="status2 != null">
+      or status = #{status2}
+    </if>
+    )
+    order by creatStamp desc
+    LIMIT #{index}, #{size}
+  </select>
+
 </mapper>

@@ -34,6 +34,9 @@ Page({
         let showLocaleName = "请选择地址";
         if (!Util.isNull(bdmerInfo.localeName)){
             showLocaleName = bdmerInfo.localeName.split(";")[0];
+            if (showLocaleName == ""){
+                showLocaleName = bdmerInfo.localeName.split(";")[1];
+            }
         }
 
         this.setData({
@@ -52,7 +55,11 @@ Page({
         let that = this;
         wx.chooseLocation({
             success: function (res) {
-                that.data.bdmerInfo.localeName = res.name + ";" + res.address;
+                let bdmerInfo = that.data.bdmerInfo;
+                bdmerInfo.localeName = res.name;
+                that.setData({
+                    bdmerInfo: bdmerInfo
+                });
                 wx.setStorageSync("bdmerInfo", that.data.bdmerInfo);
                 // 构建请求localeDTO
                 WXAPI.updateUserLocale(Util.formatParamDTO(res)).then(

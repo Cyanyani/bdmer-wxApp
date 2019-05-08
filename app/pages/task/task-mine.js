@@ -9,40 +9,25 @@ Page({
      * 页面的初始数据
      */
     data: {
+        myStatus:"CURRENT",
         isRequest:false,
-        fabButton: [
-            {
-                label: '发布任务',
-                icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkklEQVRYR+2X0VHDMBBEdyuADqADoAJCBdABoYNQAUkFQAUkHVBC6CDpgBKggmPWIzGOY0tyJOPJDPpxYsnS097p7kSM3Djy+tgDMLMJgGcAl4XhNgAeSa7r87YBaOBF4cX9dBuSVzEAcwO+AbwD+OyAkVLXrm/RGPPk/n8A0IamAE70juTOptsU8ACvJGddSpjZHEC1UHNSM/NzLEjOzWwJ4L4vQPVxIYBO2JACvQCc80qNdYsCwwIAkGfLJ9Tqv70JBgfostSfAqwcReVs/nQ4JxxEAUmuY6pjNiOpJ8xMAezFBbKJ3odOzMFO2CdQ/QMctwIuwLwBOA/Y/QvAjXfE5rgsBcxM+UDpOdYeSCrm77VcgFMAdwkKLElKibIAsW2n9GcpkLJAbEwWgJnJBLcREzQZZIqVN0kuQKoTNiF+nTIXQDFf3n0Wk7rWr3KuygMuP5RPRj1glKCOEyBYlPZU4KCiVJ4cKstTGXSKVJbrmVSWD3kx2ZLcuXF1Xc1U0ZS+HW1d5RS+mqXqWmrc6LfjH6d2SzCK7AqQAAAAAElFTkSuQmCC'
-            }
-        ],
         swiperHeight:0,
         baseItemHeightImg:128,
-        key: 'NOTICE',
+        key: 'PUBLISH',
         index: 0,
         tabs: [
             {
-                key: 'NOTICE',
-                title: '通知公告'
+                key: 'PUBLISH',
+                title: '我发布的'
             },
             {
-                key: 'WAIKUAI',
-                title: '外卖快递'
-            },
-            {
-                key: 'LOSTF',
-                title: '失物招领'
-            },
-            {
-                key: 'OTHER',
-                title: '其他任务'
+                key: 'RECEIVE',
+                title: '我领取的'
             }
         ],
         tasks: { 
-            NOTICE: [], 
-            WAIKUAI: [],
-            LOSTF: [],
-            OTHER: []
+            PUBLISH: [], 
+            RECEIVE: []
         },
         showLoadOk: false,
         showSpin: false
@@ -67,11 +52,12 @@ Page({
         let data = {};
         data.index = index;
         data.size = size;
-        data.type =  type;
+        data.myType =  type;
+        data.myStatus = this.data.myStatus;
         let locale = wx.getStorageSync("locale");
         data.lat = locale.lat;
         data.lng = locale.lng;
-        WXAPI.getTaskList(Util.formatParamDTO(data)).then(
+        WXAPI.getUserTaskList(Util.formatParamDTO(data)).then(
             function (res) {
                 if (res.code != 0) {
                     $Message({
@@ -85,19 +71,15 @@ Page({
                 } else {
                     // doSomething
                     let tasks = that.data.tasks;
-                    if (type == "NOTICE") {
-                        res.data.map((o) => {tasks.NOTICE.push(o);});
-                    } else if (type == "WAIKUAI") {
-                        res.data.map((o) => { tasks.WAIKUAI.push(o); });
-                    } else if (type == "LOSTF") {
-                        res.data.map((o) => { tasks.LOSTF.push(o); });
-                    } else {
-                        res.data.map((o) => { tasks.OTHER.push(o); });
+                    if (type == "PUBLISH") {
+                        res.data.map((o) => { tasks.PUBLISH.push(o);});
+                    } else if (type == "RECEIVE") {
+                        res.data.map((o) => { tasks.RECEIVE.push(o); });
                     }
                     that.setData({
                         tasks:tasks
                     });
-                    that.autoHeight(type);
+                    that.autoHeight(that.data.key);
                 }
             },
             function (err) {
@@ -120,6 +102,19 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.setData({
+            myStatus: options.myStatus
+        });
+
+        if(options.myStatus == "CURRENT"){
+            wx.setNavigationBarTitle({
+                title: '当前任务'
+            })
+        }else if(options.myStatus == "HISTORY"){
+            wx.setNavigationBarTitle({
+                title: '历史任务'
+            })
+        }
         
     },
 
@@ -129,10 +124,8 @@ Page({
     onShow: function () {
         // 清除原来的数据
         let tasks = this.data.tasks;
-        tasks.NOTICE = [];
-        tasks.WAIKUAI = [];
-        tasks.LOSTF = [];
-        tasks.OTHER = [];
+        tasks.PUBLISH = [];
+        tasks.RECEIVE = [];
         this.setData({
             tasks: tasks
         });
@@ -152,10 +145,8 @@ Page({
         // 给当前界面获取数据
         let index = 0;
         switch (this.data.key) {
-            case "NOTICE": index = this.data.tasks.NOTICE.length; break;
-            case "WAIKUAI": index = this.data.tasks.WAIKUAI.length; break;
-            case "LOSTF": index = this.data.tasks.LOSTF.length; break;
-            case "OTHER": index = this.data.tasks.OTHER.length; break;
+            case "PUBLISH": index = this.data.tasks.PUBLISH.length; break;
+            case "RECEIVE": index = this.data.tasks.RECEIVE.length; break;
         }
         let size = 10;
         this.getTaskData(index, size, this.data.key);
@@ -172,10 +163,8 @@ Page({
         // 给当前界面获取数据
         let index1 = 0;
         switch (this.data.key) {
-            case "NOTICE": index1 = this.data.tasks.NOTICE.length; break;
-            case "WAIKUAI": index1 = this.data.tasks.WAIKUAI.length; break;
-            case "LOSTF": index1 = this.data.tasks.LOSTF.length; break;
-            case "OTHER": index1 = this.data.tasks.OTHER.length; break;
+            case "PUBLISH": index1 = this.data.tasks.PUBLISH.length; break;
+            case "RECEIVE": index1 = this.data.tasks.RECEIVE.length; break;
         }
         let size = 10;
         this.getTaskData(index1, size, this.data.key);
@@ -192,10 +181,8 @@ Page({
         // 给当前界面获取数据
         let index1 = 0;
         switch (this.data.key) {
-            case "NOTICE": index1 = this.data.tasks.NOTICE.length; break;
-            case "WAIKUAI": index1 = this.data.tasks.WAIKUAI.length; break;
-            case "LOSTF": index1 = this.data.tasks.LOSTF.length; break;
-            case "OTHER": index1 = this.data.tasks.OTHER.length; break;
+            case "PUBLISH": index1 = this.data.tasks.PUBLISH.length; break;
+            case "RECEIVE": index1 = this.data.tasks.RECEIVE.length; break;
         }
         let size = 10;
         this.getTaskData(index1, size, this.data.key);
@@ -215,40 +202,29 @@ Page({
         let that = this;
         let { tasks, baseItemHeight } = that.data;
         let listData;
-        if (current == "NOTICE") {
-            listData = tasks.NOTICE;
-        } else if (current == "WAIKUAI") {
-            listData = tasks.WAIKUAI;
-        } else if (current == "LOSTF") {
-            listData = tasks.LOSTF;
-        } else {
-            listData = tasks.OTHER;
+        if (current == "PUBLISH") {
+            listData = tasks.PUBLISH;
+        } else if (current == "RECEIVE") {
+            listData = tasks.RECEIVE;
         }
 
-        let swiperHeight =0;
-        for(let i=0; i<listData.length; i++){
+        let swiperHeight = 0;
+        for (let i = 0; i < listData.length; i++) {
             swiperHeight += this.data.baseItemHeightImg;
         }
 
         this.setData({
-            swiperHeight: swiperHeight > 0 ? swiperHeight+40:200
+            swiperHeight: swiperHeight > 0 ? swiperHeight + 40 : 200
         });
 
         wx.createSelectorQuery()
             .select('#load').boundingClientRect()
-            .select('#'+that.data.key).boundingClientRect().exec(rect => {
+            .select('#' + that.data.key).boundingClientRect().exec(rect => {
                 let _space = rect[0].top - rect[1].top;
                 let height = swiperHeight - _space;
                 this.setData({
-                    swiperHeight: height>0?height+50:200
+                    swiperHeight: height > 0 ? height + 50 : 200
                 });
-        })
-    },
-
-    goPublishTask(){
-        //跳转
-        wx.navigateTo({
-            url: './task-publish'
-        })
+            })
     }
 })

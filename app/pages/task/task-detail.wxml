@@ -1,9 +1,9 @@
 <view id="page">
 
     <!-- button -->
-    <view wx:if="{{(uid != task.uid) && (task.type != 'NOTICE') && (task.type != 'LOSTF') && (task.status == 'FINDING')}}" class="header-button" bindtap='openReceiveTaskModal'>领取任务</view>
+    <view wx:if="{{(uid != task.uid) && (task.type != 'NOTICE') && (task.type != 'LOSTF') && (task.status == 'FINDING') && (nowTime < endTime)}}" class="header-button" bindtap='openReceiveTaskModal'>领取任务</view>
 
-    <view wx:if="{{(uid == task.uid) && (task.status == 'FINDING')}}" class="header-button" bindtap='openCancelTaskModal'>取消任务</view>
+    <view wx:if="{{(uid == task.uid) && ((task.status == 'FINDING') || ((task.status == 'DOING') && (nowTime > endTime)))}}" class="header-button" bindtap='openCancelTaskModal'>取消任务</view>
 
     <view wx:if="{{(task.doUid == uid)  && (task.status == 'DOING')}}" class="header-button" bindtap='openFinishTaskModal'>完成任务</view>
 
@@ -48,8 +48,8 @@
         <!-- 时间&地点&电话&报酬 -->
         <view class="weui-article__section">
             <view class="weui-article__h2">结束时间：{{task.endTime}}</view>
-            <view class="weui-article__h2">任务地点：{{task.localeName}}</view>
-            <view class="weui-article__h2">联系电话：{{task.telNumber}}</view>
+            <view wx:if='{{task.localeName}}' class="weui-article__h2">任务地点：{{task.localeName}}</view>
+            <view wx:if='{{task.telNumber}}' class="weui-article__h2">联系电话：{{task.telNumber}}</view>
             <view wx:if="{{(task.type != 'NOTICE') && (task.type != 'LOSTF')}}" class="weui-article__h2">报酬金额：{{task.reward}}元</view>
         </view>
 
@@ -66,12 +66,12 @@
         </view>
 
         <!-- 评价 -->
-        <view wx:if="{{(uid == task.uid) && (task.status == 'FINISH') && (task.type != 'NOTICE') && (task.type != 'LOSTF')}}">
+        <view wx:if="{{(task.status == 'FINISH') && (task.type != 'NOTICE') && (task.type != 'LOSTF')}}">
             <view class="weui-article__h1">任务评分</view>  
-            <picker wx:if="{{!(task.givePoint)}}" id="type" bindchange="openGivePointModal" value="{{task.givePoint}}" range="{{givePointType}}">
+            <picker wx:if="{{(uid == task.uid) && !(task.givePoint)}}" id="type" bindchange="openGivePointModal" value="{{task.givePoint}}" range="{{givePointType}}">
                 <view>快来给任务评分</view>
             </picker>
-            <view  wx:else class="weui-article__h2">{{task.givePoint +"分"}}</view>
+            <view  wx:if="{{task.givePoint}}" class="weui-article__h2">{{task.givePoint +"分"}}</view>
         </view>
 
     </view>

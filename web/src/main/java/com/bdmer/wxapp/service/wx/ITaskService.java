@@ -1,6 +1,8 @@
 package com.bdmer.wxapp.service.wx;
 
 import com.bdmer.wxapp.dto.request.CreateTaskDTO;
+import com.bdmer.wxapp.dto.request.QueryTaskListDTO;
+import com.bdmer.wxapp.dto.request.QueryUserTaskListDTO;
 import com.bdmer.wxapp.dto.response.ResponseDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,6 +59,16 @@ public interface ITaskService {
     public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus) throws Exception;
 
     /**
+     * 评分
+     *
+     * @param taskId
+     * @param givePoint
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> updateGivePoint(Long taskId, Integer givePoint) throws Exception;
+
+    /**
      * 更新执行人
      *
      * @param taskId
@@ -64,4 +76,30 @@ public interface ITaskService {
      * @throws Exception
      */
     public ResponseDTO<?> updateTaskDoUid(Long taskId) throws Exception;
+
+    /**
+     * 查询发布中的任务
+     *
+     * @param queryTaskListDTO
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> getTaskList(QueryTaskListDTO queryTaskListDTO) throws Exception;
+
+    /**
+     * 查询用户任务
+     *
+     * @param queryUserTaskListDTO
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> getUserTaskList(QueryUserTaskListDTO queryUserTaskListDTO) throws Exception;
+
+    /**
+     * 获取点数记录
+     *
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?> getRecord() throws Exception;
 }

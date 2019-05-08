@@ -1,15 +1,16 @@
 package com.bdmer.wxapp.dto.request;
 
 /**
- * 查询任务列表 -DTO类
+ * 查询用户任务 - DTO类
  *
- * @since 2019-05-07
+ * @since 2019-05-08
  * @author gongdl
  */
-public class QueryTaskListDTO {
+public class QueryUserTaskListDTO {
     private Integer index;
     private Integer size;
-    private String type;
+    private String myType;
+    private String myStatus;
     private Double lat;
     private Double lng;
 
@@ -29,12 +30,20 @@ public class QueryTaskListDTO {
         this.size = size;
     }
 
-    public String getType() {
-        return type;
+    public String getMyType() {
+        return myType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setMyType(String myType) {
+        this.myType = myType;
+    }
+
+    public String getMyStatus() {
+        return myStatus;
+    }
+
+    public void setMyStatus(String myStatus) {
+        this.myStatus = myStatus;
     }
 
     public Double getLat() {

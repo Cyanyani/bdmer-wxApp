@@ -48,7 +48,7 @@ Page({
      */
     bindGetUserInfo: function (e) {
         let that = this;
-
+        console.log(e);
         //用户拒绝授权信息，直接返回（必须授权）
         if (!e.detail.userInfo) {
             $Message({
@@ -86,9 +86,37 @@ Page({
                     if (loginData.rawData !== res.data.rawData) {
                         console.log("信息出错，但不影响逻辑");
                     }
-                    // 回到原来的地方放
-                    app.globalData.navigateToLogin = false;
-                    wx.navigateBack();
+
+                    //WXAPI获取bdmerInfo
+                    WXAPI.getUserBdmerInfo().then(
+                        function (res) {
+                            if (res.code != 0) {
+                                $Message({
+                                    content: res.msg,
+                                    type: 'error',
+                                    duration: 3
+                                });
+                                if (!Util.isToken(res)) {
+                                    that.login();
+                                    return;
+                                }
+                            } else {
+                                let bdmerInfo = res.data;
+                                wx.setStorageSync("bdmerInfo", res.data);
+                                // 回到原来的地方放
+                                app.globalData.navigateToLogin = false;
+                                wx.navigateBack();
+                            }
+                        },
+                        function (err) {
+                            console.log(err);
+                            $Message({
+                                content: '服务器开小差了!',
+                                type: 'error',
+                                duration: 3
+                            });
+                        }
+                    );
                 }
             },
             function (err) {

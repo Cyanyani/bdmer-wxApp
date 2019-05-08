@@ -10,6 +10,7 @@
         "i-card": "../../components/iView/card/index",
         "i-spin": "../../components/iView/spin/index",
         "i-tag": "../../components/iView/tag/index",
+        "i-icon": "../../components/iView/icon/index",
         "i-message": "../../components/iView/message/index"
     }
 }
