@@ -70,7 +70,7 @@ public class TaskServiceImpl implements ITaskService {
     public ResponseDTO<?> createTask(CreateTaskDTO createTaskDTO) throws Exception{
         // 1.获取用户
         LOG.info("【TaskServiceImpl - uploadTaskPictrue】 - 获取用户");
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid()).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         UserWxAppEntity userWxAppEntity = (UserWxAppEntity) wxAuthCore.getUserWxAppEntityByOpenid(WxUserHolder.getOpenid()).getData();
         createTaskDTO.setUid(userBdmerEntity.getUid());
         createTaskDTO.setName(userWxAppEntity.getNickName());
@@ -110,11 +110,11 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus) throws Exception{
         // 1.获取基本数据
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid()).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         TaskDetailDTO taskDetailDTO = (TaskDetailDTO) taskCore.getTaskDetailDTO(taskId).getData();
 
         // 2.更新状态（只有用户自己才能取消）
-        taskCore.updateTaskStatus(taskId, taskStatus, taskDetailDTO.getUid(), userBdmerEntity.getUid());
+        taskCore.updateTaskStatus(taskId, taskStatus, taskDetailDTO.getUid(), userBdmerEntity);
 
 
         return B.success(true);
@@ -123,7 +123,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public ResponseDTO<?> updateGivePoint(Long taskId, Integer givePoint) throws Exception{
         // 1.获取基本数据
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid()).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         TaskDetailDTO taskDetailDTO = (TaskDetailDTO) taskCore.getTaskDetailDTO(taskId).getData();
 
         // 2.更新状态（只有用户自己才能评价）
@@ -136,11 +136,11 @@ public class TaskServiceImpl implements ITaskService {
     public ResponseDTO<?> updateTaskDoUid(Long taskId) throws Exception{
 
         // 1.获取基本数据
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid()).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         TaskDetailDTO taskDetailDTO = (TaskDetailDTO) taskCore.getTaskDetailDTO(taskId).getData();
 
         // 2.更新状态
-        taskCore.updateTaskStatus(taskId, TaskStatusEnum.STATUS_IS_DOING.getCode(), taskDetailDTO.getUid(), userBdmerEntity.getUid());
+        taskCore.updateTaskStatus(taskId, TaskStatusEnum.STATUS_IS_DOING.getCode(), taskDetailDTO.getUid(), userBdmerEntity);
 
         // 3.更新执行人
         taskCore.updateTaskDoUid(taskId, userBdmerEntity.getUid());
@@ -159,7 +159,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public ResponseDTO<?> getUserTaskList(QueryUserTaskListDTO queryUserTaskListDTO) throws Exception{
         // 1.获取用户数据
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid()).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
 
         // 2.获取用户任务数据
         List<TaskCardDTO> taskCardDTOList = (List<TaskCardDTO>) taskCore.getUserTaskList(queryUserTaskListDTO, userBdmerEntity.getUid()).getData();
@@ -170,7 +170,7 @@ public class TaskServiceImpl implements ITaskService {
     @Override
     public ResponseDTO<?> getRecord() throws Exception{
         // 1.获取用户数据
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid()).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
 
         // 1.获取用户点数记录
         List<RecordEntity> recordEntityList = (List<RecordEntity>) taskCore.getRecord(userBdmerEntity.getUid()).getData();

@@ -68,15 +68,7 @@ public class UserServiceImpl implements IUserService {
             return B.error(ResponseEnum.ERROR_WX_USER_TOKEN_NEED_INFO, token);
         }
 
-        // 5.通过unionid查询bdmer用户信息
-        LOG.info("【Service - login】 - 5.通过unionid查询bdmer用户信息");
-        UserBdmerEntity olduserBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(userTokenDTO.getUnionid()).getData();
-        if(Util.allFieldIsNUll(olduserBdmerEntity)){
-            // --> 选择插入
-            userBdmerCore.insertBdmerEntity();
-        }
-
-       return B.success(token);
+        return B.success(token);
     }
 
     @Override
@@ -97,8 +89,7 @@ public class UserServiceImpl implements IUserService {
         UserWxAppEntity userWxAppEntity = (UserWxAppEntity) wxAuthCore.decryptUserInfo(sendWxUserInfoDTO).getData();
 
         // 2.通过openid去mysql查找用户
-        String openid = WxUserHolder.getOpenid();
-        UserWxAppEntity olduserWxAppEntity = (UserWxAppEntity) wxAuthCore.getUserWxAppEntityByOpenid(openid).getData();
+        UserWxAppEntity olduserWxAppEntity = (UserWxAppEntity) wxAuthCore.getUserWxAppEntityByOpenid(WxUserHolder.getOpenid()).getData();
         if(Util.allFieldIsNUll(olduserWxAppEntity)){
             // --> 选择插入
             wxAuthCore.insertUserWxAppEntity(userWxAppEntity);
@@ -107,18 +98,27 @@ public class UserServiceImpl implements IUserService {
             wxAuthCore.updateUserWxAppEntityById(userWxAppEntity);
         }
 
+        // 3.通过unionid或openid查询bdmer用户信息
+        LOG.info("【Service - login】 - 5.通过unionid或openid查询bdmer用户信息");
+        UserBdmerEntity olduserBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(userWxAppEntity.getUnionid(), userWxAppEntity.getOpenid()).getData();
+        if(Util.allFieldIsNUll(olduserBdmerEntity)){
+            // --> 选择插入
+            userBdmerCore.insertBdmerEntity(userWxAppEntity.getUnionid(), userWxAppEntity.getOpenid());
+        }
+        // openidWxApp 是空
+        else if(!Util.isString(olduserBdmerEntity.getOpenidwxapp())){
+            userBdmerCore.updateOpenidWxApp(userWxAppEntity.getUnionid(), userWxAppEntity.getOpenid());
+        }
+
         return B.success(sendWxUserInfoDTO);
     }
 
     @Override
     public ResponseDTO<?> getUserBdmerInfo() throws Exception{
-        // 1.获取unionid
-        String unionid = WxUserHolder.getUnionid();
-
         // 2.获取bdmer用户信息
-        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(unionid).getData();
+        UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         if(Util.allFieldIsNUll(userBdmerEntity)){
-            userBdmerEntity = (UserBdmerEntity) userBdmerCore.insertBdmerEntity().getData();
+            userBdmerEntity = (UserBdmerEntity) userBdmerCore.insertBdmerEntity(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         }
 
         return B.success(userBdmerEntity);

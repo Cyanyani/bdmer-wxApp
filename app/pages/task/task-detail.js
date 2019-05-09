@@ -211,6 +211,19 @@ Page({
             return;
         }
 
+        if (bdmerInfo.authStatus != 1) {
+            wx.showModal({
+                title: '请完成认证',
+                content: '请先完成身份认证',
+                success(res) {
+                    wx.navigateTo({
+                        url: '../mine/mine-cert',
+                    })
+                }
+            })
+            return;
+        }
+
         let modal = this.data.modal;
         modal.title = "确认领取";
         modal.content = "领取后就一定要完成哦";

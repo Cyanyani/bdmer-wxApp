@@ -65,7 +65,7 @@
                                         <i-tag wx:if="{{item.type == 'LOSTF'}}" name="{{item.type}}" color="blue">失物招领</i-tag>
                                         <i-tag wx:if="{{item.type == 'OTHER'}}" name="{{item.type}}" color="yellow">其他</i-tag>
                                     </view>
-                                       <view>
+                                    <view>
                                      <i-tag wx:if="{{item.status == 'FINDING'}}" name="{{item.type}}" color="red">发布中</i-tag>
                                         <i-tag wx:if="{{item.status == 'DOING'}}" name="{{item.type}}" color="yellow">执行中</i-tag>
                                         <i-tag wx:if="{{item.status == 'CANCEL'}}" name="{{item.type}}" color="blue">已取消</i-tag>

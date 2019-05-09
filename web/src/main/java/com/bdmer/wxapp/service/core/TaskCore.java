@@ -16,6 +16,7 @@ import com.bdmer.wxapp.dto.response.TaskCardDTO;
 import com.bdmer.wxapp.dto.response.TaskDetailDTO;
 import com.bdmer.wxapp.model.RecordEntity;
 import com.bdmer.wxapp.model.TaskEntity;
+import com.bdmer.wxapp.model.UserBdmerEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,11 +136,11 @@ public class TaskCore {
      * @param taskId
      * @param taskStatus
      * @param taskUid
-     * @param userUid
+     * @param userBdmerEntity
      * @return
      * @throws Exception
      */
-    public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus, Long taskUid, Long userUid) throws Exception{
+    public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus, Long taskUid, UserBdmerEntity userBdmerEntity) throws Exception{
         // 1.检查taskStatus是否正确
         if(!taskStatus.equals(TaskStatusEnum.STATUS_IS_CANCEL.getCode())
                 && !taskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode())
@@ -149,8 +150,18 @@ public class TaskCore {
         }
 
         // 2.只有自己的任务才能取消
-        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_CANCEL.getCode()) && !taskUid.equals(userUid)){
+        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_CANCEL.getCode()) && !taskUid.equals(userBdmerEntity.getUid())){
             throw new WxException(ResponseEnum.ERROR_TASK_CANNT_CANCEL);
+        }
+
+        // 3.只有验证通过的用户才可以领取任务
+        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode()) && userBdmerEntity.getAuthStatus().intValue() == 0){
+            throw new WxException(ResponseEnum.ERROR_TASK_NO_PASS_AUTH);
+        }
+
+        // 4.只有绑定了手机号码的用户才可以领取任务
+        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode()) && !Util.isNumber(userBdmerEntity.getTelNumber())){
+            throw new WxException(ResponseEnum.ERROR_TASK_NO_TEL);
         }
 
         Integer result = taskDao.updateTaskStatus(taskId, taskStatus);

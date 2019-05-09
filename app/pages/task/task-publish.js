@@ -158,6 +158,27 @@ Page({
             return;
         }
 
+        // 只有通过验证的用户才可以发布可领取任务
+        let type = this.data.form.type;
+        if(type == "外卖快递" || type == "其他"){
+            let bdmerInfo = wx.getStorageSync("bdmerInfo");
+            if(Util.isNull(bdmerInfo)){
+                app.goLoginPageTimeOut();
+            }
+            let authStatus = bdmerInfo.authStatus;
+            if(authStatus != 1){
+                $Message({
+                    content: "请先完成用户认证",
+                    type: 'warning',
+                    duration: 3
+                });
+                wx.navigateTo({
+                    url: '../mine/mine-cert',
+                })
+                return;
+            }
+        }
+
         // WXAPI创建任务
         WXAPI.publishTask(Util.formatParamDTO(this.data.form)).then(
             function (res) {

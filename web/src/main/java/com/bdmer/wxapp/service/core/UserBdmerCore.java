@@ -44,14 +44,18 @@ public class UserBdmerCore {
     private RedisUtil redisUtil;
 
     /**
-     * 根据unionid查询bdmer用户信息
+     * 根据unionid或者openid查询bdmer用户信息
      *
      * @param unionid
      * @return
      * @throws Exception
      */
-    public ResponseDTO<?> getUserBdmerEntityByUnionid(String unionid) throws Exception{
+    public ResponseDTO<?> getUserBdmerEntityByUnionid(String unionid, String openid) throws Exception{
+
         UserBdmerEntity userBdmerEntity = userBdmerDao.selectByUnionid(unionid);
+        if(Util.allFieldIsNUll(userBdmerEntity)){
+            userBdmerEntity = userBdmerDao.selectByOpenid(openid);
+        }
 
         return B.success(userBdmerEntity);
     }
@@ -69,11 +73,11 @@ public class UserBdmerCore {
      * @return
      * @throws Exception
      */
-    public ResponseDTO<?> insertBdmerEntity() throws Exception{
+    public ResponseDTO<?> insertBdmerEntity(String needUnionid, String needOpenid) throws Exception{
 
         UserBdmerEntity userBdmerEntity = new UserBdmerEntity();
-        userBdmerEntity.setUnionid(WxUserHolder.getUnionid());
-        userBdmerEntity.setOpenidwxapp(WxUserHolder.getOpenid());
+        userBdmerEntity.setUnionid(needUnionid);
+        userBdmerEntity.setOpenidwxapp(needOpenid);
         userBdmerEntity.setPoint(15L);
         userBdmerEntity.setUsedpoint(0L);
         userBdmerEntity.setRechargepoint(0L);
@@ -92,6 +96,19 @@ public class UserBdmerCore {
         return B.success(userBdmerEntity);
     }
 
+    /**
+     * 更新用户openidWxApp
+     *
+     * @param unionid
+     * @param openidWxApp
+     * @return
+     * @throws Exception
+     */
+    public ResponseDTO<?>  updateOpenidWxApp(String unionid, String openidWxApp) throws Exception{
+        Integer result = userBdmerDao.updateOpenidWxApp(unionid, openidWxApp);
+
+        return B.success(result);
+    }
     /**
      * 更新用户位置信息
      *

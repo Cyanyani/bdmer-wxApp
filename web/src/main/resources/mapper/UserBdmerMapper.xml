@@ -252,6 +252,13 @@
     select
     <include refid="Base_Column_List" />
     from userBdmer
+    where unionid = #{unionid}
+  </select>
+
+  <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from userBdmer
     where openidWxApp = #{unionid}
   </select>
 
@@ -259,6 +266,12 @@
     update userBdmer
     set locale = #{locale},
         locale_name = #{localeName}
+    where openidWxApp = #{unionid}
+  </update>
+
+  <update id="updateOpenidWxApp">
+    update userBdmer
+    set openidWxApp = #{openidWxApp}
     where openidWxApp = #{unionid}
   </update>
 

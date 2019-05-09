@@ -26,6 +26,14 @@ public interface UserBdmerDao {
     UserBdmerEntity selectByUnionid(@Param("unionid") String unionid);
 
     /**
+     * 根据openid查找用户
+     *
+     * @param openid
+     * @return
+     */
+    UserBdmerEntity selectByOpenid(@Param("openid") String openid);
+
+    /**
      * 根据unionid更新位置信息
      * @param unionid
      * @param locale
@@ -34,6 +42,14 @@ public interface UserBdmerDao {
      */
     int updateLocaleByUnionid(@Param("unionid") String unionid, @Param("locale") String locale, @Param("localeName") String localeName);
 
+    /**
+     * 根据unionid更新openidWxApp
+     *
+     * @param unionid
+     * @param openidWxApp
+     * @return
+     */
+    int updateOpenidWxApp(@Param("unionid") String unionid, @Param("openidWxApp") String openidWxApp);
     /**
      * 根据unionid更新手机号码
      *
