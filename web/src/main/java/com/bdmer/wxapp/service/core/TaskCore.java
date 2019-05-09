@@ -50,7 +50,10 @@ public class TaskCore {
      * @return
      * @throws Exception
      */
-    public ResponseDTO<?> insertTask(CreateTaskDTO createTaskDTO) throws Exception{
+    public ResponseDTO<?> insertTask(CreateTaskDTO createTaskDTO, Long userPoint, Long uid) throws Exception{
+        if(userPoint.intValue() < 0){
+            throw new WxException(ResponseEnum.ERROR_TASK_NO_POINT);
+        }
 
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setUid(createTaskDTO.getUid());
@@ -79,11 +82,14 @@ public class TaskCore {
             case "其他": taskType = TaskTypeEnum.TYPE_IS_OTHER.getCode();;break;
         }
 
+
         taskEntity.setType(taskType);
         taskEntity.setStatus(TaskStatusEnum.STATUS_IS_FINDING.getCode());
 
 
         Integer result = taskDao.insertSelective(taskEntity);
+        // 3.更新doUid的数据
+        userBdmerDao.updatePointByUid(uid, -3);
 
         return B.success(taskEntity.getId());
     }
@@ -135,7 +141,6 @@ public class TaskCore {
      *
      * @param taskId
      * @param taskStatus
-     * @param taskUid
      * @param userBdmerEntity
      * @return
      * @throws Exception
@@ -167,12 +172,21 @@ public class TaskCore {
             throw new WxException(ResponseEnum.ERROR_TASK_NO_TEL);
         }
 
-        // 5.完成任务之前必须是DOING状态 领取任务
+        // 5.充值点数
+        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode()) && userBdmerEntity.getPoint().intValue() < 0){
+            throw new WxException(ResponseEnum.ERROR_TASK_NO_POINT);
+        }
+
+        // 6.完成任务之前必须是DOING状态 领取任务
         if(taskStatus.equals(TaskStatusEnum.STATUS_IS_FINISH.getCode()) && !preTaskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode())){
             throw new WxException(ResponseEnum.ERROR_TASK_IS_CANCEL);
         }
 
         Integer result = taskDao.updateTaskStatus(taskId, taskStatus);
+        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_CANCEL.getCode()) && taskDetailDTO.getDoUid() == null){
+            // 7.更新doUid的数据
+            userBdmerDao.updatePointByUid(userBdmerEntity.getUid(), 3);
+        }
 
         return B.success(result);
     }

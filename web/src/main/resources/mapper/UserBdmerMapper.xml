@@ -259,7 +259,7 @@
     select
     <include refid="Base_Column_List" />
     from userBdmer
-    where openidWxApp = #{unionid}
+    where openidWxApp = #{openid}
   </select>
 
   <update id="updateLocaleByUnionid">

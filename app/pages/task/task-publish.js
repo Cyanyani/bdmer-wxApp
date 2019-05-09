@@ -282,7 +282,7 @@ Page({
             success(res) {
                 const tempFilePaths = res.tempFilePaths
                 wx.uploadFile({
-                    url: baseUrl + '/wxApp/wx/task/uploadTaskPictrue',
+                    url: baseUrl + '/bdmers/wxApp/wx/task/uploadTaskPictrue',
                     header:header,
                     filePath: tempFilePaths[0],
                     name: 'file',

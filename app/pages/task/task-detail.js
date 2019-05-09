@@ -33,7 +33,7 @@ Page({
 
         uid:"",
         doUser:{},
-        givePointType: [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        givePointType: [-3, -2, -1, 1, 2, 3],
         taskId:0,
         nowTime:0,
         endTime: 0,

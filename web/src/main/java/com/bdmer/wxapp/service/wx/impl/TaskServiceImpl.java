@@ -78,7 +78,7 @@ public class TaskServiceImpl implements ITaskService {
 
         // 2.储存任务
         LOG.info("【TaskServiceImpl - uploadTaskPictrue】 - 储存任务");
-        Long taskId = (Long) taskCore.insertTask(createTaskDTO).getData();
+        Long taskId = (Long) taskCore.insertTask(createTaskDTO, userBdmerEntity.getPoint(), userBdmerEntity.getUid()).getData();
 
         return B.success(taskId);
     }

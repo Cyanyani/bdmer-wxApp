@@ -6,7 +6,7 @@
         <view wx:if="{{(progress1 != 0 && progress1 != 100)}}">
             <progress  percent="{{ progress1 }}" show-info />
         </view>
-        <wux-upload wx:if="{{ !authInfo || !authInfo.authImage }}" url="{{baseUrl+'/wxApp/wx/user/uploadAuthInfo'}}" header="{{header}}"  bind:change="onChange1" bind:success="onSuccess1" bind:fail="onFail1" bind:complete="onComplete1" bind:progress="onProgress1">
+        <wux-upload wx:if="{{ !authInfo || !authInfo.authImage }}" url="{{baseUrl+'/bdmers/wxApp/wx/user/uploadAuthInfo'}}" header="{{header}}"  bind:change="onChange1" bind:success="onSuccess1" bind:fail="onFail1" bind:complete="onComplete1" bind:progress="onProgress1">
                 <button type="default">上传身份证照片或学生证，<span style="color:red">必须包括正反面</span></button>
         </wux-upload>
     </view>
