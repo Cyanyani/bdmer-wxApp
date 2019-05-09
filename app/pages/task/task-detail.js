@@ -416,6 +416,7 @@ Page({
                     if (!Util.isToken(res)) {
                         app.goLoginPageTimeOut();
                     }
+                    that.onShow();
                 } else {
                     // doSomething
                     $Message({

@@ -10,7 +10,7 @@
                 <view class="weui-label">标题</view>
             </view>
             <view class="weui-cell__bd">
-                <input id="title" value='{{form.title}}' bindinput="updateForm" class="weui-input" placeholder="请输入任务标题" focus />
+                <input id="title" value='{{form.title}}' bindinput="updateForm" class="weui-input" placeholder="请输入任务标题" maxlength="5" focus />
             </view>
         </view>
 
@@ -19,7 +19,7 @@
         <view class="weui-cell">
                 <view class="weui-cell__bd">
                     <textarea id="content" value='{{form.content}}' bindinput="updateForm" class="weui-textarea" placeholder="请输入任务内容" style="height: 4em" number="500"/>
-                    <view class="weui-textarea-counter">0/500</view>
+                    <view class="weui-textarea-counter">500</view>
                 </view>
         </view>
 

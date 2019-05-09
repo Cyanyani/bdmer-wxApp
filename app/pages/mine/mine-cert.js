@@ -28,17 +28,46 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+        let that = this;
         let authInfo = {};
         let header =  {};
-        let bdmerInfo = wx.getStorageSync("bdmerInfo");
         header.cookie = "token=" + wx.getStorageSync("token");
-        authInfo.authImage = bdmerInfo.authImage;
-        authInfo.authStatus = bdmerInfo.authStatus;
-        
-        this.setData({
-            header: header,
-            baseUrl: CONFIG.baseUrl,
-            authInfo: authInfo
+
+        //WXAPI获取bdmerInfo
+        WXAPI.getUserBdmerInfo().then(
+            function (res) {
+                if (res.code != 0) {
+                    $Message({
+                        content: res.msg,
+                        type: 'error',
+                        duration: 3
+                    });
+                    if (!Util.isToken(res)) {
+                        app.goLoginPageTimeOut();
+                        return;
+                    }
+                } else {
+                    let bdmerInfo = res.data;
+                    wx.setStorageSync("bdmerInfo", res.data);
+                }
+            },
+            function (err) {
+                console.log(err);
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        ).then(function(){
+            let bdmerInfo = wx.getStorageSync("bdmerInfo");
+            authInfo.authImage = bdmerInfo.authImage;
+            authInfo.authStatus = bdmerInfo.authStatus;
+            that.setData({
+                header: header,
+                baseUrl: CONFIG.baseUrl,
+                authInfo: authInfo
+            });
         });
     },
 
@@ -81,6 +110,11 @@ Page({
             this.setData({
                 authInfo: authInfo
             });
+
+            let bdmerInfo = wx.getStorageSync("bdmerInfo");
+            bdmerInfo.authImage = res.data.authImage;
+            bdmerInfo.authStatus = res.data.authStatus;
+            wx.setStorageSync("bdmerInfo", bdmerInfo);
 
             $Message({
                 content: "上传身份信息成功",

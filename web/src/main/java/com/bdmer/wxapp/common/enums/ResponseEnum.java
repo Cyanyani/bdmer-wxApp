@@ -37,7 +37,8 @@ public enum ResponseEnum {
     ERROR_TASK_ERROR_QUERY_PARAMS(4003, "错误的查询参数"),
     ERROR_TASK_ERROR_POINT(4004, "评论分数不正确"),
     ERROR_TASK_NO_PASS_AUTH(4005, "请先完成身份认证"),
-    ERROR_TASK_NO_TEL(4006, "请先绑定手机号码");
+    ERROR_TASK_NO_TEL(4006, "请先绑定手机号码"),
+    ERROR_TASK_IS_CANCEL(4007, "该任务因超时已经被取消");
 
     ResponseEnum(Integer code, String msg) {
         this.code = code;

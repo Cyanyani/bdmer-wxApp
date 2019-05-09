@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "BDMER帮点儿忙",
-    "onReachBottomDistance":50,
+    "onReachBottomDistance":300,
     "usingComponents": {
         "wux-white-space": "../../components/wux/white-space/index",
         "i-icon": "../../components/iView/icon/index",

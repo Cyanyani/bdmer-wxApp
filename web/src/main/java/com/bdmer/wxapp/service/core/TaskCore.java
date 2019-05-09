@@ -140,8 +140,11 @@ public class TaskCore {
      * @return
      * @throws Exception
      */
-    public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus, Long taskUid, UserBdmerEntity userBdmerEntity) throws Exception{
+    public ResponseDTO<?> updateTaskStatus(Long taskId, String taskStatus, TaskDetailDTO taskDetailDTO, UserBdmerEntity userBdmerEntity) throws Exception{
+
         // 1.检查taskStatus是否正确
+        String preTaskStatus = taskDetailDTO.getStatus();
+        Long taskUid = taskDetailDTO.getUid();
         if(!taskStatus.equals(TaskStatusEnum.STATUS_IS_CANCEL.getCode())
                 && !taskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode())
                 && !taskStatus.equals(TaskStatusEnum.STATUS_IS_FINISH.getCode())){
@@ -162,6 +165,11 @@ public class TaskCore {
         // 4.只有绑定了手机号码的用户才可以领取任务
         if(taskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode()) && !Util.isNumber(userBdmerEntity.getTelNumber())){
             throw new WxException(ResponseEnum.ERROR_TASK_NO_TEL);
+        }
+
+        // 5.完成任务之前必须是DOING状态 领取任务
+        if(taskStatus.equals(TaskStatusEnum.STATUS_IS_FINISH.getCode()) && !preTaskStatus.equals(TaskStatusEnum.STATUS_IS_DOING.getCode())){
+            throw new WxException(ResponseEnum.ERROR_TASK_IS_CANCEL);
         }
 
         Integer result = taskDao.updateTaskStatus(taskId, taskStatus);

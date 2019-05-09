@@ -296,7 +296,7 @@
         ), 0
       ) AS distance
     from task
-    where status = "FINDING" and (unix_timestamp(now()) &lt; (FORMAT(endStamp/1000, 0)))
+    where status = "FINDING" and (FORMAT(unix_timestamp(now()),0) &lt; (FORMAT(endStamp/1000, 0)))
     <if test="type != null" >
       and type = #{type}
     </if>

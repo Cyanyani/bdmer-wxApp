@@ -114,7 +114,7 @@ public class TaskServiceImpl implements ITaskService {
         TaskDetailDTO taskDetailDTO = (TaskDetailDTO) taskCore.getTaskDetailDTO(taskId).getData();
 
         // 2.更新状态（只有用户自己才能取消）
-        taskCore.updateTaskStatus(taskId, taskStatus, taskDetailDTO.getUid(), userBdmerEntity);
+        taskCore.updateTaskStatus(taskId, taskStatus, taskDetailDTO, userBdmerEntity);
 
 
         return B.success(true);
@@ -140,7 +140,7 @@ public class TaskServiceImpl implements ITaskService {
         TaskDetailDTO taskDetailDTO = (TaskDetailDTO) taskCore.getTaskDetailDTO(taskId).getData();
 
         // 2.更新状态
-        taskCore.updateTaskStatus(taskId, TaskStatusEnum.STATUS_IS_DOING.getCode(), taskDetailDTO.getUid(), userBdmerEntity);
+        taskCore.updateTaskStatus(taskId,TaskStatusEnum.STATUS_IS_DOING.getCode(), taskDetailDTO, userBdmerEntity);
 
         // 3.更新执行人
         taskCore.updateTaskDoUid(taskId, userBdmerEntity.getUid());
