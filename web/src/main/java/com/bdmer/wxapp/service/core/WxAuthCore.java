@@ -65,7 +65,7 @@ public class WxAuthCore {
 
         // 将返回的json字符串转换成UserTokenDTO对象
         UserTokenDTO userTokenDTO = JSONObject.parseObject(result, UserTokenDTO.class);
-        if(Util.allFieldIsNUll(userTokenDTO)){
+        if(userTokenDTO == null &&userTokenDTO.getOpenid().equals("")){
             // ---> 应该code问题，所以信息有误，不能转换。
             throw new WxException(ResponseEnum.ERROR_WX_USER_CODE);
         }

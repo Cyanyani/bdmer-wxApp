@@ -98,7 +98,7 @@ public class TaskCore {
     public ResponseDTO<?> getTaskDetailDTO(Long taskId) throws Exception{
         // 1.查询任务Entity
         TaskEntity taskEntity = taskDao.selectByPrimaryKey(taskId);
-        if(Util.allFieldIsNUll(taskEntity)){
+        if(taskEntity == null){
             throw new WxException(ResponseEnum.ERROR_TASK_NO_TASK);
         }
 

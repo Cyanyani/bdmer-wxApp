@@ -53,7 +53,7 @@ public class UserBdmerCore {
     public ResponseDTO<?> getUserBdmerEntityByUnionid(String unionid, String openid) throws Exception{
 
         UserBdmerEntity userBdmerEntity = userBdmerDao.selectByUnionid(unionid);
-        if(Util.allFieldIsNUll(userBdmerEntity)){
+        if(userBdmerEntity == null){
             userBdmerEntity = userBdmerDao.selectByOpenid(openid);
         }
 

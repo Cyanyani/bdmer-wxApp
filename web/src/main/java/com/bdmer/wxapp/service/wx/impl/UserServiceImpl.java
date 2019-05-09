@@ -90,7 +90,7 @@ public class UserServiceImpl implements IUserService {
 
         // 2.通过openid去mysql查找用户
         UserWxAppEntity olduserWxAppEntity = (UserWxAppEntity) wxAuthCore.getUserWxAppEntityByOpenid(WxUserHolder.getOpenid()).getData();
-        if(Util.allFieldIsNUll(olduserWxAppEntity)){
+        if(olduserWxAppEntity == null){
             // --> 选择插入
             wxAuthCore.insertUserWxAppEntity(userWxAppEntity);
         }else{
@@ -101,7 +101,7 @@ public class UserServiceImpl implements IUserService {
         // 3.通过unionid或openid查询bdmer用户信息
         LOG.info("【Service - login】 - 5.通过unionid或openid查询bdmer用户信息");
         UserBdmerEntity olduserBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(userWxAppEntity.getUnionid(), userWxAppEntity.getOpenid()).getData();
-        if(Util.allFieldIsNUll(olduserBdmerEntity)){
+        if(olduserBdmerEntity == null){
             // --> 选择插入
             userBdmerCore.insertBdmerEntity(userWxAppEntity.getUnionid(), userWxAppEntity.getOpenid());
         }
@@ -117,7 +117,7 @@ public class UserServiceImpl implements IUserService {
     public ResponseDTO<?> getUserBdmerInfo() throws Exception{
         // 2.获取bdmer用户信息
         UserBdmerEntity userBdmerEntity = (UserBdmerEntity) userBdmerCore.getUserBdmerEntityByUnionid(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
-        if(Util.allFieldIsNUll(userBdmerEntity)){
+        if(userBdmerEntity == null){
             userBdmerEntity = (UserBdmerEntity) userBdmerCore.insertBdmerEntity(WxUserHolder.getUnionid(), WxUserHolder.getOpenid()).getData();
         }
 

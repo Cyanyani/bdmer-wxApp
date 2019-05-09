@@ -266,19 +266,19 @@
     update userBdmer
     set locale = #{locale},
         locale_name = #{localeName}
-    where openidWxApp = #{unionid}
+    where unionid = #{unionid}
   </update>
 
   <update id="updateOpenidWxApp">
     update userBdmer
     set openidWxApp = #{openidWxApp}
-    where openidWxApp = #{unionid}
+    where unionid = #{unionid}
   </update>
 
   <update id="updateTelNumberByUnionid">
     update userBdmer
     set tel_number = #{telNumber}
-    where openidWxApp = #{unionid}
+    where unionid = #{unionid}
   </update>
 
   <update id="updateAuthInfo" parameterType="com.bdmer.wxapp.dto.other.AuthInfoDTO">
@@ -291,7 +291,7 @@
         auth_status = #{authStatus}
       </if>
     </set>
-    where openidWxApp = #{unionid}
+    where unionid = #{unionid}
   </update>
 
   <update id="updatePointByUid">
