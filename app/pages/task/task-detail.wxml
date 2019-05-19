@@ -1,0 +1,112 @@
+<view id="page">
+
+    <!-- button -->
+    <view wx:if="{{(uid != task.uid) && (task.type != 'NOTICE') && (task.type != 'LOSTF') && (task.status == 'FINDING') && (nowTime < endTime)}}" class="header-button" bindtap='openReceiveTaskModal'>领取任务</view>
+
+    <view wx:if="{{(uid == task.uid) && ((task.status == 'FINDING') || ((task.status == 'DOING') && (nowTime > endTime)))}}" class="header-button" bindtap='openCancelTaskModal'>取消任务</view>
+
+    <view wx:if="{{(task.doUid == uid)  && (task.status == 'DOING')}}" class="header-button" bindtap='openFinishTaskModal'>完成任务</view>
+
+    <!-- 任务详情 -->
+    <view class="weui-article">
+        <!-- 头像&名字 -->
+        <view class="container header">
+            <image src="{{task.avatarUrl}}" class="header-image"></image>
+            <view class='container-other'>
+                <view class="header-text">
+                    <view>{{task.name}}</view>
+                    <view>{{task.createTime}}</view>
+                </view>
+                <view>
+                    <view style='color:#FFFFFF'>分享</view>
+                    <view style='margin-left:20rpx' bindtap='openActionSheet'>
+                        <i-icon type="share" size="20" />
+                        <label>分享</label>
+                    </view>
+                </view>
+                <view>
+                    <view>
+                        <i-tag name="{{task.typee}}" color="yellow">{{task.typeName}}</i-tag>
+                    </view>
+                    <view>
+                        <i-tag name="{{task.status}}" color="blue">{{task.statusName}}</i-tag>
+                    </view>
+                </view>
+            </view>
+           
+        </view>
+        <!-- 标题&内容 -->
+        <view class="weui-article__section">
+            <view class="weui-article__h1">{{task.title}}</view>
+            <view class="weui-article__section">
+                <view class="weui-article__p">
+                    {{task.content}}
+                </view>
+            </view>
+        </view>
+
+        <!-- 时间&地点&电话&报酬 -->
+        <view class="weui-article__section">
+            <view class="weui-article__h2">结束时间：{{task.endTime}}</view>
+            <view wx:if='{{task.localeName}}' class="weui-article__h2">任务地点：{{task.localeName}}</view>
+            <view wx:if='{{task.telNumber}}' class="weui-article__h2">联系电话：{{task.telNumber}}</view>
+            <view wx:if="{{(task.type != 'NOTICE') && (task.type != 'LOSTF')}}" class="weui-article__h2">报酬金额：{{task.reward}}元</view>
+        </view>
+
+        <!-- 执行人 -->
+        <view wx:if="{{(task.doUid) && (uid == task.uid)}}" class="weui-article__section">
+            <view class="weui-article__h1">执行人</view>
+            <view class='container'>
+                <image src="{{doUser.avatarUrl}}" class="header-image"></image>
+                <view style='font-size:15px;' style='margin-left:10px;'>
+                    <view>昵称：{{doUser.name}}</view>
+                    <view>联系电话：{{doUser.telNumber}}</view>
+                </view>
+            </view>
+        </view>
+
+        <!-- 评价 -->
+        <view wx:if="{{(task.doUid) && (task.status == 'FINISH')&& (task.type != 'NOTICE') && (task.type != 'LOSTF')}}">
+            <view class="weui-article__h1">任务评分</view>  
+            <picker wx:if="{{(uid == task.uid) && !(task.givePoint)}}" id="type" bindchange="openGivePointModal" value="{{task.givePoint}}" range="{{givePointType}}">
+                <view>快来给任务评分</view>
+            </picker>
+            <view  wx:if="{{task.givePoint}}" class="weui-article__h2">{{task.givePoint +"分"}}</view>
+        </view>
+
+    </view>
+
+    <!-- 图片 -->
+    <view class="weui-cell">
+        <view class="weui-cell__bd">
+            <view class="weui-uploader">
+                <view class="weui-uploader__hd">
+                    <view class="weui-uploader__title">任务相关图片</view>
+                </view>
+                <view class="weui-uploader__bd">
+                    <view class="weui-uploader__files" id="uploaderFiles">
+                        <block wx:for="{{task.pictrues}}" wx:key="*this">
+                                <view class="weui-uploader__file" bindtap="previewImage" id="{{baseUrl + item}}">
+                                    <image class="weui-uploader__img" src="{{baseUrl + item}}" mode="aspectFill" />
+                                </view>
+                        </block>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    
+    <!-- 模态框 -->
+    <i-modal title="{{modal.title}}" visible="{{ modal.visible }}" actions="{{ modal.actions }}" bind:click="{{modal.mFunction}}">
+        <view>{{modal.content}}</view>
+    </i-modal>
+
+    <!-- 动作面板（分享） -->
+    <i-action-sheet visible="{{ showActionSheet }}" data-new-id="2" actions="{{ actions }}" show-cancel bind:cancel="cancelActionSheet" bind:click="clickActionSheet">
+    </i-action-sheet>
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
+</view>
+
+

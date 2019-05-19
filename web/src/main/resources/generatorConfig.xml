@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 
-    <classPathEntry location="D:/JAR/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar" />
+    <classPathEntry location="C:/Users/E-SKY/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar" />
 
     <context id="mysqlTables" targetRuntime="MyBatis3">
         <!-- optional，旨在创建class时，对注释进行控制 -->
@@ -15,7 +15,7 @@
         </commentGenerator>
 
         <!-- 连接数据库 -->
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://192.168.99.100:3306/wxApp" userId="root" password="123456">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/wxApp" userId="root" password="123456">
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
@@ -39,9 +39,19 @@
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
+       <!-- <table tableName="user_wx_app" domainObjectName="UserWxApp" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
 
+        </table>-->
+        <!--<table tableName="userBdmer" domainObjectName="UserBdmer" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
+
+        </table>-->
+        <!--<table tableName="task" domainObjectName="Task" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
+            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <columnOverride column="pictrues" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </table>-->
+
+        <table tableName="record" domainObjectName="Record" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"  >
         </table>
-    </context>
 
+    </context>
 </generatorConfiguration>

@@ -8,7 +8,6 @@ App({
     },
     
     onLaunch: function () {
-        wx.setStorageSync("token", "saxas");
         const that = this;
 
         /**
@@ -71,7 +70,7 @@ App({
         WXAPI.checkToken().then(function (res) {
             if (res.code != 0) {
                 //token有效，但是需要用户信息
-                if (res.code != 10005) {
+                if (res.code != 2005) {
                     wx.removeStorageSync('token');
                 }
                 that.goLoginPageTimeOut();
@@ -86,6 +85,30 @@ App({
                 icon:"none"
             });
         });
+
+        /**
+         * 获取当前位置信息
+         */
+        wx.getLocation({
+            type: 'wgs84',
+            success(res) {
+                let locale = {};
+                locale.lat = res.latitude;
+                locale.lng = res.longitude;
+                wx.setStorageSync("locale", locale);
+            },
+            fail(err){
+                wx.showModal({
+                    title: '定位失败',
+                    content: '请删除小程序，重新下载，并开启定位权限',
+                    success: function (res) {
+                        wx.navigateBack({
+                            delta: 0
+                        })
+                    }
+                });
+            }
+        })
     },
 
     goLoginPageTimeOut: function () {

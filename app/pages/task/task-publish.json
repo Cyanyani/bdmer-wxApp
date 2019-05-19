@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText": "发布任务",
+    "onReachBottomDistance": 50,
+    "usingComponents": {
+        "i-icon": "../../components/iView/icon/index",
+        "i-tag": "../../components/iView/tag/index",
+        "i-message": "../../components/iView/message/index",
+        "i-cell": "../../components/iView/cell/index",
+        "i-modal": "../../components/iView/modal/index"
+    }
+}

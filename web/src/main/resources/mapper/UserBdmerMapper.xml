@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdmer.wxapp.dao.UserBdmerDao" >
+  <resultMap id="BaseResultMap" type="com.bdmer.wxapp.model.UserBdmerEntity" >
+    <id column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="unionid" property="unionid" jdbcType="VARCHAR" />
+    <result column="openidWxWeb" property="openidwxweb" jdbcType="VARCHAR" />
+    <result column="openidWxApp" property="openidwxapp" jdbcType="VARCHAR" />
+    <result column="point" property="point" jdbcType="BIGINT" />
+    <result column="usedPoint" property="usedpoint" jdbcType="BIGINT" />
+    <result column="rechargePoint" property="rechargepoint" jdbcType="BIGINT" />
+    <result column="invitationCount" property="invitationcount" jdbcType="INTEGER" />
+    <result column="tempInvitationSuccess" property="tempinvitationsuccess" jdbcType="INTEGER" />
+    <result column="tempInvitationFail" property="tempinvitationfail" jdbcType="INTEGER" />
+    <result column="fromUid" property="fromuid" jdbcType="BIGINT" />
+    <result column="subscribe" property="subscribe" jdbcType="BIT" />
+    <result column="isVip" property="isvip" jdbcType="BIT" />
+    <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+    <result column="createStamp" property="createstamp" jdbcType="BIGINT" />
+    <result column="tel_number" property="telNumber" jdbcType="VARCHAR" />
+    <result column="locale" property="locale" jdbcType="VARCHAR" />
+    <result column="locale_name" property="localeName" jdbcType="VARCHAR" />
+    <result column="auth_image" property="authImage" jdbcType="VARCHAR" />
+    <result column="auth_status" property="authStatus" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uid, unionid, openidWxWeb, openidWxApp, point, usedPoint, rechargePoint, invitationCount, 
+    tempInvitationSuccess, tempInvitationFail, fromUid, subscribe, isVip, createTime, 
+    createStamp, tel_number, locale, locale_name, auth_image, auth_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from userBdmer
+    where uid = #{uid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from userBdmer
+    where uid = #{uid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bdmer.wxapp.model.UserBdmerEntity" >
+    insert into userBdmer (uid, unionid, openidWxWeb, 
+      openidWxApp, point, usedPoint, 
+      rechargePoint, invitationCount, tempInvitationSuccess, 
+      tempInvitationFail, fromUid, subscribe, 
+      isVip, createTime, createStamp, 
+      tel_number, locale, locale_name
+      )
+    values (#{uid,jdbcType=BIGINT}, #{unionid,jdbcType=VARCHAR}, #{openidwxweb,jdbcType=VARCHAR}, 
+      #{openidwxapp,jdbcType=VARCHAR}, #{point,jdbcType=BIGINT}, #{usedpoint,jdbcType=BIGINT}, 
+      #{rechargepoint,jdbcType=BIGINT}, #{invitationcount,jdbcType=INTEGER}, #{tempinvitationsuccess,jdbcType=INTEGER}, 
+      #{tempinvitationfail,jdbcType=INTEGER}, #{fromuid,jdbcType=BIGINT}, #{subscribe,jdbcType=BIT}, 
+      #{isvip,jdbcType=BIT}, #{createtime,jdbcType=VARCHAR}, #{createstamp,jdbcType=BIGINT}, 
+      #{telNumber,jdbcType=VARCHAR}, #{locale,jdbcType=VARCHAR}, #{localeName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bdmer.wxapp.model.UserBdmerEntity" useGeneratedKeys="true" keyProperty="uid">
+    insert into userBdmer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="unionid != null" >
+        unionid,
+      </if>
+      <if test="openidwxweb != null" >
+        openidWxWeb,
+      </if>
+      <if test="openidwxapp != null" >
+        openidWxApp,
+      </if>
+      <if test="point != null" >
+        point,
+      </if>
+      <if test="usedpoint != null" >
+        usedPoint,
+      </if>
+      <if test="rechargepoint != null" >
+        rechargePoint,
+      </if>
+      <if test="invitationcount != null" >
+        invitationCount,
+      </if>
+      <if test="tempinvitationsuccess != null" >
+        tempInvitationSuccess,
+      </if>
+      <if test="tempinvitationfail != null" >
+        tempInvitationFail,
+      </if>
+      <if test="fromuid != null" >
+        fromUid,
+      </if>
+      <if test="subscribe != null" >
+        subscribe,
+      </if>
+      <if test="isvip != null" >
+        isVip,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="createstamp != null" >
+        createStamp,
+      </if>
+      <if test="telNumber != null" >
+        tel_number,
+      </if>
+      <if test="locale != null" >
+        locale,
+      </if>
+      <if test="localeName != null" >
+        locale_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="unionid != null" >
+        #{unionid,jdbcType=VARCHAR},
+      </if>
+      <if test="openidwxweb != null" >
+        #{openidwxweb,jdbcType=VARCHAR},
+      </if>
+      <if test="openidwxapp != null" >
+        #{openidwxapp,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null" >
+        #{point,jdbcType=BIGINT},
+      </if>
+      <if test="usedpoint != null" >
+        #{usedpoint,jdbcType=BIGINT},
+      </if>
+      <if test="rechargepoint != null" >
+        #{rechargepoint,jdbcType=BIGINT},
+      </if>
+      <if test="invitationcount != null" >
+        #{invitationcount,jdbcType=INTEGER},
+      </if>
+      <if test="tempinvitationsuccess != null" >
+        #{tempinvitationsuccess,jdbcType=INTEGER},
+      </if>
+      <if test="tempinvitationfail != null" >
+        #{tempinvitationfail,jdbcType=INTEGER},
+      </if>
+      <if test="fromuid != null" >
+        #{fromuid,jdbcType=BIGINT},
+      </if>
+      <if test="subscribe != null" >
+        #{subscribe,jdbcType=BIT},
+      </if>
+      <if test="isvip != null" >
+        #{isvip,jdbcType=BIT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createstamp != null" >
+        #{createstamp,jdbcType=BIGINT},
+      </if>
+      <if test="telNumber != null" >
+        #{telNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="locale != null" >
+        #{locale,jdbcType=VARCHAR},
+      </if>
+      <if test="localeName != null" >
+        #{localeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bdmer.wxapp.model.UserBdmerEntity" >
+    update userBdmer
+    <set >
+      <if test="unionid != null" >
+        unionid = #{unionid,jdbcType=VARCHAR},
+      </if>
+      <if test="openidwxweb != null" >
+        openidWxWeb = #{openidwxweb,jdbcType=VARCHAR},
+      </if>
+      <if test="openidwxapp != null" >
+        openidWxApp = #{openidwxapp,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null" >
+        point = #{point,jdbcType=BIGINT},
+      </if>
+      <if test="usedpoint != null" >
+        usedPoint = #{usedpoint,jdbcType=BIGINT},
+      </if>
+      <if test="rechargepoint != null" >
+        rechargePoint = #{rechargepoint,jdbcType=BIGINT},
+      </if>
+      <if test="invitationcount != null" >
+        invitationCount = #{invitationcount,jdbcType=INTEGER},
+      </if>
+      <if test="tempinvitationsuccess != null" >
+        tempInvitationSuccess = #{tempinvitationsuccess,jdbcType=INTEGER},
+      </if>
+      <if test="tempinvitationfail != null" >
+        tempInvitationFail = #{tempinvitationfail,jdbcType=INTEGER},
+      </if>
+      <if test="fromuid != null" >
+        fromUid = #{fromuid,jdbcType=BIGINT},
+      </if>
+      <if test="subscribe != null" >
+        subscribe = #{subscribe,jdbcType=BIT},
+      </if>
+      <if test="isvip != null" >
+        isVip = #{isvip,jdbcType=BIT},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createstamp != null" >
+        createStamp = #{createstamp,jdbcType=BIGINT},
+      </if>
+      <if test="telNumber != null" >
+        tel_number = #{telNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="locale != null" >
+        locale = #{locale,jdbcType=VARCHAR},
+      </if>
+      <if test="localeName != null" >
+        locale_name = #{localeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bdmer.wxapp.model.UserBdmerEntity" >
+    update userBdmer
+    set unionid = #{unionid,jdbcType=VARCHAR},
+      openidWxWeb = #{openidwxweb,jdbcType=VARCHAR},
+      openidWxApp = #{openidwxapp,jdbcType=VARCHAR},
+      point = #{point,jdbcType=BIGINT},
+      usedPoint = #{usedpoint,jdbcType=BIGINT},
+      rechargePoint = #{rechargepoint,jdbcType=BIGINT},
+      invitationCount = #{invitationcount,jdbcType=INTEGER},
+      tempInvitationSuccess = #{tempinvitationsuccess,jdbcType=INTEGER},
+      tempInvitationFail = #{tempinvitationfail,jdbcType=INTEGER},
+      fromUid = #{fromuid,jdbcType=BIGINT},
+      subscribe = #{subscribe,jdbcType=BIT},
+      isVip = #{isvip,jdbcType=BIT},
+      createTime = #{createtime,jdbcType=VARCHAR},
+      createStamp = #{createstamp,jdbcType=BIGINT},
+      tel_number = #{telNumber,jdbcType=VARCHAR},
+      locale = #{locale,jdbcType=VARCHAR},
+      locale_name = #{localeName,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByUnionid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from userBdmer
+    where unionid = #{unionid}
+  </select>
+
+  <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from userBdmer
+    where openidWxApp = #{openid}
+  </select>
+
+  <update id="updateLocaleByUnionid">
+    update userBdmer
+    set locale = #{locale},
+        locale_name = #{localeName}
+    where unionid = #{unionid}
+  </update>
+
+  <update id="updateOpenidWxApp">
+    update userBdmer
+    set openidWxApp = #{openidWxApp}
+    where unionid = #{unionid}
+  </update>
+
+  <update id="updateTelNumberByUnionid">
+    update userBdmer
+    set tel_number = #{telNumber}
+    where unionid = #{unionid}
+  </update>
+
+  <update id="updateAuthInfo" parameterType="com.bdmer.wxapp.dto.other.AuthInfoDTO">
+    update userBdmer
+    <set>
+      <if test="authImage != null" >
+        auth_image = #{authImage},
+      </if>
+      <if test="authStatus != null" >
+        auth_status = #{authStatus}
+      </if>
+    </set>
+    where unionid = #{unionid}
+  </update>
+
+  <update id="updatePointByUid">
+    update userBdmer
+    set point = point + #{givePoint}
+    where uid = #{taskDoUid}
+  </update>
+
+</mapper>

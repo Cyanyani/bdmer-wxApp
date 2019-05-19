@@ -1,0 +1,123 @@
+<view id="page">
+    <!-- button -->
+    <view class="header" bindtap='openPublishTasktModal'>发布任务</view>
+
+    <!-- from -->
+    <view class="weui-cells weui-cells_after-title">
+        <!-- title -->
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">标题</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input id="title" value='{{form.title}}' bindinput="updateForm" class="weui-input" placeholder="请输入任务标题" maxlength="5" focus />
+            </view>
+        </view>
+
+        <!-- content -->
+        <view class="weui-cells__title  weui-cells_after-title" style="color:#000000;font-size:18px">内容</view>
+        <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <textarea id="content" value='{{form.content}}' bindinput="updateForm" class="weui-textarea" placeholder="请输入任务内容" style="height: 4em" number="500"/>
+                    <view class="weui-textarea-counter">500</view>
+                </view>
+        </view>
+
+        <!-- type -->
+        <view class="weui-cell weui-cell_select">
+            <view class="weui-cell__hd weui-cell__hd_in-select-after">
+                <view class="weui-label">任务类型</view>
+            </view>
+            <view class="weui-cell__bd">
+                <picker id="type" bindchange="getType" value="{{form.type}}" range="{{types}}">
+                    <view class="weui-select weui-select_in-select-after">{{form.type}}</view>
+                </picker>
+            </view>
+        </view>
+
+        <!-- endTime-Date -->
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">截至日期</view>
+            </view>
+            <view class="weui-cell__bd">
+                <picker id="endDate" mode="date" value="{{form.endDate}}" bindchange="updateForm">
+                    <view class="weui-input">{{form.endDate}}</view>
+                </picker>
+            </view>
+        </view>
+
+        <!-- endTime-Time -->
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">截至时间</view>
+            </view>
+            <view class="weui-cell__bd">
+                <picker  id="endTime" mode="time" value="{{form.endTime}}" bindchange="updateForm">
+                    <view class="weui-input">{{form.endTime}}</view>
+                </picker>
+            </view>
+        </view>
+
+        <!-- telNumber -->
+        <view wx:if="{{form.type !='通知公告'}}" class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">手机号</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input id="telNumber" value='{{form.telNumber}}' bindinput="updateForm" bindblur="checkTelNumber" type="number" class="weui-input" placeholder="请输入手机号" />
+            </view>
+        </view>
+
+        <!-- reward -->
+        <view wx:if="{{form.type !='通知公告' && form.type !='失物招领'}}" class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">报酬(元)</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input  id="reward"  value='{{form.reward}}' bindinput="updateForm" type="number" class="weui-input" placeholder="请输入报酬(元)" />
+            </view>
+        </view>
+
+        <!-- locale -->
+        <view style='height:20px;'></view>
+        <i-cell is-link title="位置" i-class="locale" value="{{form.localeName}}" bind:click="getLocale"></i-cell>
+
+        <!-- pictrues -->
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <view class="weui-uploader">
+                    <view class="weui-uploader__hd">
+                        <view class="weui-uploader__title">图片上传</view>
+                        <view class="weui-uploader__info">上传图片让别人更好理解任务</view>
+                    </view>
+                    <view class="weui-uploader__bd">
+                        <view class="weui-uploader__files" id="uploaderFiles">
+
+                            <block wx:for="{{pictruesList}}" wx:key="*this">
+                                    <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                            </block>
+
+                            <view class="weui-uploader__input-box">
+                                <view class="weui-uploader__input" bindtap="getPictrues"> 
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+          </view>
+        </view>
+    </view>
+
+     <!-- 模态框 -->
+    <i-modal title="确认发布" visible="{{ modal.visible }}" actions="{{ modal.actions }}" bind:click="publishTask">
+        <view>发布后不可修改哦</view>
+    </i-modal>
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
+</view>
+
+

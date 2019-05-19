@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdmer.wxapp.dao.TaskDao" >
+  <resultMap id="BaseResultMap" type="com.bdmer.wxapp.model.TaskEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="pictrues" property="pictrues" jdbcType="VARCHAR" />
+    <result column="creatStamp" property="creatstamp" jdbcType="BIGINT" />
+    <result column="endStamp" property="endstamp" jdbcType="BIGINT" />
+    <result column="lat" property="lat" jdbcType="DOUBLE" />
+    <result column="lng" property="lng" jdbcType="DOUBLE" />
+    <result column="locale_name" property="localeName" jdbcType="VARCHAR" />
+    <result column="tel_number" property="telNumber" jdbcType="VARCHAR" />
+    <result column="reward" property="reward" jdbcType="INTEGER" />
+    <result column="doUid" property="douid" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="give_point" property="givePoint" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="TaskCardResultMap" type="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    <id column="id" property="taskId"/>
+    <result column="title" property="title"/>
+    <result column="content_brief" property="contentBrief"/>
+    <result column="create_time" property="createTime"/>
+    <result column="end_time" property="endTime"/>
+    <result column="avatar_url" property="avatarUrl"/>
+    <result column="type" property="type"/>
+    <result column="distance" property="distance" />
+    <result column="status" property="status" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, uid, name, avatar_url, title, content, pictrues, creatStamp, endStamp, lat, lng, 
+    locale_name, tel_number, reward, doUid, status, type, give_point
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from task
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bdmer.wxapp.model.TaskEntity" >
+    insert into task (id, uid, name, 
+      avatar_url, title, content, 
+      pictrues, creatStamp, endStamp, 
+      lat, lng, locale_name, 
+      tel_number, reward, doUid, 
+      status, type, give_point
+      )
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{avatarUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{pictrues,jdbcType=VARCHAR}, #{creatstamp,jdbcType=BIGINT}, #{endstamp,jdbcType=BIGINT}, 
+      #{lat,jdbcType=DOUBLE}, #{lng,jdbcType=DOUBLE}, #{localeName,jdbcType=VARCHAR}, 
+      #{telNumber,jdbcType=VARCHAR}, #{reward,jdbcType=INTEGER}, #{douid,jdbcType=BIGINT}, 
+      #{status,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{givePoint,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bdmer.wxapp.model.TaskEntity" useGeneratedKeys="true" keyProperty="id">
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="pictrues != null" >
+        pictrues,
+      </if>
+      <if test="creatstamp != null" >
+        creatStamp,
+      </if>
+      <if test="endstamp != null" >
+        endStamp,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="localeName != null" >
+        locale_name,
+      </if>
+      <if test="telNumber != null" >
+        tel_number,
+      </if>
+      <if test="reward != null" >
+        reward,
+      </if>
+      <if test="douid != null" >
+        doUid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="givePoint != null" >
+        give_point,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null" >
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="pictrues != null" >
+        #{pictrues,jdbcType=VARCHAR},
+      </if>
+      <if test="creatstamp != null" >
+        #{creatstamp,jdbcType=BIGINT},
+      </if>
+      <if test="endstamp != null" >
+        #{endstamp,jdbcType=BIGINT},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=DOUBLE},
+      </if>
+      <if test="localeName != null" >
+        #{localeName,jdbcType=VARCHAR},
+      </if>
+      <if test="telNumber != null" >
+        #{telNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="reward != null" >
+        #{reward,jdbcType=INTEGER},
+      </if>
+      <if test="douid != null" >
+        #{douid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="givePoint != null" >
+        #{givePoint,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bdmer.wxapp.model.TaskEntity" >
+    update task
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="pictrues != null" >
+        pictrues = #{pictrues,jdbcType=VARCHAR},
+      </if>
+      <if test="creatstamp != null" >
+        creatStamp = #{creatstamp,jdbcType=BIGINT},
+      </if>
+      <if test="endstamp != null" >
+        endStamp = #{endstamp,jdbcType=BIGINT},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=DOUBLE},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=DOUBLE},
+      </if>
+      <if test="localeName != null" >
+        locale_name = #{localeName,jdbcType=VARCHAR},
+      </if>
+      <if test="telNumber != null" >
+        tel_number = #{telNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="reward != null" >
+        reward = #{reward,jdbcType=INTEGER},
+      </if>
+      <if test="douid != null" >
+        doUid = #{douid,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="givePoint != null" >
+        give_point = #{givePoint,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bdmer.wxapp.model.TaskEntity" >
+    update task
+    set uid = #{uid,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      pictrues = #{pictrues,jdbcType=VARCHAR},
+      creatStamp = #{creatstamp,jdbcType=BIGINT},
+      endStamp = #{endstamp,jdbcType=BIGINT},
+      lat = #{lat,jdbcType=DOUBLE},
+      lng = #{lng,jdbcType=DOUBLE},
+      locale_name = #{localeName,jdbcType=VARCHAR},
+      tel_number = #{telNumber,jdbcType=VARCHAR},
+      reward = #{reward,jdbcType=INTEGER},
+      doUid = #{douid,jdbcType=BIGINT},
+      status = #{status,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      give_point = #{givePoint,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateTaskStatus">
+    update task
+    set status = #{taskStatus}
+    where id = #{taskId}
+  </update>
+
+  <update id="updateTaskDoUid">
+    update task
+    set doUid = #{doUid}
+    where id = #{taskId}
+  </update>
+
+  <update id="updateGivePoint">
+    update task
+    set give_point = #{givePoint}
+    where id = #{taskId}
+  </update>
+
+  <select id="getTaskList" resultMap="TaskCardResultMap" parameterType="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    select
+      id,
+      title,
+      left(content, 50) AS content_brief,
+      FROM_UNIXTIME(creatStamp/1000, '%Y-%m-%d %H:%i') AS create_time,
+      FROM_UNIXTIME(endStamp/1000, '%Y-%m-%d %H:%i') AS end_time,
+      avatar_url,
+      type,
+      status,
+      FORMAT(
+        6371 * acos (
+          cos ( radians(#{lat}) )
+          * cos( radians( lat ) )
+          * cos( radians( lng ) - radians(#{lng}) )
+          + sin ( radians(#{lat}) )
+          * sin( radians( lat ) )
+        ), 0
+      ) AS distance
+    from task
+    where status = "FINDING" and (FORMAT(unix_timestamp(now()),0) &lt; (FORMAT(endStamp/1000, 0)))
+    <if test="type != null" >
+      and type = #{type}
+    </if>
+    order by distance
+    LIMIT #{index}, #{size}
+  </select>
+
+  <select id="getTaskListByUid" resultMap="TaskCardResultMap" parameterType="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    select
+    id,
+    title,
+    left(content, 50) AS content_brief,
+    FROM_UNIXTIME(creatStamp/1000, '%Y-%m-%d %H:%i') AS create_time,
+    FROM_UNIXTIME(endStamp/1000, '%Y-%m-%d %H:%i') AS end_time,
+    avatar_url,
+    type,
+    status,
+    FORMAT(
+    6371 * acos (
+    cos ( radians(#{lat}) )
+    * cos( radians( lat ) )
+    * cos( radians( lng ) - radians(#{lng}) )
+    + sin ( radians(#{lat}) )
+    * sin( radians( lat ) )
+    ), 0
+    ) AS distance
+    from task
+    where uid = #{uid} and (status = #{status1}
+    <if test="status2 != null">
+      or status = #{status2}
+    </if>
+    )
+    order by creatStamp desc
+    LIMIT #{index}, #{size}
+  </select>
+
+  <select id="getTaskListByDoUid" resultMap="TaskCardResultMap" parameterType="com.bdmer.wxapp.dto.response.TaskCardDTO" >
+    select
+    id,
+    title,
+    left(content, 50) AS content_brief,
+    FROM_UNIXTIME(creatStamp/1000, '%Y-%m-%d %H:%i') AS create_time,
+    FROM_UNIXTIME(endStamp/1000, '%Y-%m-%d %H:%i') AS end_time,
+    avatar_url,
+    type,
+    status,
+    FORMAT(
+    6371 * acos (
+    cos ( radians(#{lat}) )
+    * cos( radians( lat ) )
+    * cos( radians( lng ) - radians(#{lng}) )
+    + sin ( radians(#{lat}) )
+    * sin( radians( lat ) )
+    ), 0
+    ) AS distance
+    from task
+    where doUid = #{doUid} and (status = #{status1}
+    <if test="status2 != null">
+      or status = #{status2}
+    </if>
+    )
+    order by creatStamp desc
+    LIMIT #{index}, #{size}
+  </select>
+
+</mapper>

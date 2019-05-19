@@ -19,6 +19,8 @@
 		"hidedInDevtools": []
 	},
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -37,7 +39,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 7,
 			"list": [
 				{
 					"id": -1,
@@ -48,30 +50,50 @@
 				},
 				{
 					"id": -1,
-					"name": "phone",
-					"pathName": "pages/mine-phone/index",
+					"name": "wx-web",
+					"pathName": "pages/other/wx-web",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "bindphone",
-					"pathName": "pages/mine-phone/bind-phone",
+					"name": "mine-info",
+					"pathName": "pages/mine/mine-info",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "new",
-					"pathName": "pages/new/new",
+					"name": "mine-cert",
+					"pathName": "pages/mine/mine-cert",
 					"query": "",
 					"scene": null
 				},
 				{
-					"id": 4,
-					"name": "list",
-					"pathName": "pages/list/index",
+					"id": -1,
+					"name": "task",
+					"pathName": "pages/task/task",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "task-publish",
+					"pathName": "pages/task/task-publish",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "task-detail",
+					"pathName": "pages/task/task-detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "timeline",
+					"pathName": "pages/other/record",
 					"scene": null
 				}
 			]

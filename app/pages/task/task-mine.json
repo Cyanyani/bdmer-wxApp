@@ -1,0 +1,15 @@
+{
+    "navigationBarTitleText": "我的任务",
+    "onReachBottomDistance": 300,
+    "usingComponents": {
+        "wux-white-space": "../../components/wux/white-space/index",
+        "wux-divider": "../../components/wux/divider/index",
+        "wux-tabs": "../../components/wux/tabs/index",
+        "wux-tab": "../../components/wux/tab/index",
+        "i-card": "../../components/iView/card/index",
+        "i-spin": "../../components/iView/spin/index",
+        "i-tag": "../../components/iView/tag/index",
+        "i-icon": "../../components/iView/icon/index",
+        "i-message": "../../components/iView/message/index"
+    }
+}

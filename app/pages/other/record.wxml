@@ -1,0 +1,21 @@
+<view>
+
+    <!-- 时间线模块 -->
+    <view>
+        <wux-timeline position="alternate">
+            <block wx:for="{{records}}" wx:key="id">
+                <wux-timeline-item wx:if="{{item.getpoint >= 0}}" dotStyle="border-color: #33cd5f; color: #33cd5f">
+                    <view><text>{{item.createtime}}\n操作：{{item.event}}\n增加：{{item.getpoint}}</text></view>
+                </wux-timeline-item>
+                <wux-timeline-item wx:elif="{{item.getpoint < 0}}" dotStyle="border-color: #ef473a; color: #ef473a">
+                    <view><text>{{item.createtime}}\n操作：{{item.event}}\n减少：{{item.getpoint * -1}}\n</text></view>
+                </wux-timeline-item>
+            </block>
+           
+        </wux-timeline>
+    </view>
+    
+
+    <!-- 错误提示 -->
+    <i-message id="message" />
+</view>

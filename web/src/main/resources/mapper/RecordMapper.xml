@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdmer.wxapp.dao.RecordDao" >
+  <resultMap id="BaseResultMap" type="com.bdmer.wxapp.model.RecordEntity" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="event" property="event" jdbcType="VARCHAR" />
+    <result column="eventDetail" property="eventdetail" jdbcType="VARCHAR" />
+    <result column="getPoint" property="getpoint" jdbcType="BIGINT" />
+    <result column="createTime" property="createtime" jdbcType="VARCHAR" />
+    <result column="createStamp" property="createstamp" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, event, eventDetail, getPoint, createTime, createStamp
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bdmer.wxapp.model.RecordEntity" >
+    insert into record (id, uid, event, 
+      eventDetail, getPoint, createTime, 
+      createStamp)
+    values (#{id,jdbcType=BIGINT}, #{uid,jdbcType=BIGINT}, #{event,jdbcType=VARCHAR}, 
+      #{eventdetail,jdbcType=VARCHAR}, #{getpoint,jdbcType=BIGINT}, #{createtime,jdbcType=VARCHAR}, 
+      #{createstamp,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bdmer.wxapp.model.RecordEntity" >
+    insert into record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="event != null" >
+        event,
+      </if>
+      <if test="eventdetail != null" >
+        eventDetail,
+      </if>
+      <if test="getpoint != null" >
+        getPoint,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="createstamp != null" >
+        createStamp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="event != null" >
+        #{event,jdbcType=VARCHAR},
+      </if>
+      <if test="eventdetail != null" >
+        #{eventdetail,jdbcType=VARCHAR},
+      </if>
+      <if test="getpoint != null" >
+        #{getpoint,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createstamp != null" >
+        #{createstamp,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bdmer.wxapp.model.RecordEntity" >
+    update record
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="event != null" >
+        event = #{event,jdbcType=VARCHAR},
+      </if>
+      <if test="eventdetail != null" >
+        eventDetail = #{eventdetail,jdbcType=VARCHAR},
+      </if>
+      <if test="getpoint != null" >
+        getPoint = #{getpoint,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createstamp != null" >
+        createStamp = #{createstamp,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bdmer.wxapp.model.RecordEntity" >
+    update record
+    set uid = #{uid,jdbcType=BIGINT},
+      event = #{event,jdbcType=VARCHAR},
+      eventDetail = #{eventdetail,jdbcType=VARCHAR},
+      getPoint = #{getpoint,jdbcType=BIGINT},
+      createTime = #{createtime,jdbcType=VARCHAR},
+      createStamp = #{createstamp,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from record
+    where uid = #{uid}
+    order by createStamp DESC
+  </select>
+
+</mapper>

@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "身份认证",
+    "usingComponents": {
+        "wux-upload": "../../components/wux/upload/index",
+        "i-message": "../../components/iView/message/index"
+    }
+}

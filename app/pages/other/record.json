@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText": "点数记录",
+    "usingComponents": {
+        "wux-timeline": "../../components/wux/timeline/index",
+        "wux-timeline-item": "../../components/wux/timeline-item/index",
+        "i-message": "../../components/iView/message/index"
+    }
+}

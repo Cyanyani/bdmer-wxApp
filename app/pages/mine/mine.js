@@ -1,4 +1,5 @@
 const WXAPI = require('../../wxapi/main');
+const Util = require('../../utils/util.js');
 const { $Message } = require('../../components/iView/base/index');
 
 var app = getApp();
@@ -8,9 +9,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        userInfo:"",
-        infInfo:"",
-        showTelNumber:""
+        userInfo:{},
+        bdmerInfo:{},
     },
 
     /**
@@ -30,34 +30,61 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
+        let that = this;
         let userInfo = wx.getStorageSync("userInfo");
-        let infInfo = wx.getStorageSync("infInfo");
-        //WXAPI获取infInfo
+        let bdmerInfo = {};
 
-        //测试
-        infInfo = infInfo ? infInfo:{};
-        infInfo.telNumber = "18758896369";
-        infInfo.jiaoWuAccount = "1500304128";
-        infInfo.jiaoWuPassword = "1500304128";
-        infInfo.libraryAccount = "1500304128";
-        infInfo.libraryPassword = "1500304128";
-        wx.setStorageSync("infInfo",infInfo);
-        
-        this.setData({
-            userInfo: userInfo,
-            infInfo: infInfo,
-            showTelNumber: infInfo.telNumber ? (infInfo.telNumber.substr(0, 3) +"****"+ infInfo.telNumber.substr(7, 4)):""
+        //WXAPI获取bdmerInfo
+        WXAPI.getUserBdmerInfo().then(
+            function (res) {
+                if (res.code != 0) {
+                    $Message({
+                        content: res.msg,
+                        type: 'error',
+                        duration: 3
+                    });
+                    if (!Util.isToken(res)) {
+                        app.goLoginPageTimeOut();
+                    }
+                } else {
+                    bdmerInfo = res.data;
+                    wx.setStorageSync("bdmerInfo", res.data);
+                }
+            },
+            function (err) {
+                console.log(err);
+                $Message({
+                    content: '服务器开小差了!',
+                    type: 'error',
+                    duration: 3
+                });
+            }
+        ).then(() => {
+            that.setData({
+                userInfo: userInfo,
+                bdmerInfo: bdmerInfo
+            });
+        });
+    },
+
+    //-- 用户自定义函数 --//
+    
+    /**
+     * 跳转用户信息
+     */
+    goMineInfo:function(){
+        wx.navigateTo({
+            url: "./mine-info"
         });
     },
 
     /**
-     * 用户自定义函数
+     * 跳转点数记录
      */
-    goInfo:function(){
-        let telNumber = this.data.infInfo.telNumber? this.data.infInfo.telNumber:"";
+    goRecord:function(){
         wx.navigateTo({
-            url: "../mine-phone/index?telNumber=" + telNumber
-        });
+            url: "../other/record"
+        }); 
     }
 
 })
